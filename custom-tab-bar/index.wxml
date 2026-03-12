@@ -1,4 +1,4 @@
-<van-tabbar active="{{ active }}" bind:change="onChange" active-color="#00B0FF" inactive-color="#999999" wx:if="{{ !hideTabbar }}">
+<van-tabbar active="{{ active }}" bind:change="onChange" active-color="#00B0FF" inactive-color="#999999" hidden="{{ hideTabbar }}">
   <van-tabbar-item icon="search">发现</van-tabbar-item>
   <van-tabbar-item icon="friends-o">社交</van-tabbar-item>
   <van-tabbar-item icon="home-o">首页</van-tabbar-item>
