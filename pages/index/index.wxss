@@ -298,7 +298,7 @@
 
 .van-dialog__footer .van-button {
   flex: 1 !important;
-  width: 0 !important; /* 强制平分宽度 */
+  min-width: 0 !important; /* 允许 flex 收缩 */
   height: 88rpx !important;
   font-size: 32rpx !important;
 }
