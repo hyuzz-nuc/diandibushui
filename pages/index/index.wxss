@@ -303,6 +303,14 @@
   height: 88rpx !important;
   font-size: 32rpx !important;
   border-radius: 0 !important;
+  text-align: center !important;
+}
+
+.van-dialog__footer .van-button__text {
+  display: block !important;
+  width: 100% !important;
+  text-align: center !important;
+  line-height: 88rpx !important;
 }
 
 .van-dialog__confirm {
@@ -430,9 +438,16 @@ page.guide-is-showing .custom-tab-bar {
 }
 
 .guide-start-btn {
-  padding: 0 60rpx !important;
+  padding: 0 !important;
   font-weight: bold !important;
   box-shadow: 0 4px 10px rgba(0, 176, 255, 0.3);
+  text-align: center !important;
+}
+
+.guide-start-btn .van-button__text {
+  display: block !important;
+  width: 100% !important;
+  text-align: center !important;
 }
 
 .guide-pointing-hand {
@@ -565,12 +580,14 @@ page.guide-is-showing .custom-tab-bar {
   flex: 1 !important;
   min-width: 0 !important;
   text-align: center !important;
+  padding: 0 !important;
 }
 
 .step-actions .van-button__text {
-  display: inline-block !important;
+  display: block !important;
   width: 100% !important;
   text-align: center !important;
+  line-height: normal !important;
 }
 
 .step-actions.center {
