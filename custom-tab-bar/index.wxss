@@ -1,1 +1,4 @@
 /* custom-tab-bar/index.wxss */
+.van-tabbar {
+  z-index: 100 !important;
+}

@@ -1,6 +1,7 @@
 Component({
   data: {
-    active: 2 // 默认选中首页 (index 2)
+    active: 2, // 默认选中首页 (index 2)
+    hideTabbar: false // 是否隐藏导航栏
   },
   methods: {
     onChange(event) {
@@ -15,6 +16,10 @@ Component({
       wx.switchTab({
         url: urls[event.detail]
       });
+    },
+    // 控制导航栏显示/隐藏
+    setVisibility(hide) {
+      this.setData({ hideTabbar: hide });
     }
   }
 });

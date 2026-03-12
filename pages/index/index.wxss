@@ -395,6 +395,12 @@
   overflow-y: auto;
 }
 
+/* ========== 引导时隐藏底部导航栏 ========== */
+/* 当引导进行时，强制隐藏 custom-tab-bar */
+page.guide-is-showing .custom-tab-bar {
+  display: none !important;
+}
+
 .guide-icon {
   font-size: 80rpx;
   margin-bottom: 30rpx;

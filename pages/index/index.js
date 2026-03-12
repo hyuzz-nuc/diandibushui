@@ -86,6 +86,9 @@ Page({
     if (!hasGuided) {
       // 隐藏底部 tabbar，避免遮挡引导弹窗
       wx.hideTabBar();
+      if (typeof this.getTabBar === 'function' && this.getTabBar()) {
+        this.getTabBar().setVisibility(true);
+      }
 
       // 步骤1：弹出欢迎致辞
       setTimeout(() => {
@@ -150,6 +153,9 @@ Page({
     
     // 恢复底部 tabbar
     wx.showTabBar();
+    if (typeof this.getTabBar === 'function' && this.getTabBar()) {
+      this.getTabBar().setVisibility(false);
+    }
   },
 
   // 引导步骤控制器
@@ -755,6 +761,8 @@ Page({
     this.promptAddWater(amount);
   }
 })
+
+
 
 
 
