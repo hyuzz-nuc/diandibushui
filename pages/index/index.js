@@ -1,4 +1,4 @@
-import Dialog from '@vant/weapp/dialog/dialog';
+﻿import Dialog from '@vant/weapp/dialog/dialog';
 
 const app = getApp()
 
@@ -84,6 +84,9 @@ Page({
   checkNewUserGuide() {
     const hasGuided = wx.getStorageSync('has_guided_v2'); // 升级版本号，强制触发新引导
     if (!hasGuided) {
+      // 隐藏底部 tabbar，避免遮挡引导弹窗
+      wx.hideTabBar();
+
       // 步骤1：弹出欢迎致辞
       setTimeout(() => {
         this.setData({ 
@@ -144,6 +147,9 @@ Page({
     if (app.globalData) app.globalData.dailyGoal = originalGoal;
 
     wx.setStorageSync('has_guided_v2', true);
+    
+    // 恢复底部 tabbar
+    wx.showTabBar();
   },
 
   // 引导步骤控制器
@@ -749,3 +755,7 @@ Page({
     this.promptAddWater(amount);
   }
 })
+
+
+
+
