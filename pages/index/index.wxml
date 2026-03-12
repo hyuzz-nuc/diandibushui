@@ -67,7 +67,8 @@
     <view class="custom-input"></view>
   </view>
 
-  <van-popup id="van-popup" z-index="10000" />
+  <!-- Vant Dialog 专用节点（供 Dialog API 使用） -->
+  <van-dialog id="van-dialog" />
 
   <!-- 新手引导：1. 欢迎弹窗（底部弹出） -->
   <van-popup
