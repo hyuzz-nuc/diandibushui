@@ -19,7 +19,10 @@ Component({
     },
     // 控制导航栏显示/隐藏
     setVisibility(hide) {
+      console.log('[custom-tab-bar] setVisibility called with:', hide);
+      console.log('[custom-tab-bar] 当前 hideTabbar:', this.data.hideTabbar);
       this.setData({ hideTabbar: hide });
+      console.log('[custom-tab-bar] 设置后 hideTabbar:', hide);
     }
   }
 });

@@ -113,12 +113,6 @@ Page({
     if (app.globalData && app.globalData.finishGuidePending) {
       app.globalData.finishGuidePending = false; // 清除标记
       
-      // 恢复导航栏显示
-      if (typeof this.getTabBar === 'function' && this.getTabBar()) {
-        this.getTabBar().setVisibility(false);
-      }
-      wx.showTabBar();
-      
       // 强制重置其他弹窗状态，避免冲突
       this.setData({
         showRecommendDialog: false,
@@ -142,6 +136,8 @@ Page({
 
   // 结束引导
   finishGuide() {
+    console.log('[finishGuide] 开始恢复导航栏');
+    
     // 恢复数据
     const originalGoal = this.data.originalDailyGoal;
     this.setData({ 
@@ -159,11 +155,16 @@ Page({
     
     // 恢复底部 tabbar（延迟执行，确保 DOM 渲染完成）
     setTimeout(() => {
-      if (typeof this.getTabBar === 'function' && this.getTabBar()) {
-        this.getTabBar().setVisibility(false);
+      console.log('[finishGuide] setTimeout 执行');
+      const tabBar = this.getTabBar();
+      console.log('[finishGuide] tabBar:', tabBar);
+      if (typeof this.getTabBar === 'function' && tabBar) {
+        console.log('[finishGuide] 调用 setVisibility(false)');
+        tabBar.setVisibility(false);
       }
+      console.log('[finishGuide] 调用 wx.showTabBar()');
       wx.showTabBar();
-    }, 100);
+    }, 300);
   },
 
   // 引导步骤控制器
