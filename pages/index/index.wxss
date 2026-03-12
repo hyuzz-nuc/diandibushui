@@ -575,18 +575,28 @@ page.guide-is-showing .custom-tab-bar {
 }
 
 .step-actions {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 40rpx;
-  padding: 0 20rpx;
-  gap: 20rpx;
+  display: flex !important;
+  justify-content: space-between !important;
+  margin-top: 40rpx !important;
+  padding: 0 20rpx !important;
+  gap: 20rpx !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
 }
 
 .step-actions .van-button {
   flex: 1 !important;
+  width: 0 !important; /* 强制 flex 平分 */
   min-width: 0 !important;
+  max-width: none !important;
   text-align: center !important;
   padding: 0 !important;
+  margin: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.step-actions .van-button--normal {
+  width: 100% !important;
 }
 
 .step-actions .van-button__text {
@@ -594,6 +604,30 @@ page.guide-is-showing .custom-tab-bar {
   width: 100% !important;
   text-align: center !important;
   line-height: normal !important;
+}
+
+/* ========== 引导步骤按钮专用样式 ========== */
+.step-btn {
+  flex: 1 !important;
+  width: 0 !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  text-align: center !important;
+}
+
+.step-btn.van-button--small {
+  font-size: 28rpx !important;
+  height: 72rpx !important;
+  min-width: 0 !important;
+  padding: 0 !important;
+}
+
+.step-btn .van-button__text {
+  display: block !important;
+  width: 100% !important;
+  text-align: center !important;
 }
 
 .step-actions.center {

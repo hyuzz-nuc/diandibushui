@@ -150,8 +150,8 @@
         <view class="guide-hand-animation" style="right: 40rpx; top: 50%;">✍️</view>
       </view>
       <view class="step-actions">
-        <van-button round size="small" bind:click="prevSmartStep">上一步</van-button>
-        <van-button round type="info" size="small" bind:click="nextSmartStep">下一步</van-button>
+        <van-button round size="small" custom-class="step-btn" bind:click="prevSmartStep">上一步</van-button>
+        <van-button round type="info" size="small" custom-class="step-btn" bind:click="nextSmartStep">下一步</van-button>
       </view>
     </view>
 
@@ -222,8 +222,8 @@
         <view class="guide-hand-animation" style="right: 40rpx; top: 50%;">✍️</view>
       </view>
       <view class="step-actions">
-        <van-button round size="small" bind:click="prevSmartStep">返回</van-button>
-        <van-button round type="primary" size="small" color="#00B0FF" bind:click="confirmRecommend">确认目标</van-button>
+        <van-button round size="small" custom-class="step-btn" bind:click="prevSmartStep">返回</van-button>
+        <van-button round type="primary" size="small" custom-class="step-btn" color="#00B0FF" bind:click="confirmRecommend">确认目标</van-button>
       </view>
     </view>
   </van-popup>
