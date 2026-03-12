@@ -564,6 +564,13 @@ page.guide-is-showing .custom-tab-bar {
 .step-actions .van-button {
   flex: 1 !important;
   min-width: 0 !important;
+  text-align: center !important;
+}
+
+.step-actions .van-button__text {
+  display: inline-block !important;
+  width: 100% !important;
+  text-align: center !important;
 }
 
 .step-actions.center {
