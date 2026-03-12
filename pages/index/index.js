@@ -296,7 +296,10 @@ Page({
         percent: this.calculatePercent(startValue, this.data.dailyGoal)
       });
 
-      // 5. 进入社交引导
+      // 5. 进入社交引导（保持导航栏隐藏）
+      if (typeof this.getTabBar === 'function' && this.getTabBar()) {
+        this.getTabBar().setVisibility(true);
+      }
       this.showSocialGuide();
     }, 2000);
   },
@@ -637,6 +640,11 @@ Page({
     });
     
     setTimeout(() => {
+      // 引导期间隐藏导航栏
+      if (typeof this.getTabBar === 'function' && this.getTabBar()) {
+        this.getTabBar().setVisibility(true);
+      }
+      
       Dialog.confirm({
         title: '开启喝水提醒',
         message: '好记性不如烂笔头，允许我们定时提醒您喝水吗？',

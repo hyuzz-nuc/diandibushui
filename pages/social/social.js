@@ -31,6 +31,10 @@ Page({
     // 检查是否有引导任务
     const app = getApp();
     if (app.globalData && app.globalData.socialGuidePending) {
+      // 引导期间隐藏导航栏
+      if (typeof this.getTabBar === 'function' && this.getTabBar()) {
+        this.getTabBar().setVisibility(true);
+      }
       this.setData({ showSocialGuideAction: true });
       app.globalData.socialGuidePending = false; // 清除标记
     }
@@ -38,6 +42,11 @@ Page({
   
   onFinishSocialGuide() {
     this.setData({ showSocialGuideAction: false });
+    
+    // 恢复导航栏显示
+    if (typeof this.getTabBar === 'function' && this.getTabBar()) {
+      this.getTabBar().setVisibility(false);
+    }
     
     // 设置全局标记，准备在 Index 页面显示最终弹窗
     const app = getApp();
