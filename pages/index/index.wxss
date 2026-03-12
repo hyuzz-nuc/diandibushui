@@ -270,6 +270,12 @@
   display: block; 
 }
 
+.action-btn-wrapper {
+  flex: 1 !important;
+  width: 0 !important; /* 强制 flex 平分 */
+  display: block !important;
+}
+
 .cancel-btn {
   width: 100% !important;
   background-color: #f5f5f5 !important;
@@ -277,6 +283,14 @@
   border: none !important;
   font-size: 32rpx !important;
   height: 88rpx !important;
+  text-align: center !important;
+  padding: 0 !important;
+}
+
+.cancel-btn .van-button__text {
+  display: block !important;
+  width: 100% !important;
+  text-align: center !important;
 }
 
 .confirm-btn {
@@ -286,6 +300,14 @@
   font-size: 32rpx !important;
   height: 88rpx !important;
   box-shadow: 0 8rpx 20rpx rgba(0, 176, 255, 0.3);
+  text-align: center !important;
+  padding: 0 !important;
+}
+
+.confirm-btn .van-button__text {
+  display: block !important;
+  width: 100% !important;
+  text-align: center !important;
 }
 
 /* ========== Vant Dialog 按钮样式统一 ========== */
