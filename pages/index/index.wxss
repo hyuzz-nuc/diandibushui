@@ -297,20 +297,26 @@
   padding: 0 !important;
 }
 
-.van-dialog__footer .van-button {
+.van-dialog__button {
   flex: 1 !important;
-  width: 50% !important; /* 强制平分 */
+  width: 50% !important;
   height: 88rpx !important;
   font-size: 32rpx !important;
   border-radius: 0 !important;
-  text-align: center !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
-.van-dialog__footer .van-button__text {
-  display: block !important;
+.van-dialog__button--default,
+.van-dialog__button--primary {
   width: 100% !important;
+  height: 100% !important;
+  border-radius: 0 !important;
   text-align: center !important;
-  line-height: 88rpx !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
 .van-dialog__confirm {
