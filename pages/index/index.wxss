@@ -384,9 +384,9 @@
   50% { transform: translateY(-10px); }
 }
 
-/* ========== 引导弹窗内部样式 ========== */
-.guide-dialog-content {
-  padding: 40rpx 30rpx;
+/* ========== 引导弹窗内部样式（底部弹出） ========== */
+.guide-popup-content {
+  padding: 40rpx 30rpx calc(80rpx + env(safe-area-inset-bottom));
   display: flex;
   flex-direction: column;
   align-items: center;

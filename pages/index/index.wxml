@@ -1,4 +1,4 @@
-<view class="container">
+﻿<view class="container">
   <view class="header">
     <text class="greeting">Hi, 记得喝水哦 💧</text>
   </view>
@@ -67,20 +67,19 @@
     <view class="custom-input"></view>
   </view>
 
-  <van-dialog id="van-dialog" z-index="10000" />
+  <van-popup id="van-popup" z-index="10000" />
 
-  <!-- 新手引导：1. 欢迎弹窗 -->
-  <van-dialog
-    use-slot
-    title="欢迎加入补水计划 ✨"
+  <!-- 新手引导：1. 欢迎弹窗（底部弹出） -->
+  <van-popup
     show="{{ showWelcomeDialog }}"
-    show-confirm-button="{{ false }}"
+    position="bottom"
+    round
     close-on-click-overlay="{{ false }}"
     bind:close="onCloseDialog"
     z-index="1000"
-    custom-style="border-radius: 16px;"
+    custom-style="border-radius: 16px 16px 0 0;"
   >
-    <view class="guide-dialog-content">
+    <view class="guide-popup-content">
       <view class="guide-icon">💧</view>
       <view class="guide-message">
         Hi，我是你的私人饮水小助手。无论是工作忙碌还是偶尔健忘，我都会陪你一起养成好习惯。
@@ -101,20 +100,19 @@
         </van-button>
       </view>
     </view>
-  </van-dialog>
+  </van-popup>
 
-  <!-- 新手引导：2. 目标设置引导 -->
-  <van-dialog
-    use-slot
-    title="定制你的补水目标 🎯"
+  <!-- 新手引导：2. 目标设置引导（底部弹出） -->
+  <van-popup
     show="{{ showRecommendDialog }}"
-    show-confirm-button="{{ false }}"
+    position="bottom"
+    round
     close-on-click-overlay="{{ false }}"
     bind:close="onCloseDialog"
     z-index="1000"
-    custom-style="border-radius: 16px; min-height: 500rpx;"
+    custom-style="border-radius: 16px 16px 0 0; max-height: 80vh;"
   >
-    <view class="guide-dialog-content" style="padding: 20rpx;" wx:if="{{ goalGuideSubStep === 0 }}">
+    <view class="guide-popup-content" style="padding: 20rpx;" wx:if="{{ goalGuideSubStep === 0 }}">
       <view class="guide-mode-tip">⚠️ 引导模式仅供演示，不保存数据</view>
       <view class="goal-mode-card" bind:tap="selectGoalMode" data-mode="smart">
         <view class="goal-mode-icon">🤖</view>
@@ -227,7 +225,7 @@
         <van-button round type="primary" size="small" color="#00B0FF" bind:click="confirmRecommend">确认目标</van-button>
       </view>
     </view>
-  </van-dialog>
+  </van-popup>
 
   <!-- 自定义喝水弹窗 -->
   <van-dialog
@@ -251,7 +249,7 @@
         focus="{{ showCustomDialog }}"
       />
     </view>
-  </van-dialog>
+  </van-popup>
 
   <!-- 杯型参考弹窗 -->
   <van-popup
@@ -301,17 +299,16 @@
   </van-popup>
 
   <!-- 新手引导：3. 社交功能介绍 -->
-  <van-dialog
-    use-slot
-    title="最后一步: 拒绝孤单 👯‍♀️"
+  <van-popup
     show="{{ showSocialGuideDialog }}"
-    show-confirm-button="{{ false }}"
+    position="bottom"
+    round
     close-on-click-overlay="{{ false }}"
     bind:close="onCloseDialog"
     z-index="1000"
-    custom-style="border-radius: 16px;"
+    custom-style="border-radius: 16px 16px 0 0;"
   >
-    <view class="guide-dialog-content">
+    <view class="guide-popup-content">
       <view class="guide-icon">👀</view>
       <view class="guide-message">
         一个人坚持太难？去 <strong>“找搭子”</strong> 邀请好友互相监督！
@@ -327,16 +324,14 @@
         >听起来不错</van-button>
       </view>
     </view>
-  </van-dialog>
+  </van-popup>
 
   <!-- 最终完成弹窗 -->
-  <van-dialog
-    use-slot
-    title="🎉 恭喜完成新手引导"
+  <van-popup
     show="{{ showFinalDialog }}"
-    theme="round-button"
-    confirm-button-color="#00B0FF"
-    show-cancel-button="{{ false }}"
+    position="bottom"
+    round
+    close-on-click-overlay="{{ false }}"
     z-index="10000"
   >
     <view style="padding: 20px; text-align: center; color: #666; font-size: 14px; line-height: 1.6;">
@@ -351,7 +346,7 @@
         bind:click="onConfirmFinalDialog"
       >开始补水</van-button>
     </view>
-  </van-dialog>
+  </van-popup>
 
   <!-- 新手引导遮罩 -->
   <view class="guide-overlay" wx:if="{{ showGuideOverlay }}" catch:touchmove="true">
@@ -365,3 +360,11 @@
   </view>
 
 </view>
+
+
+
+
+
+
+
+
