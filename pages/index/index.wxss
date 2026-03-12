@@ -288,6 +288,30 @@
   box-shadow: 0 8rpx 20rpx rgba(0, 176, 255, 0.3);
 }
 
+/* ========== Vant Dialog 按钮样式统一 ========== */
+/* 确保 confirm/cancel 按钮宽度一致 */
+.van-dialog__footer {
+  display: flex !important;
+  justify-content: space-between !important;
+  gap: 0 !important;
+}
+
+.van-dialog__footer .van-button {
+  flex: 1 !important;
+  width: 0 !important; /* 强制平分宽度 */
+  height: 88rpx !important;
+  font-size: 32rpx !important;
+}
+
+.van-dialog__confirm {
+  border-radius: 0 !important;
+}
+
+.van-dialog__cancel {
+  border-radius: 0 !important;
+  border-right: 1rpx solid #eee !important;
+}
+
 /* ========== 新手引导遮罩 ========== */
 .guide-overlay {
   position: fixed;

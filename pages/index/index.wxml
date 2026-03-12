@@ -7,7 +7,7 @@
     <van-circle 
       value="{{ percent }}" 
       color="{{ gradientColor }}"
-      layer-color="#eeeeee"
+      layer-color="#2a2a2a"
       stroke-width="10"
       size="220"
       text=""
@@ -200,7 +200,7 @@
           <van-button round type="primary" block color="#00B0FF" bind:click="confirmRecommend">
             确认目标
           </van-button>
-          <view class="guide-hand-animation" style="right: -60rpx; top: 10rpx;">👆</view>
+          <view class="guide-hand-animation" style="right: 80rpx; top: -80rpx;">👆</view>
         </view>
         <view class="re-calc" bind:tap="prevSmartStep">重新计算</view>
       </view>
