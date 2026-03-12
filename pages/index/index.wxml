@@ -249,7 +249,7 @@
         focus="{{ showCustomDialog }}"
       />
     </view>
-  </van-popup>
+  </van-dialog>
 
   <!-- 杯型参考弹窗 -->
   <van-popup
