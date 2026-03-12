@@ -6,7 +6,7 @@ npm-cache/
 # 云函数依赖（每个云函数单独安装）
 cloudfunctions/*/node_modules/
 
-# 编辑器
+# IDE/编辑器配置
 .vscode/
 .idea/
 *.swp
@@ -16,13 +16,15 @@ cloudfunctions/*/node_modules/
 # 系统文件
 .DS_Store
 Thumbs.db
+desktop.ini
 
-# 临时文件
+# 日志文件
 *.log
 npm-debug.log*
 
 # 项目私有配置（含敏感信息）
 project.private.config.json
 
-# 锁文件
-.hugo_build.lock
+# 临时文件
+tmp/
+temp/
