@@ -558,12 +558,22 @@ page.guide-is-showing .custom-tab-bar {
   justify-content: space-between;
   margin-top: 40rpx;
   padding: 0 20rpx;
+  gap: 20rpx;
+}
+
+.step-actions .van-button {
+  flex: 1 !important;
+  min-width: 0 !important;
 }
 
 .step-actions.center {
   justify-content: center;
   flex-direction: column;
   align-items: center;
+}
+
+.step-actions.center .van-button {
+  width: 80% !important;
 }
 
 /* 垂直职业选择 */
