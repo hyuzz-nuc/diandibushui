@@ -1,0 +1,115 @@
+.container {
+  padding: 20rpx;
+  background-color: #F0F8FF;
+  min-height: 100vh;
+}
+
+.user-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: #fff;
+  padding: 40rpx;
+  border-radius: 20rpx;
+  margin-bottom: 30rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.05);
+}
+
+.avatar-wrapper {
+  padding: 0;
+  width: 188rpx;
+  height: 188rpx;
+  border-radius: 50%;
+  margin-bottom: 20rpx;
+  background-color: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 0;
+}
+
+.avatar-wrapper::after {
+  border: none;
+}
+
+.avatar {
+  width: 168rpx;
+  height: 168rpx;
+}
+
+.avatar.placeholder {
+  width: 168rpx;
+  height: 168rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(79, 195, 247, 0.12);
+  border-radius: 50%;
+}
+
+.avatar-ring {
+  width: 188rpx;
+  height: 188rpx;
+  border-radius: 50%;
+  padding: 10rpx;
+  box-sizing: border-box;
+  background: linear-gradient(180deg, rgba(79, 195, 247, 0.9), rgba(0, 176, 255, 0.9));
+  box-shadow: 0 10rpx 26rpx rgba(0, 176, 255, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.invite-popup {
+  padding: 32rpx;
+}
+
+.invite-title {
+  text-align: center;
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 24rpx;
+}
+
+.invite-tip {
+  text-align: center;
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 16rpx;
+}
+
+.nickname-wrapper {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10rpx;
+}
+
+.nickname-input {
+  text-align: center;
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  width: 300rpx;
+}
+
+.title-badge {
+  background-color: #FFF9C4;
+  color: #FBC02D;
+  padding: 4rpx 16rpx;
+  border-radius: 20rpx;
+  font-size: 24rpx;
+  display: flex;
+  align-items: center;
+  gap: 6rpx;
+  margin-top: 10rpx;
+}
+
+.menu-list {
+  margin-bottom: 40rpx;
+}
+
+.save-btn-container {
+  padding: 0 20rpx;
+}

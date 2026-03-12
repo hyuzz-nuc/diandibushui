@@ -1,0 +1,66 @@
+<view class="container">
+  <view class="month-card">
+    <view class="month-header">
+      <van-icon name="arrow-left" size="18px" color="#00B0FF" bind:click="onPrevMonth" />
+      <text class="month-title">{{ monthText }}</text>
+      <van-icon name="arrow" size="18px" color="#00B0FF" bind:click="onNextMonth" />
+    </view>
+
+    <view class="week-row">
+      <text class="week-item">一</text>
+      <text class="week-item">二</text>
+      <text class="week-item">三</text>
+      <text class="week-item">四</text>
+      <text class="week-item">五</text>
+      <text class="week-item">六</text>
+      <text class="week-item">日</text>
+    </view>
+
+    <view class="day-grid">
+      <view
+        wx:for="{{ calendarCells }}"
+        wx:key="key"
+        class="day-cell {{ item.isCurrentMonth ? '' : 'muted' }}"
+      >
+        <view class="day-dot {{ item.reached ? 'reached' : '' }} {{ item.isToday ? 'today' : '' }}">
+          <text class="day-num">{{ item.day }}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="month-summary">
+      <view class="summary-item">
+        <text class="summary-num">{{ consecutiveDays }}</text>
+        <text class="summary-label">连续打卡</text>
+      </view>
+      <view class="summary-item">
+        <text class="summary-num">{{ totalDays }}</text>
+        <text class="summary-label">累计打卡</text>
+      </view>
+      <view class="summary-item">
+        <text class="summary-num">{{ reachRate }}%</text>
+        <text class="summary-label">本月达标率</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="trend-card">
+    <view class="trend-header">
+      <text class="trend-title">近7天趋势</text>
+      <text class="trend-sub">日均 {{ avgAmount }}ml</text>
+    </view>
+    <block wx:if="{{ weekSeries.length > 0 }}">
+      <view class="trend-list">
+        <view class="trend-row" wx:for="{{ weekSeries }}" wx:key="date">
+          <!-- 这里的 date 已经是 M/D 格式，直接展示即可 -->
+          <text class="trend-date">{{ item.date }}</text>
+          <view class="trend-bar-bg">
+            <view class="trend-bar-fill" style="width: {{ item.barWidth }}%;"></view>
+          </view>
+          <text class="trend-ml">{{ item.amount }}ml</text>
+        </view>
+      </view>
+    </block>
+    <van-empty wx:else description="暂无记录" />
+  </view>
+</view>

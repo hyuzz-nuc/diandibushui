@@ -1,0 +1,154 @@
+/* pages/article-detail/article-detail.wxss */
+.container {
+  min-height: 100vh;
+  background-color: #ffffff;
+}
+
+/* 导航栏 */
+.nav-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  z-index: 1000;
+  background-color: #ffffff;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  margin-left: 12px;
+  border: 1rpx solid #e0e0e0;
+  border-radius: 16px;
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 4px 8px;
+}
+
+.nav-btn {
+  padding: 4px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-btn:active {
+  opacity: 0.6;
+}
+
+.nav-divider {
+  width: 1rpx;
+  height: 14px;
+  background-color: #e0e0e0;
+  margin: 0 4px;
+}
+
+.nav-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 16px;
+  font-weight: 500;
+  color: #333;
+}
+
+/* 内容区域 */
+.article-wrapper {
+  padding: 24px 20px 40px;
+}
+
+.article-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #121212;
+  line-height: 1.4;
+  margin-bottom: 16px;
+}
+
+.article-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+
+.tag-item {
+  font-size: 12px !important;
+}
+
+.article-content {
+  font-size: 17px;
+  color: #121212; /* 知乎正文色 */
+  line-height: 1.8;
+  text-align: justify;
+}
+
+.footer-note {
+  margin-top: 40px;
+  text-align: center;
+  font-size: 12px;
+  color: #999;
+}
+
+/* Markdown Styles (复用并优化) */
+.md-h1 {
+  font-size: 20px;
+  font-weight: bold;
+  margin: 32px 0 16px;
+  color: #121212;
+  border-left: 4px solid #00B0FF;
+  padding-left: 12px;
+  line-height: 1.4;
+}
+
+.md-h2 {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 28px 0 12px;
+  color: #121212;
+  line-height: 1.4;
+}
+
+.md-h3 {
+  font-size: 16px;
+  font-weight: bold;
+  margin: 20px 0 10px;
+  color: #333;
+}
+
+.md-p {
+  margin-bottom: 16px;
+  color: #444;
+}
+
+.md-li-box {
+  margin-bottom: 8px;
+  display: flex;
+}
+
+.md-li-bullet {
+  flex-shrink: 0;
+  width: 20px;
+  color: #00B0FF;
+  font-weight: bold;
+}
+
+.md-li-content {
+  flex: 1;
+}
+
+.md-strong {
+  font-weight: bold;
+  color: #121212;
+}
+
+.md-code {
+  background-color: #f6f8fa;
+  padding: 2px 4px;
+  border-radius: 4px;
+  font-family: monospace;
+  color: #d63200;
+  font-size: 14px;
+}

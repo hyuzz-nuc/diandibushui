@@ -1,0 +1,133 @@
+<view class="container">
+  <van-tabs active="{{ activeTab }}" bind:change="onTabChange" color="#00B0FF" sticky animated swipeable>
+    <!-- Tab 1: 我的好友 -->
+    <van-tab title="我的好友">
+      <view class="tab-content">
+        <!-- 邀请按钮区域 -->
+        <view class="invite-section">
+          <view class="invite-text">邀请好友一起喝水，建立绑定关系</view>
+          <van-button icon="share-o" round open-type="share" custom-class="invite-btn" size="small">去邀请</van-button>
+        </view>
+
+        <view class="friend-list" wx:if="{{ !loadingFriends }}">
+        <block wx:if="{{ friends.length > 0 }}">
+          <view class="friend-card" wx:for="{{ friends }}" wx:key="openid">
+            <van-image 
+              width="50" 
+              height="50" 
+              round 
+              src="{{ item.avatar_url || 'https://img.yzcdn.cn/vant/cat.jpeg' }}" 
+            />
+            <view class="friend-info">
+              <view class="friend-name">{{ item.nickname }}</view>
+              <view class="friend-status">
+                <text>今日已喝 {{ item.today_water }}ml</text>
+                <view class="progress-bar">
+                  <view class="progress-fill" style="width: {{ item.today_water / item.daily_goal * 100 }}%"></view>
+                </view>
+              </view>
+            </view>
+            <van-button 
+              size="small" 
+              round 
+              color="{{ item.today_water >= item.daily_goal ? '#FF9800' : '#00B0FF' }}"
+              bind:click="onRemind"
+              data-id="{{ item.openid }}"
+              disabled="{{ item.today_water >= item.daily_goal }}"
+            >
+              {{ item.today_water >= item.daily_goal ? '已达标' : '提醒TA' }}
+            </van-button>
+          </view>
+        </block>
+        
+        <van-empty 
+          wx:elif="{{ !loadingFriends }}" 
+          description="还没有好友，快去邀请吧" 
+          image="search"
+        >
+          <van-button round type="info" size="small" open-type="share">邀请好友</van-button>
+        </van-empty>
+      </view>
+
+      <view class="loading-center" wx:if="{{ loadingFriends }}">
+        <van-loading type="spinner" />
+      </view>
+    </view>
+  </van-tab>
+
+    <!-- Tab 2: 推荐搭子 -->
+    <van-tab title="找搭子">
+      <view class="recommend-list">
+        <view class="recommend-header">
+          <text>🔥 活跃水友推荐</text>
+          <view class="refresh-btn" bind:tap="refreshRecommend">
+            <van-icon name="replay" /> 换一批
+          </view>
+        </view>
+
+        <block wx:if="{{ recommendations.length > 0 }}">
+          <view class="recommend-card" wx:for="{{ recommendations }}" wx:key="openid">
+            <view class="card-left">
+              <van-image 
+                width="60" 
+                height="60" 
+                round 
+                src="{{ item.avatar_url || 'https://img.yzcdn.cn/vant/cat.jpeg' }}" 
+              />
+              <view class="user-meta">
+                <view class="user-name">{{ item.nickname }}</view>
+                <view class="user-badge">
+                  <van-icon name="medal-o" color="#FF9800" /> {{ item.current_title }}
+                </view>
+                <view class="user-streak">已连续打卡 {{ item.consecutive_days }} 天</view>
+              </view>
+            </view>
+            <van-button 
+              icon="plus" 
+              round 
+              type="primary" 
+              size="small"
+              bind:click="onAddFriend"
+              data-id="{{ item.openid }}"
+            >加好友</van-button>
+          </view>
+        </block>
+
+        <van-empty 
+          wx:elif="{{ !loadingRecommend }}" 
+          description="暂无推荐用户" 
+        />
+
+        <view class="loading-center" wx:if="{{ loadingRecommend }}">
+          <van-loading type="spinner" vertical>寻找志同道合的水友...</van-loading>
+        </view>
+      </view>
+    </van-tab>
+  </van-tabs>
+
+  <!-- 新手引导：社交页面引导 -->
+  <van-dialog
+    use-slot
+    title="找到你的喝水搭子 🤝"
+    show="{{ showSocialGuideAction }}"
+    show-confirm-button="{{ false }}"
+    z-index="2000"
+    custom-style="border-radius: 16px;"
+  >
+    <view style="padding: 20px; text-align: center; color: #666; font-size: 14px; line-height: 1.6;">
+      <view style="font-size: 40px; margin-bottom: 10px;">👇</view>
+      <view>在这里可以看到好友的喝水进度，互相提醒，互相监督！</view>
+      <view style="margin-top: 10px; color: #00B0FF; font-weight: bold;">快去邀请第一个好友吧！</view>
+      
+      <view style="margin-top: 30px; width: 80%; margin-left: auto; margin-right: auto;">
+        <van-button 
+          round 
+          block 
+          color="#00B0FF" 
+          bind:click="onFinishSocialGuide"
+        >我知道了</van-button>
+      </view>
+    </view>
+  </van-dialog>
+
+</view>

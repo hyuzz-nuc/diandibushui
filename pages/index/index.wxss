@@ -1,0 +1,607 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 40rpx 0;
+  height: 80vh;
+  box-sizing: border-box;
+}
+
+.header {
+  margin-top: 20rpx;
+}
+
+.greeting {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.progress-container {
+  margin: 60rpx 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.circle-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.progress-placeholder {
+  margin: 60rpx 0;
+  width: 220px; 
+  height: 220px;
+  border-radius: 50%;
+  border: 10px solid #eeeeee; /* 模拟圆环底色 */
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.water-num {
+  font-size: 64rpx;
+  font-weight: bold;
+  color: #00B0FF;
+}
+
+.water-unit {
+  font-size: 24rpx;
+  color: #999;
+  margin-top: -10rpx;
+}
+
+.goal-wrapper {
+  display: flex;
+  align-items: center;
+  margin-top: 10rpx;
+  padding: 4rpx 10rpx;
+  border-radius: 10rpx;
+}
+
+.goal-wrapper:active {
+  background-color: #f5f5f5;
+}
+
+.goal-text {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.controls {
+  width: 100%;
+  padding: 0 40rpx;
+  box-sizing: border-box;
+}
+
+.btn-group {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.water-btn {
+  width: 180rpx !important;
+  box-shadow: 0 4rpx 10rpx rgba(0, 176, 255, 0.3);
+}
+
+.btn-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8rpx;
+}
+
+/* ========== 额外控制区 ========== */
+.extra-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  gap: 15px;
+}
+
+.extra-btn {
+  font-size: 14px;
+  color: #666;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 12px;
+  background: #f5f5f5;
+  border-radius: 20px;
+}
+
+.extra-btn:active {
+  background: #eeeeee;
+}
+
+.divider {
+  color: #ddd;
+}
+
+/* ========== 职业选择样式 ========== */
+.occupation-group {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.occupation-item {
+  flex: 1;
+  text-align: center;
+  font-size: 12px;
+  padding: 8px 0;
+  background-color: #f7f8fa;
+  color: #323233;
+  border-radius: 4px;
+  border: 1px solid transparent;
+  transition: all 0.3s;
+}
+
+.occupation-item.active {
+  background-color: #e6f7ff;
+  color: #00B0FF;
+  border-color: #00B0FF;
+  font-weight: bold;
+}
+
+/* ========== 杯型参考样式 ========== */
+.cup-guide-container {
+  padding: 40rpx 20rpx calc(250rpx + env(safe-area-inset-bottom)) 20rpx;
+}
+
+.guide-title {
+  text-align: center;
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.cup-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+}
+
+.cup-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 15px 0;
+  background: #f9f9f9;
+  border-radius: 8px;
+}
+
+.cup-item:active {
+  background: #f0f0f0;
+}
+
+.cup-icon {
+  font-size: 32px;
+  margin-bottom: 8px;
+}
+
+.cup-name {
+  font-size: 13px;
+  color: #333;
+}
+
+.cup-volume {
+  font-size: 12px;
+  color: #999;
+  margin-top: 4px;
+}
+
+/* ========== 底部确认弹窗样式 ========== */
+.confirm-popup-container {
+  padding: 60rpx 40rpx calc(180rpx + env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ========== 自定义 Dialog 样式 (打卡成功) ========== */
+.celebrate-dialog .van-button {
+  background: linear-gradient(135deg, #81D4FA 0%, #29B6F6 100%) !important; /* 淡雅蓝渐变 */
+  border: none !important;
+  color: #ffffff !important;
+  width: 70% !important; /* 调整宽度让其居中且不占满 */
+  margin: 0 auto 30rpx !important; /* 居中并留底部间距 */
+  box-shadow: 0 4rpx 12rpx rgba(41, 182, 246, 0.3) !important;
+  font-size: 32rpx !important;
+  letter-spacing: 2rpx;
+}
+
+.celebrate-dialog .van-dialog__header {
+  padding-top: 40rpx;
+  font-weight: bold;
+  font-size: 36rpx;
+}
+
+.confirm-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 40rpx;
+}
+
+.confirm-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 60rpx;
+}
+
+.confirm-icon {
+  font-size: 80rpx;
+  margin-bottom: 20rpx;
+}
+
+.confirm-text {
+  font-size: 32rpx;
+  color: #666;
+}
+
+.highlight {
+  color: #00B0FF;
+  font-weight: bold;
+  font-size: 40rpx;
+  margin: 0 8rpx;
+}
+
+.confirm-actions {
+  display: flex;
+  width: 100%;
+  gap: 30rpx;
+  justify-content: space-between;
+}
+
+.action-btn-wrapper {
+  flex: 1;
+  /* 确保按钮容器也是block布局，避免高度塌陷 */
+  display: block; 
+}
+
+.cancel-btn {
+  width: 100% !important;
+  background-color: #f5f5f5 !important;
+  color: #999 !important;
+  border: none !important;
+  font-size: 32rpx !important;
+  height: 88rpx !important;
+}
+
+.confirm-btn {
+  width: 100% !important;
+  background-color: #00B0FF !important;
+  border: none !important;
+  font-size: 32rpx !important;
+  height: 88rpx !important;
+  box-shadow: 0 8rpx 20rpx rgba(0, 176, 255, 0.3);
+}
+
+/* ========== 新手引导遮罩 ========== */
+.guide-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 900; /* 低于高亮按钮的901 */
+}
+
+.guide-mask-full {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.85);
+}
+
+/* 高亮目标按钮 */
+.guide-highlight-target {
+  position: relative;
+  z-index: 901 !important; /* 必须高于 overlay */
+  box-shadow: 0 0 0 10rpx rgba(255, 255, 255, 0.2), 0 0 40rpx rgba(255, 255, 255, 0.5) !important;
+  animation: pulse-target 2s infinite;
+  background-color: #00B0FF !important; /* 确保背景色不被覆盖 */
+  color: #fff !important;
+}
+
+@keyframes pulse-target {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+.guide-tip-container {
+  position: absolute;
+  bottom: 300rpx; /* 调整位置，避免遮挡 */
+  left: 0;
+  right: 0;
+  text-align: center;
+  color: #fff;
+  pointer-events: none;
+  z-index: 902;
+}
+
+.guide-hand {
+  font-size: 60rpx;
+  margin-bottom: 20rpx;
+  animation: bounce 1.5s infinite;
+}
+
+.guide-text {
+  font-size: 36rpx;
+  font-weight: bold;
+  margin-bottom: 10rpx;
+  text-shadow: 0 2rpx 4rpx rgba(0,0,0,0.5);
+}
+
+.guide-sub-text {
+  font-size: 24rpx;
+  color: #ddd;
+}
+
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); }
+  70% { box-shadow: 0 0 0 20px rgba(255, 255, 255, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* ========== 引导弹窗内部样式 ========== */
+.guide-dialog-content {
+  padding: 40rpx 30rpx;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.guide-icon {
+  font-size: 80rpx;
+  margin-bottom: 30rpx;
+}
+
+.guide-message {
+  font-size: 30rpx;
+  color: #333;
+  line-height: 1.6;
+  margin-bottom: 20rpx;
+}
+
+.guide-message strong {
+  color: #00B0FF;
+  font-weight: bold;
+}
+
+.guide-sub-message {
+  font-size: 26rpx;
+  color: #999;
+  margin-bottom: 40rpx;
+}
+
+.guide-action-area {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  padding-top: 20rpx;
+  width: 100%;
+}
+
+.guide-start-btn {
+  padding: 0 60rpx !important;
+  font-weight: bold !important;
+  box-shadow: 0 4px 10px rgba(0, 176, 255, 0.3);
+}
+
+.guide-pointing-hand {
+  position: absolute;
+  top: 70rpx;
+  left: 50%;
+  margin-left: 60rpx;
+  font-size: 50rpx;
+  animation: finger-tap 1.5s infinite;
+  z-index: 10;
+  pointer-events: none;
+}
+
+@keyframes finger-tap {
+  0%, 100% { transform: translate(0, 0) rotate(-30deg); }
+  50% { transform: translate(-10rpx, -10rpx) rotate(-30deg); }
+}
+
+/* ========== 目标设置引导分步样式 ========== */
+.goal-step-container {
+  padding: 30rpx 20rpx;
+  min-height: 400rpx;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* 模式卡片 */
+.goal-mode-card {
+  display: flex;
+  align-items: center;
+  padding: 30rpx;
+  margin-bottom: 24rpx;
+  background: #f8fcff;
+  border: 2rpx solid #e1f3ff;
+  border-radius: 16rpx;
+  position: relative;
+  transition: all 0.3s;
+}
+
+.goal-mode-card:active {
+  background: #e6f7ff;
+}
+
+.goal-mode-icon {
+  font-size: 60rpx;
+  margin-right: 24rpx;
+}
+
+.goal-mode-title {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 8rpx;
+}
+
+.goal-mode-desc {
+  font-size: 24rpx;
+  color: #999;
+}
+
+/* 禁用状态卡片 */
+.disabled-card {
+  opacity: 0.6;
+  background: #f0f0f0;
+  border-color: #eee;
+  pointer-events: none; /* 禁止点击 */
+}
+
+/* 禁用状态职业 */
+.disabled-occupation {
+  opacity: 0.5;
+  background: #f0f0f0;
+  color: #999;
+  /* pointer-events: none; 不要完全禁用，以便弹出提示 */
+}
+
+/* 引导模式提示 */
+.guide-mode-tip {
+  text-align: center;
+  font-size: 24rpx;
+  color: #ff976a;
+  background: #fffbe8;
+  padding: 10rpx;
+  border-radius: 8rpx;
+  margin-bottom: 20rpx;
+}
+
+/* 小手动画通用类 */
+.guide-hand-animation {
+  position: absolute;
+  font-size: 50rpx;
+  animation: finger-tap 1.5s infinite;
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* 输入框高亮 */
+.input-highlight-wrapper {
+  position: relative;
+  margin: 40rpx 0;
+  border-radius: 16rpx;
+  box-shadow: 0 0 0 4rpx rgba(0, 176, 255, 0.2);
+  animation: pulse-border 2s infinite;
+}
+
+@keyframes pulse-border {
+  0% { box-shadow: 0 0 0 0 rgba(0, 176, 255, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(0, 176, 255, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(0, 176, 255, 0); }
+}
+
+.step-title {
+  text-align: center;
+  font-size: 30rpx;
+  color: #333;
+  font-weight: bold;
+  margin-bottom: 20rpx;
+}
+
+.step-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 40rpx;
+  padding: 0 20rpx;
+}
+
+.step-actions.center {
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* 垂直职业选择 */
+.occupation-group-vertical {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.occupation-item-large {
+  padding: 24rpx 30rpx;
+  background: #f5f5f5;
+  border-radius: 12rpx;
+  font-size: 28rpx;
+  color: #666;
+  position: relative;
+  border: 2rpx solid transparent;
+  transition: all 0.3s;
+}
+
+.occupation-item-large.active {
+  background: #e6f7ff;
+  border-color: #00B0FF;
+  color: #00B0FF;
+  font-weight: bold;
+}
+
+/* 结果圆环 */
+.result-circle {
+  width: 260rpx;
+  height: 260rpx;
+  border-radius: 50%;
+  border: 10rpx solid #00B0FF;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 40rpx;
+  box-shadow: 0 10rpx 30rpx rgba(0, 176, 255, 0.2);
+}
+
+.result-val {
+  font-size: 56rpx;
+  font-weight: bold;
+  color: #00B0FF;
+}
+
+.result-val .unit {
+  font-size: 24rpx;
+  margin-left: 4rpx;
+}
+
+.result-label {
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 10rpx;
+}
+
+.confirm-wrapper {
+  position: relative;
+  width: 100%;
+  margin-bottom: 20rpx;
+}
+
+.re-calc {
+  font-size: 24rpx;
+  color: #999;
+  text-decoration: underline;
+  padding: 10rpx;
+}

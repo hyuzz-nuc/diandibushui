@@ -1,0 +1,177 @@
+.container {
+  padding: 20rpx;
+  min-height: 100vh;
+  background-color: #F0F8FF;
+}
+
+.month-card {
+  background: #fff;
+  border-radius: 24rpx;
+  padding: 24rpx;
+  box-shadow: 0 8rpx 20rpx rgba(0, 0, 0, 0.06);
+}
+
+.month-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6rpx 4rpx 18rpx;
+}
+
+.month-title {
+  font-size: 32rpx;
+  font-weight: 800;
+  color: #333;
+}
+
+.week-row {
+  display: flex;
+  padding: 6rpx 0 10rpx;
+}
+
+.week-item {
+  width: 14.2857%;
+  text-align: center;
+  color: #8aa7b6;
+  font-size: 24rpx;
+  font-weight: 600;
+}
+
+.day-grid {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.day-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 14.2857%;
+  height: 72rpx;
+}
+
+.day-cell.muted .day-num {
+  color: #c8d6de;
+}
+
+.day-dot {
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.day-dot.reached {
+  background: linear-gradient(180deg, #4FC3F7, #00B0FF);
+}
+
+.day-dot.today {
+  box-shadow: 0 0 0 4rpx rgba(0, 176, 255, 0.22);
+}
+
+.day-num {
+  font-size: 26rpx;
+  font-weight: 700;
+  color: #333;
+}
+
+.day-dot.reached .day-num {
+  color: #fff;
+}
+
+.month-summary {
+  margin-top: 18rpx;
+  background: rgba(0, 176, 255, 0.06);
+  border-radius: 18rpx;
+  padding: 18rpx 10rpx;
+  display: flex;
+}
+
+.summary-item {
+  width: 33.3333%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.summary-num {
+  font-size: 34rpx;
+  font-weight: 900;
+  color: #00B0FF;
+}
+
+.summary-label {
+  margin-top: 6rpx;
+  font-size: 22rpx;
+  color: #7f96a3;
+}
+
+.trend-card {
+  margin-top: 22rpx;
+  background: #fff;
+  border-radius: 24rpx;
+  padding: 24rpx;
+  box-shadow: 0 8rpx 20rpx rgba(0, 0, 0, 0.06);
+}
+
+.trend-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 18rpx;
+}
+
+.trend-title {
+  font-size: 30rpx;
+  font-weight: 800;
+  color: #333;
+}
+
+.trend-sub {
+  font-size: 22rpx;
+  color: #8aa7b6;
+}
+
+.trend-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14rpx;
+}
+
+.trend-row {
+  display: flex;
+  align-items: center;
+  gap: 12rpx;
+}
+
+.trend-date {
+  width: 90rpx;
+  font-size: 22rpx;
+  color: #8aa7b6;
+  font-weight: 700;
+}
+
+.trend-bar-bg {
+  flex: 1;
+  height: 16rpx;
+  border-radius: 999rpx;
+  background: rgba(0, 176, 255, 0.14);
+  overflow: hidden;
+}
+
+.trend-bar-fill {
+  height: 100%;
+  border-radius: 999rpx;
+  background: linear-gradient(90deg, #4FC3F7, #00B0FF);
+}
+
+.trend-ml {
+  width: 110rpx;
+  text-align: right;
+  font-size: 22rpx;
+  color: #333;
+  font-weight: 700;
+}

@@ -1,0 +1,28 @@
+# 依赖目录
+node_modules/
+miniprogram_npm/
+npm-cache/
+
+# 云函数依赖（每个云函数单独安装）
+cloudfunctions/*/node_modules/
+
+# 编辑器
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# 临时文件
+*.log
+npm-debug.log*
+
+# 项目私有配置（含敏感信息）
+project.private.config.json
+
+# 锁文件
+.hugo_build.lock

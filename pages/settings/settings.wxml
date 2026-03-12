@@ -1,0 +1,45 @@
+<view class="container">
+  <van-cell-group inset title="提醒设置">
+    <van-cell title="接收好友提醒" label="开启后允许好友提醒你喝水">
+       <van-switch slot="right-icon" checked="{{ subscribeEnabled }}" bind:change="onSubscribeChange" size="24px" active-color="#00B0FF" />
+    </van-cell>
+    <van-cell title="开始时间" value="{{ startTime }}" is-link bind:click="showStartTime" />
+    <van-cell title="结束时间" value="{{ endTime }}" is-link bind:click="showEndTime" />
+    <van-cell title="提醒间隔" value="{{ interval }}" is-link bind:click="showInterval" />
+    <van-cell title="音效与动画">
+      <van-switch slot="right-icon" checked="{{ soundEnabled }}" bind:change="onSoundChange" size="24px" />
+    </van-cell>
+  </van-cell-group>
+
+  <!-- 弹出层：开始时间 -->
+  <van-popup show="{{ showStartTimePicker }}" position="bottom">
+    <van-datetime-picker
+      type="time"
+      value="{{ currentTimeValue }}"
+      bind:confirm="onConfirmStartTime"
+      bind:cancel="onCancelStartTime"
+    />
+  </van-popup>
+
+  <!-- 弹出层：结束时间 -->
+  <van-popup show="{{ showEndTimePicker }}" position="bottom">
+    <van-datetime-picker
+      type="time"
+      value="{{ currentTimeValue }}"
+      bind:confirm="onConfirmEndTime"
+      bind:cancel="onCancelEndTime"
+    />
+  </van-popup>
+
+  <!-- 弹出层：间隔选择 -->
+  <van-popup show="{{ showIntervalPicker }}" position="bottom">
+    <van-picker
+      columns="{{ intervalColumns }}"
+      show-toolbar
+      bind:confirm="onConfirmInterval"
+      bind:cancel="onCancelInterval"
+    />
+  </van-popup>
+
+  <van-dialog id="van-dialog" />
+</view>

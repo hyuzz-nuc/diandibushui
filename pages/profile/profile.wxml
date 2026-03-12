@@ -1,0 +1,42 @@
+<view class="container">
+  <view class="user-card">
+    <button class="avatar-wrapper" bind:tap="onPickAvatar">
+      <view class="avatar-ring">
+        <view class="avatar placeholder" wx:if="{{ !userInfo.avatarUrl }}">
+          <van-icon name="user-circle-o" size="64px" color="#B3E5FC" />
+        </view>
+        <van-image wx:else round width="168rpx" height="168rpx" fit="cover" src="{{ userInfo.avatarUrl }}" />
+      </view>
+    </button>
+    <view class="nickname-wrapper">
+       <input type="nickname" class="nickname-input" placeholder="点击输入昵称" value="{{ userInfo.nickName }}" bind:change="onInputChange" />
+       <van-icon name="edit" size="16px" color="#999" />
+    </view>
+    <view class="title-badge" wx:if="{{ userInfo.current_title }}" bind:tap="onViewPoster">
+      <van-icon name="medal-o" /> {{ userInfo.current_title }} <van-icon name="arrow" size="12px" style="margin-left: 4px;" />
+    </view>
+  </view>
+
+  <!-- 功能列表 -->
+  <view class="menu-list">
+    <van-cell-group inset>
+      <van-cell title="我的好友" icon="friends-o" is-link url="/pages/social/social" />
+      <van-cell title="提醒设置" icon="clock-o" is-link url="/pages/settings/settings" />
+      <van-cell title="联系客服" icon="service-o" is-link open-type="contact" />
+      <van-cell title="关于我们" icon="info-o" is-link />
+    </van-cell-group>
+  </view>
+
+  <!-- 保存按钮 (仅当有修改时显示，或者简化为自动保存) -->
+  <view class="save-btn-container">
+    <van-button type="primary" block round bind:click="saveUserInfo">同步个人信息</van-button>
+  </view>
+
+  <van-popup show="{{ showInvitePopup }}" position="bottom" round bind:close="onCloseInvite">
+    <view class="invite-popup">
+      <view class="invite-title">邀请好友成为喝水搭子</view>
+      <van-button type="info" block round open-type="share">一键分享邀请</van-button>
+      <view class="invite-tip">好友打开链接后会弹窗确认绑定</view>
+    </view>
+  </van-popup>
+</view>

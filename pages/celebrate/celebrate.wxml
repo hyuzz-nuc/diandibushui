@@ -1,0 +1,78 @@
+<view class="page">
+  <!-- 装饰背景 -->
+  <view class="decoration-circle circle-1"></view>
+  <view class="decoration-circle circle-2"></view>
+  <view class="decoration-circle circle-3"></view>
+
+  <view class="content-container animate-slide-up">
+    <view class="trophy-icon animate-bounce">
+      <image class="trophy-img" src="/images/trophy.png" mode="aspectFit" wx:if="{{false}}" /> <!-- 如果有图片 -->
+      <view class="emoji-icon">🏆</view>
+    </view>
+    
+    <view class="headline">恭喜达成今日目标!</view>
+    <view class="subline">每一滴水都是对身体的爱护</view>
+
+    <view class="stats-box">
+      <view class="stat-item">
+        <view class="stat-value">{{ consecutiveDays }}<text class="stat-unit">天</text></view>
+        <view class="stat-label">连续坚持</view>
+      </view>
+      <view class="divider"></view>
+      <view class="stat-item">
+        <view class="stat-value">{{ dailyGoal }}<text class="stat-unit">ml</text></view>
+        <view class="stat-label">今日饮水</view>
+      </view>
+    </view>
+
+    <view class="title-wrap" wx:if="{{ newTitle }}">
+      <view class="title-badge">NEW</view>
+      <view class="title-content">
+        <view class="title-label">获得新称号</view>
+        <view class="title-text">「{{ newTitle }}」</view>
+      </view>
+    </view>
+
+    <view class="tip-box">
+      <van-icon name="smile-o" size="16px" style="margin-right: 4px;" />
+      {{ tipText }}
+    </view>
+  </view>
+
+  <view class="actions animate-fade-in">
+    <van-button 
+      custom-class="action-btn primary-btn" 
+      type="info" 
+      round 
+      block 
+      bind:click="onSavePoster"
+    >
+      <view class="btn-content">
+        <van-icon name="photo-o" size="18px" style="margin-right: 6px;" />
+        保存成就海报
+      </view>
+    </van-button>
+    
+    <view class="gap"></view>
+    
+    <van-button 
+      custom-class="action-btn secondary-btn" 
+      type="default" 
+      round 
+      block 
+      open-type="share"
+    >
+      <view class="btn-content">
+        <van-icon name="share-o" size="18px" style="margin-right: 6px;" />
+        分享给好友
+      </view>
+    </van-button>
+    
+    <view class="back-btn" bind:tap="onBack">
+      <text>返回首页</text>
+    </view>
+  </view>
+
+  <canvas type="2d" id="poster" class="poster-canvas"></canvas>
+</view>
+

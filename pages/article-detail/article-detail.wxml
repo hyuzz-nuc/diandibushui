@@ -1,0 +1,40 @@
+<view class="container">
+  <!-- 自定义导航栏 -->
+  <view class="nav-bar" style="padding-top: {{ statusBarHeight }}px; height: {{ navBarHeight }}px;">
+    <view class="nav-actions">
+      <view class="nav-btn" bindtap="onBack">
+        <van-icon name="arrow-left" size="20px" color="#333" />
+      </view>
+      <view class="nav-divider"></view>
+      <view class="nav-btn" bindtap="onHome">
+        <van-icon name="wap-home-o" size="20px" color="#333" />
+      </view>
+    </view>
+    <view class="nav-title">健康阅读</view>
+  </view>
+
+  <!-- 内容区域 -->
+  <scroll-view scroll-y class="content-scroll" style="margin-top: {{ statusBarHeight + navBarHeight }}px; height: calc(100vh - {{ statusBarHeight + navBarHeight }}px);">
+    <view class="article-wrapper">
+      <view class="article-title">{{ articleTitle }}</view>
+      
+      <view class="article-tags" wx:if="{{ articleTags.length > 0 }}">
+        <van-tag 
+          wx:for="{{ articleTags }}" 
+          wx:key="*this" 
+          plain 
+          type="primary" 
+          custom-class="tag-item"
+        >{{ item }}</van-tag>
+      </view>
+
+      <view class="article-content">
+        <rich-text nodes="{{ articleHtml }}"></rich-text>
+      </view>
+
+      <view class="footer-note">
+        - 内容由AI生成，仅供参考 -
+      </view>
+    </view>
+  </scroll-view>
+</view>

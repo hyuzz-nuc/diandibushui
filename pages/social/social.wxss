@@ -1,0 +1,146 @@
+/* pages/social/social.wxss */
+.container {
+  min-height: 100vh;
+  background-color: var(--bg-color, #F0F8FF);
+  padding-bottom: 150rpx;
+}
+
+.tab-content {
+  padding: 20rpx;
+  min-height: 80vh;
+}
+
+.invite-section {
+  background-color: #fff;
+  padding: 30rpx;
+  border-radius: 16rpx;
+  margin-bottom: 20rpx;
+  box-shadow: 0 2rpx 10rpx rgba(0,0,0,0.05);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.invite-text {
+  font-size: 28rpx;
+  color: #333;
+  font-weight: 500;
+}
+
+.invite-btn {
+  background: linear-gradient(135deg, #81D4FA 0%, #81D4FA 100%) !important;
+  border: none !important;
+  color: #ffffff !important;
+  box-shadow: 0 4rpx 12rpx rgba(41, 182, 246, 0.3) !important;
+}
+
+/* 列表容器 */
+.friend-list, .recommend-list {
+  padding: 16px;
+}
+
+/* 推荐头部 */
+.recommend-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+  font-size: 16px;
+  font-weight: bold;
+  color: var(--text-main, #333333);
+}
+
+.refresh-btn {
+  font-size: 14px;
+  color: var(--primary-color, #00B0FF);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* 卡片通用样式 */
+.friend-card, .recommend-card {
+  background-color: var(--card-bg, #ffffff);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  box-shadow: 0 2px 8px var(--shadow-color, rgba(0, 0, 0, 0.05));
+}
+
+/* 好友列表样式 */
+.friend-info {
+  flex: 1;
+  margin: 0 12px;
+}
+
+.friend-name {
+  font-size: 16px;
+  font-weight: bold;
+  color: var(--text-main, #333333);
+  margin-bottom: 4px;
+}
+
+.friend-status {
+  font-size: 12px;
+  color: var(--text-muted, #999999);
+}
+
+.progress-bar {
+  height: 6px;
+  background-color: #f0f0f0;
+  border-radius: 3px;
+  margin-top: 6px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background-color: var(--primary-color, #00B0FF);
+  border-radius: 3px;
+}
+
+/* 推荐卡片样式 */
+.recommend-card {
+  justify-content: space-between;
+}
+
+.card-left {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.user-meta {
+  margin-left: 12px;
+}
+
+.user-name {
+  font-size: 16px;
+  font-weight: bold;
+  color: var(--text-main, #333333);
+}
+
+.user-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 12px;
+  color: #FF9800;
+  background-color: rgba(255, 152, 0, 0.1);
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-top: 4px;
+}
+
+.user-streak {
+  font-size: 12px;
+  color: var(--text-muted, #999999);
+  margin-top: 4px;
+}
+
+.loading-center {
+  display: flex;
+  justify-content: center;
+  padding: 20px 0;
+}

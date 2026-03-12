@@ -1,0 +1,68 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/discovery/discovery",
+    "pages/social/social",
+    "pages/stats/stats",
+    "pages/profile/profile",
+    "pages/friends/friends",
+    "pages/settings/settings",
+    "pages/celebrate/celebrate"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTitleText": "点滴补水",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#F0F8FF"
+  },
+  "tabBar": {
+    "custom": true,
+    "color": "#999999",
+    "selectedColor": "#00B0FF",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/discovery/discovery",
+        "text": "AI对话"
+      },
+      {
+        "pagePath": "pages/social/social",
+        "text": "社交"
+      },
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/stats/stats",
+        "text": "统计"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的"
+      }
+    ]
+  },
+  "usingComponents": {
+    "van-button": "@vant/weapp/button/index",
+    "van-cell": "@vant/weapp/cell/index",
+    "van-cell-group": "@vant/weapp/cell-group/index",
+    "van-icon": "@vant/weapp/icon/index",
+    "van-image": "@vant/weapp/image/index",
+    "van-row": "@vant/weapp/row/index",
+    "van-col": "@vant/weapp/col/index",
+    "van-toast": "@vant/weapp/toast/index",
+    "van-dialog": "@vant/weapp/dialog/index",
+    "van-popup": "@vant/weapp/popup/index",
+    "van-field": "@vant/weapp/field/index",
+    "van-circle": "@vant/weapp/circle/index",
+    "van-progress": "@vant/weapp/progress/index",
+    "van-tabbar": "@vant/weapp/tabbar/index",
+    "van-tabbar-item": "@vant/weapp/tabbar-item/index",
+    "van-tabs": "@vant/weapp/tabs/index",
+    "van-tab": "@vant/weapp/tab/index"
+  },
+  "sitemapLocation": "sitemap.json",
+  "style": "v2"
+}

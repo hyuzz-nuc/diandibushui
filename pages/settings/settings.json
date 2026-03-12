@@ -1,0 +1,12 @@
+{
+  "usingComponents": {
+    "van-cell": "@vant/weapp/cell/index",
+    "van-cell-group": "@vant/weapp/cell-group/index",
+    "van-switch": "@vant/weapp/switch/index",
+    "van-dialog": "@vant/weapp/dialog/index",
+    "van-popup": "@vant/weapp/popup/index",
+    "van-datetime-picker": "@vant/weapp/datetime-picker/index",
+    "van-picker": "@vant/weapp/picker/index"
+  },
+  "navigationBarTitleText": "提醒设置"
+}
