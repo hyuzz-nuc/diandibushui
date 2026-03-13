@@ -78,6 +78,14 @@ Page({
     
     // 检查是否需要新手引导
     this.checkNewUserGuide();
+    
+    // 加载通知
+    this.loadNotices();
+    
+    // 模拟测试：如果有邀请码，添加邀请通知
+    if (app.globalData.inviteCode) {
+      this.addNotice('invite', '好友邀请', '你有一个好友邀请你一起喝水打卡');
+    }
   },
 
   // 检查是否需要新手引导
@@ -85,10 +93,19 @@ Page({
     const hasGuided = wx.getStorageSync('has_guided_v2'); // 升级版本号，强制触发新引导
     if (!hasGuided) {
       // 隐藏底部 tabbar，避免遮挡引导弹窗
-      wx.hideTabBar();
-      if (typeof this.getTabBar === 'function' && this.getTabBar()) {
-        this.getTabBar().setVisibility(true);
-      }
+      setTimeout(() => {
+        try {
+          wx.hideTabBar();
+          if (typeof this.getTabBar === 'function') {
+            const tabBar = this.getTabBar();
+            if (tabBar && typeof tabBar.setVisibility === 'function') {
+              tabBar.setVisibility(true);
+            }
+          }
+        } catch (e) {
+          console.warn('[checkNewUserGuide] tabBar operation failed:', e);
+        }
+      }, 100);
 
       // 步骤1：弹出欢迎致辞
       setTimeout(() => {
@@ -102,11 +119,20 @@ Page({
   },
   
   onShow() {
-    if (typeof this.getTabBar === 'function' && this.getTabBar()) {
-      this.getTabBar().setData({
-        active: 2
-      })
-    }
+    setTimeout(() => {
+      try {
+        if (typeof this.getTabBar === 'function') {
+          const tabBar = this.getTabBar();
+          if (tabBar && typeof tabBar.setData === 'function') {
+            tabBar.setData({
+              active: 2
+            });
+          }
+        }
+      } catch (e) {
+        console.warn('[onShow] tabBar setData failed:', e);
+      }
+    }, 100);
     
     // 检查是否有结束引导的任务（从 Social 页面跳回）
     const app = getApp();
@@ -143,6 +169,11 @@ Page({
     this.setData({ 
       showGuideOverlay: false, 
       guideStep: 0,
+      showFinalDialog: false,
+      showRecommendDialog: false,
+      showWelcomeDialog: false,
+      showSocialGuideDialog: false,
+      isSystemDialogShowing: false,
       dailyGoal: originalGoal,
       currentWater: 0,
       percent: this.calculatePercent(0, originalGoal)
@@ -239,10 +270,17 @@ Page({
       this.updateGreeting();
     }
     
-    if (typeof this.getTabBar === 'function' && this.getTabBar()) {
-      this.getTabBar().setData({
-        active: 2 // 首页对应索引 2
-      })
+    try {
+      if (typeof this.getTabBar === 'function') {
+        const tabBar = this.getTabBar();
+        if (tabBar && typeof tabBar.setData === 'function') {
+          tabBar.setData({
+            active: 2 // 首页对应索引 2
+          });
+        }
+      }
+    } catch (e) {
+      console.warn('[onShow] tabBar setData failed:', e);
     }
   },
 
@@ -278,7 +316,6 @@ Page({
 
     this.promptAddWater(amount);
   },
-
   // 模拟加水（不记录数据）
   simulateAddWater(amount) {
     const startValue = this.data.currentWater;
@@ -306,8 +343,15 @@ Page({
       });
 
       // 5. 进入社交引导（保持导航栏隐藏）
-      if (typeof this.getTabBar === 'function' && this.getTabBar()) {
-        this.getTabBar().setVisibility(true);
+      try {
+        if (typeof this.getTabBar === 'function') {
+          const tabBar = this.getTabBar();
+          if (tabBar && typeof tabBar.setVisibility === 'function') {
+            tabBar.setVisibility(true);
+          }
+        }
+      } catch (e) {
+        console.warn('[nextGuideStep] tabBar setVisibility failed:', e);
       }
       this.showSocialGuide();
     }, 2000);
@@ -650,9 +694,7 @@ Page({
     
     setTimeout(() => {
       // 引导期间隐藏导航栏
-      if (typeof this.getTabBar === 'function' && this.getTabBar()) {
-        this.getTabBar().setVisibility(true);
-      }
+      try { if (typeof this.getTabBar === 'function') { const tabBar = this.getTabBar(); if (tabBar && typeof tabBar.setVisibility === 'function') { tabBar.setVisibility(true); } } } catch (e) { console.warn('[tabBar] setVisibility failed:', e); }
       
       Dialog.confirm({
         title: '开启喝水提醒',
@@ -747,7 +789,7 @@ Page({
     });
   },
 
-  // ========== 自定义喝水与参考 ==========
+  // ========== 通知中心相关方法 ==========
 
   onCustomWater() {
     this.setData({ showCustomDialog: true, customAmount: '' });
@@ -776,11 +818,71 @@ Page({
     const amount = e.currentTarget.dataset.volume;
     this.setData({ showCupGuide: false });
     this.promptAddWater(amount);
+  },
+
+  // ========== 通知中心相关方法 ==========
+
+  toggleNotificationPanel() {
+    const show = !this.data.showNotificationPanel;
+    this.setData({ showNotificationPanel: show });
+    if (show) {
+      this.markAllAsRead();
+    }
+  },
+
+  markAllAsRead() {
+    const notices = this.data.notices.map(n => ({ ...n, read: true }));
+    this.setData({ notices, hasUnreadNotice: false });
+    wx.setStorageSync('notices', notices);
+  },
+
+  clearAllNotices() {
+    this.setData({ notices: [], hasUnreadNotice: false });
+    wx.setStorageSync('notices', []);
+  },
+
+  onNoticeTap(e) {
+    const item = e.currentTarget.dataset.item;
+    if (item.type === 'invite') {
+      wx.switchTab({ url: '/pages/social/social' });
+    } else if (item.url) {
+      wx.navigateTo({ url: item.url });
+    }
+    const notices = this.data.notices.map(n => n.id === item.id ? { ...n, read: true } : n);
+    this.setData({ notices, hasUnreadNotice: notices.some(n => !n.read) });
+    wx.setStorageSync('notices', notices);
+  },
+
+  addNotice(type, title, desc) {
+    const notices = this.data.notices;
+    const newNotice = {
+      id: Date.now(),
+      type,
+      title,
+      desc,
+      icon: this.noticeIcons[type] || 'info-o',
+      time: this.formatNoticeTime(new Date()),
+      read: false
+    };
+    notices.unshift(newNotice);
+    this.setData({ notices, hasUnreadNotice: true });
+    wx.setStorageSync('notices', notices);
+  },
+
+  formatNoticeTime(date) {
+    const diff = new Date() - date;
+    const minutes = Math.floor(diff / 60000);
+    const hours = Math.floor(diff / 3600000);
+    const days = Math.floor(diff / 86400000);
+    if (minutes < 1) return '刚刚';
+    if (minutes < 60) return minutes + '分钟前';
+    if (hours < 24) return hours + '小时前';
+    if (days < 7) return days + '天前';
+    return (date.getMonth() + 1) + '月' + date.getDate() + '日';
+  },
+
+  loadNotices() {
+    const notices = wx.getStorageSync('notices') || [];
+    this.setData({ notices, hasUnreadNotice: notices.some(n => !n.read) });
   }
-})
-
-
-
-
-
-
+});

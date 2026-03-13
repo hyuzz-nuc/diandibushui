@@ -1,13 +1,52 @@
 ﻿<view class="container">
   <view class="header">
+    <view class="header-left">
+      <view class="notification-bell" bind:tap="toggleNotificationPanel">
+        <van-icon name="bell" size="24" color="{{ hasUnreadNotice ? '#ff6b6b' : '#999' }}" />
+        <view class="notification-dot" wx:if="{{ hasUnreadNotice }}"></view>
+      </view>
+    </view>
     <text class="greeting">Hi, 记得喝水哦 💧</text>
   </view>
+  
+  <!-- 通知中心弹窗 -->
+  <van-popup
+    show="{{ showNotificationPanel }}"
+    position="top"
+    round
+    bind:close="toggleNotificationPanel"
+    z-index="3000"
+    custom-style="border-radius: 0 0 16px 16px;"
+  >
+    <view class="notification-panel">
+      <view class="panel-header">
+        <text class="panel-title">消息中心</text>
+        <view class="clear-all" wx:if="{{ notices.length > 0 }}" bind:tap="clearAllNotices">清空</view>
+      </view>
+      <view class="notice-list">
+        <view class="notice-item" wx:if="{{ notices.length === 0 }}">
+          <view class="notice-empty">暂无消息</view>
+        </view>
+        <view class="notice-item" wx:for="{{ notices }}" wx:key="id" bind:tap="onNoticeTap" data-item="{{ item }}">
+          <view class="notice-icon {{ item.type }}">
+            <van-icon name="{{ item.icon }}" size="20" color="#fff" />
+          </view>
+          <view class="notice-content">
+            <view class="notice-title">{{ item.title }}</view>
+            <view class="notice-desc">{{ item.desc }}</view>
+            <view class="notice-time">{{ item.time }}</view>
+          </view>
+          <view class="notice-dot" wx:if="{{ !item.read }}"></view>
+        </view>
+      </view>
+    </view>
+  </van-popup>
 
-  <view class="progress-container" wx:if="{{ !showConfirmPopup && !showCupGuide && !isSystemDialogShowing && !showRecommendDialog }}">
+  <view class="progress-container" wx:if="{{ !showConfirmPopup && !showCupGuide && !showFinalDialog }}">
     <van-circle 
       value="{{ percent }}" 
-      color="{{ gradientColor }}"
-      layer-color="#2a2a2a"
+      color="#00B0FF"
+      layer-color="#eeeeee"
       stroke-width="10"
       size="220"
       text=""
@@ -24,7 +63,7 @@
   </view>
   
   <!-- 占位符，保持布局高度，防止闪烁 -->
-  <view class="progress-placeholder" wx:if="{{ showConfirmPopup || showCupGuide || isSystemDialogShowing || showRecommendDialog }}">
+  <view class="progress-placeholder" wx:if="{{ showConfirmPopup || showCupGuide || showFinalDialog }}">
       <view class="circle-text">
         <text class="water-num">{{ currentWater }}</text>
         <text class="water-unit">ml</text>
@@ -147,11 +186,10 @@
           input-align="center"
           custom-style="background: #F5F7FA; border-radius: 12px; font-size: 32rpx; padding: 20rpx;"
         />
-        <view class="guide-hand-animation" style="right: 40rpx; top: 50%;">✍️</view>
+        <view class="guide-hand-animation" style="right: 40rpx; top: 0rpx;">✍️</view>
       </view>
-      <view class="step-actions">
-        <van-button round size="small" custom-class="step-btn" bind:click="prevSmartStep">上一步</van-button>
-        <van-button round type="info" size="small" custom-class="step-btn" bind:click="nextSmartStep">下一步</van-button>
+      <view class="step-actions single-btn">
+        <van-button type="info" custom-class="step-btn" bind:click="nextSmartStep">下一步</van-button>
       </view>
     </view>
 
@@ -182,9 +220,8 @@
           <text>🏋️ 重体力/运动</text>
         </view>
       </view>
-      <view class="step-actions">
-        <van-button round size="small" bind:click="prevSmartStep">上一步</van-button>
-        <van-button round type="info" size="small" bind:click="nextSmartStep">生成目标</van-button>
+      <view class="step-actions single-btn">
+        <van-button type="info" custom-class="step-btn" bind:click="nextSmartStep">下一步</van-button>
       </view>
     </view>
 
@@ -196,10 +233,10 @@
       </view>
       <view class="step-actions center">
         <view class="confirm-wrapper">
-          <van-button round type="primary" block color="#00B0FF" bind:click="confirmRecommend">
+          <van-button type="primary" custom-class="step-btn" bind:click="confirmRecommend">
             确认目标
           </van-button>
-          <view class="guide-hand-animation" style="right: 80rpx; top: -80rpx;">👆</view>
+          <view class="guide-hand-animation" style="right: 120rpx; top: 50%; transform: translateY(-50%) rotate(-45deg);">👆</view>
         </view>
         <view class="re-calc" bind:tap="prevSmartStep">重新计算</view>
       </view>
@@ -221,9 +258,8 @@
         />
         <view class="guide-hand-animation" style="right: 40rpx; top: 50%;">✍️</view>
       </view>
-      <view class="step-actions">
-        <van-button round size="small" custom-class="step-btn" bind:click="prevSmartStep">返回</van-button>
-        <van-button round type="primary" size="small" custom-class="step-btn" color="#00B0FF" bind:click="confirmRecommend">确认目标</van-button>
+      <view class="step-actions single-btn">
+        <van-button type="primary" custom-class="step-btn" bind:click="confirmRecommend">确认目标</van-button>
       </view>
     </view>
   </van-popup>
