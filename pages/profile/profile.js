@@ -137,6 +137,23 @@ Page({
     });
   },
 
+  restartGuide() {
+    wx.showModal({
+      title: '重新进入新手引导',
+      content: '引导过程中的数据不会影响到您的实际记录，确认要重新开始吗？',
+      success: (res) => {
+        if (res.confirm) {
+          // 清除引导缓存
+          wx.removeStorageSync('has_guided_v2');
+          // 跳转到首页，由首页检测引导状态并启动引导
+          wx.switchTab({
+            url: '/pages/index/index'
+          });
+        }
+      }
+    });
+  },
+
   onShareAppMessage() {
     return {
       title: '快来和我一起喝水打卡吧！',

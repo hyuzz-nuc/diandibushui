@@ -1,4 +1,4 @@
-﻿<view class="container">
+<view class="container">
   <view class="header">
     <view class="header-left">
       <view class="notification-bell" bind:tap="toggleNotificationPanel">
@@ -42,14 +42,16 @@
     </view>
   </van-popup>
 
-  <view class="progress-container" wx:if="{{ !showConfirmPopup && !showCupGuide && !showFinalDialog }}">
+  <!-- 进度圆环 -->
+  <view class="progress-container" wx:if="{{ !showConfirmPopup && !showCupGuide }}">
     <van-circle 
       value="{{ percent }}" 
       color="#00B0FF"
-      layer-color="#eeeeee"
+      layer-color="rgba(238, 238, 238, 0.3)"
       stroke-width="10"
       size="220"
       text=""
+      style="z-index: 1;"
     >
       <view class="circle-text">
         <text class="water-num">{{ currentWater }}</text>
@@ -63,7 +65,7 @@
   </view>
   
   <!-- 占位符，保持布局高度，防止闪烁 -->
-  <view class="progress-placeholder" wx:if="{{ showConfirmPopup || showCupGuide || showFinalDialog }}">
+  <view class="progress-placeholder" wx:if="{{ showConfirmPopup || showCupGuide }}">
       <view class="circle-text">
         <text class="water-num">{{ currentWater }}</text>
         <text class="water-unit">ml</text>
@@ -76,7 +78,7 @@
 
   <view class="controls">
     <view class="btn-group">
-      <van-button round type="info" size="normal" custom-class="water-btn {{ showGuideOverlay ? 'guide-highlight-target' : '' }}" data-amount="200" bind:click="addWater">
+      <van-button round type="info" size="normal" custom-class="water-btn" data-amount="200" bind:click="addWater">
         <view class="btn-content">
           <van-icon name="fire-o" /> +200
         </view>
@@ -109,70 +111,34 @@
   <!-- Vant Dialog 专用节点（供 Dialog API 使用） -->
   <van-dialog id="van-dialog" />
 
-  <!-- 新手引导：1. 欢迎弹窗（底部弹出） -->
-  <van-popup
-    show="{{ showWelcomeDialog }}"
-    position="bottom"
-    round
-    close-on-click-overlay="{{ false }}"
-    bind:close="onCloseDialog"
-    z-index="10000"
-    custom-style="border-radius: 16px 16px 0 0;"
-  >
-    <view class="guide-popup-content">
-      <view class="guide-icon">💧</view>
-      <view class="guide-message">
-        Hi，我是你的私人饮水小助手。无论是工作忙碌还是偶尔健忘，我都会陪你一起养成好习惯。
-      </view>
-      <view class="guide-sub-message">只需简单几步，开启元气满满的一天！</view>
-      
-      <!-- 自定义按钮区域 -->
-      <view class="guide-action-area">
-        <view class="guide-pointing-hand">👆</view>
-        <van-button 
-          type="primary" 
-          round 
-          color="#00B0FF"
-          custom-class="guide-start-btn"
-          bind:click="nextGuideStep"
-        >
-          开启旅程
-        </van-button>
-      </view>
-    </view>
-  </van-popup>
-
-  <!-- 新手引导：2. 目标设置引导（底部弹出） -->
+  <!-- 目标设置弹窗（智能推荐/自定义） -->
   <van-popup
     show="{{ showRecommendDialog }}"
     position="bottom"
     round
-    close-on-click-overlay="{{ false }}"
     bind:close="onCloseDialog"
-    z-index="10000"
+    z-index="2000"
     custom-style="border-radius: 16px 16px 0 0; max-height: 80vh;"
   >
     <view class="guide-popup-content" style="padding: 20rpx;" wx:if="{{ goalGuideSubStep === 0 }}">
-      <view class="guide-mode-tip">⚠️ 引导模式仅供演示，不保存数据</view>
       <view class="goal-mode-card" bind:tap="selectGoalMode" data-mode="smart">
         <view class="goal-mode-icon">🤖</view>
         <view class="goal-mode-info">
           <view class="goal-mode-title">智能生成</view>
           <view class="goal-mode-desc">根据体重/职业科学计算</view>
         </view>
-        <view class="guide-hand-animation" style="right: 20rpx; top: 50%;">👆</view>
       </view>
       
-      <view class="goal-mode-card disabled-card" data-mode="custom" bind:tap="selectGoalMode">
+      <view class="goal-mode-card" data-mode="custom" bind:tap="selectGoalMode">
         <view class="goal-mode-icon">📝</view>
         <view class="goal-mode-info">
           <view class="goal-mode-title">手动设置</view>
-          <view class="goal-mode-desc">引导模式下暂不可用</view>
+          <view class="goal-mode-desc">自己输入每日目标</view>
         </view>
       </view>
     </view>
 
-    <!-- 步骤1：智能-输入体重 -->
+    <!-- 步骤 1：智能 - 输入体重 -->
     <view class="goal-step-container" wx:if="{{ goalGuideSubStep === 1 }}">
       <view class="step-title">为了更准确的推荐，请输入您的体重</view>
       <view class="input-highlight-wrapper">
@@ -186,14 +152,13 @@
           input-align="center"
           custom-style="background: #F5F7FA; border-radius: 12px; font-size: 32rpx; padding: 20rpx;"
         />
-        <view class="guide-hand-animation" style="right: 40rpx; top: 0rpx;">✍️</view>
       </view>
       <view class="step-actions single-btn">
         <van-button type="info" custom-class="step-btn" bind:click="nextSmartStep">下一步</van-button>
       </view>
     </view>
 
-    <!-- 步骤2：智能-选择职业 -->
+    <!-- 步骤 2：智能 - 选择职业 -->
     <view class="goal-step-container" wx:if="{{ goalGuideSubStep === 2 }}">
       <view class="step-title">您的日常活动强度是？</view>
       <view class="occupation-group-vertical">
@@ -203,17 +168,16 @@
           data-type="office"
         >
           <text>🖥️ 脑力/办公</text>
-          <view class="guide-hand-animation" wx:if="{{ occupation === 'office' }}" style="right: 20rpx;">👆</view>
         </view>
         <view 
-          class="occupation-item-large disabled-occupation" 
+          class="occupation-item-large {{ occupation === 'light' ? 'active' : '' }}" 
           bind:tap="onOccupationChange" 
           data-type="light"
         >
           <text>🚶 轻体力活动</text>
         </view>
         <view 
-          class="occupation-item-large disabled-occupation" 
+          class="occupation-item-large {{ occupation === 'heavy' ? 'active' : '' }}" 
           bind:tap="onOccupationChange" 
           data-type="heavy"
         >
@@ -225,7 +189,7 @@
       </view>
     </view>
 
-    <!-- 步骤3：智能-结果确认 -->
+    <!-- 步骤 3：智能 - 结果确认 -->
     <view class="goal-step-container" wx:if="{{ goalGuideSubStep === 3 }}">
       <view class="result-circle">
         <view class="result-val">{{ recommendGoal }}<text class="unit">ml</text></view>
@@ -236,13 +200,12 @@
           <van-button type="primary" custom-class="step-btn" bind:click="confirmRecommend">
             确认目标
           </van-button>
-          <view class="guide-hand-animation" style="right: 120rpx; top: 50%; transform: translateY(-50%) rotate(-45deg);">👆</view>
         </view>
         <view class="re-calc" bind:tap="prevSmartStep">重新计算</view>
       </view>
     </view>
 
-    <!-- 步骤4：自定义-输入数值 -->
+    <!-- 步骤 4：自定义 - 输入数值 -->
     <view class="goal-step-container" wx:if="{{ goalGuideSubStep === 4 }}">
       <view class="step-title">请输入您的每日饮水目标</view>
       <view class="input-highlight-wrapper">
@@ -256,7 +219,6 @@
           input-align="center"
           custom-style="background: #F5F7FA; border-radius: 12px; font-size: 32rpx; padding: 20rpx;"
         />
-        <view class="guide-hand-animation" style="right: 40rpx; top: 50%;">✍️</view>
       </view>
       <view class="step-actions single-btn">
         <van-button type="primary" custom-class="step-btn" bind:click="confirmRecommend">确认目标</van-button>
@@ -335,35 +297,57 @@
     </view>
   </van-popup>
 
-  <!-- 新手引导：3. 社交功能介绍 -->
+  <!-- 新手引导欢迎弹窗（Step 1） -->
   <van-popup
-    show="{{ showSocialGuideDialog }}"
-    position="bottom"
+    show="{{ showWelcomeDialog }}"
+    position="center"
     round
     close-on-click-overlay="{{ false }}"
     bind:close="onCloseDialog"
-    z-index="10000"
-    custom-style="border-radius: 16px 16px 0 0;"
+    z-index="9999"
   >
-    <view class="guide-popup-content">
-      <view class="guide-icon">👀</view>
-      <view class="guide-message">
-        一个人坚持太难？去 <strong>“找搭子”</strong> 邀请好友互相监督！
+    <view style="padding: 40rpx 30rpx; text-align: center; min-width: 500rpx;">
+      <view style="font-size: 80rpx; margin-bottom: 20rpx;">👋</view>
+      <view style="font-size: 36rpx; font-weight: bold; color: #333; margin-bottom: 20rpx;">欢迎来到点滴补水</view>
+      <view style="font-size: 28rpx; color: #666; line-height: 1.6; margin-bottom: 40rpx;">
+        接下来我们会引导你设置每日喝水目标，<br/>并体验如何记录喝水哦~
       </view>
-      <view class="guide-sub-message">喝水打卡比拼排行，看看谁才是真正的“水王”！</view>
-      
-      <view style="margin-top: 40rpx; width: 80%; margin-left: auto; margin-right: auto;">
-        <van-button 
-          round 
-          block 
-          color="#00B0FF" 
-          bind:click="nextGuideStep"
-        >听起来不错</van-button>
-      </view>
+      <van-button 
+        round 
+        block 
+        type="primary" 
+        bind:click="nextGuideStep"
+        style="background: linear-gradient(135deg, #4FC3F7 0%, #00B0FF 100%);"
+      >开始引导</van-button>
     </view>
   </van-popup>
 
-  <!-- 最终完成弹窗 -->
+  <!-- 社交引导弹窗（Step 5） -->
+  <van-popup
+    show="{{ showSocialGuideDialog }}"
+    position="center"
+    round
+    close-on-click-overlay="{{ false }}"
+    bind:close="onCloseDialog"
+    z-index="9999"
+  >
+    <view style="padding: 40rpx 30rpx; text-align: center; min-width: 500rpx;">
+      <view style="font-size: 80rpx; margin-bottom: 20rpx;">👯</view>
+      <view style="font-size: 36rpx; font-weight: bold; color: #333; margin-bottom: 20rpx;">好友监督更有趣</view>
+      <view style="font-size: 28rpx; color: #666; line-height: 1.6; margin-bottom: 40rpx;">
+        在社交页面可以绑定好友，<br/>互相监督一起喝水~
+      </view>
+      <van-button 
+        round 
+        block 
+        type="primary" 
+        bind:click="nextGuideStep"
+        style="background: linear-gradient(135deg, #4FC3F7 0%, #00B0FF 100%);"
+      >去社交页看看</van-button>
+    </view>
+  </van-popup>
+
+  <!-- 最终完成弹窗（引导结束后显示） -->
   <van-popup
     show="{{ showFinalDialog }}"
     position="bottom"
@@ -385,25 +369,4 @@
     </view>
   </van-popup>
 
-  <!-- 新手引导遮罩 -->
-  <view class="guide-overlay" wx:if="{{ showGuideOverlay }}" catch:touchmove="true">
-    <view class="guide-mask-full"></view>
-    
-    <view class="guide-tip-container">
-      <view class="guide-hand">👆</view>
-      <view class="guide-text">点击上方高亮按钮记录第一杯水</view>
-      <view class="guide-sub-text">温馨提示：引导过程中的喝水量不会记录到今天的实际喝水量之中</view>
-    </view>
-  </view>
-
 </view>
-
-
-
-
-
-
-
-
-
-

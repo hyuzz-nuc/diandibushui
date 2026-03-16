@@ -187,7 +187,7 @@
   width: 220px; 
   height: 220px;
   border-radius: 50%;
-  border: 10px solid #eeeeee; /* 模拟圆环底色 */
+  border: 10px solid rgba(238, 238, 238, 0.3);
   box-sizing: border-box;
   display: flex;
   justify-content: center;
@@ -275,32 +275,6 @@
   color: #ddd;
 }
 
-/* ========== 职业选择样式 ========== */
-.occupation-group {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-}
-
-.occupation-item {
-  flex: 1;
-  text-align: center;
-  font-size: 12px;
-  padding: 8px 0;
-  background-color: #f7f8fa;
-  color: #323233;
-  border-radius: 4px;
-  border: 1px solid transparent;
-  transition: all 0.3s;
-}
-
-.occupation-item.active {
-  background-color: #e6f7ff;
-  color: #00B0FF;
-  border-color: #00B0FF;
-  font-weight: bold;
-}
-
 /* ========== 杯型参考样式 ========== */
 .cup-guide-container {
   padding: 40rpx 20rpx calc(250rpx + env(safe-area-inset-bottom)) 20rpx;
@@ -359,11 +333,11 @@
 
 /* ========== 自定义 Dialog 样式 (打卡成功) ========== */
 .celebrate-dialog .van-button {
-  background: linear-gradient(135deg, #81D4FA 0%, #29B6F6 100%) !important; /* 淡雅蓝渐变 */
+  background: linear-gradient(135deg, #81D4FA 0%, #29B6F6 100%) !important;
   border: none !important;
   color: #ffffff !important;
-  width: 70% !important; /* 调整宽度让其居中且不占满 */
-  margin: 0 auto 30rpx !important; /* 居中并留底部间距 */
+  width: 70% !important;
+  margin: 0 auto 30rpx !important;
   box-shadow: 0 4rpx 12rpx rgba(41, 182, 246, 0.3) !important;
   font-size: 32rpx !important;
   letter-spacing: 2rpx;
@@ -415,13 +389,12 @@
 
 .action-btn-wrapper {
   flex: 1;
-  /* 确保按钮容器也是block布局，避免高度塌陷 */
   display: block; 
 }
 
 .action-btn-wrapper {
   flex: 1 !important;
-  width: 0 !important; /* 强制 flex 平分 */
+  width: 0 !important;
   display: block !important;
 }
 
@@ -460,7 +433,6 @@
 }
 
 /* ========== Vant Dialog 按钮样式统一 ========== */
-/* 确保 confirm/cancel 按钮宽度一致 */
 .van-dialog__footer {
   display: flex !important;
   justify-content: space-between !important;
@@ -494,78 +466,6 @@
   border-left: 1rpx solid #eee !important;
 }
 
-/* ========== 新手引导遮罩 ========== */
-.guide-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 900; /* 低于高亮按钮的901 */
-}
-
-.guide-mask-full {
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.85);
-}
-
-/* 高亮目标按钮 */
-.guide-highlight-target {
-  position: relative;
-  z-index: 901 !important; /* 必须高于 overlay */
-  box-shadow: 0 0 0 10rpx rgba(255, 255, 255, 0.2), 0 0 40rpx rgba(255, 255, 255, 0.5) !important;
-  animation: pulse-target 2s infinite;
-  background-color: #00B0FF !important; /* 确保背景色不被覆盖 */
-  color: #fff !important;
-}
-
-@keyframes pulse-target {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); }
-}
-
-.guide-tip-container {
-  position: absolute;
-  bottom: 300rpx; /* 调整位置，避免遮挡 */
-  left: 0;
-  right: 0;
-  text-align: center;
-  color: #fff;
-  pointer-events: none;
-  z-index: 902;
-}
-
-.guide-hand {
-  font-size: 60rpx;
-  margin-bottom: 20rpx;
-  animation: bounce 1.5s infinite;
-}
-
-.guide-text {
-  font-size: 36rpx;
-  font-weight: bold;
-  margin-bottom: 10rpx;
-  text-shadow: 0 2rpx 4rpx rgba(0,0,0,0.5);
-}
-
-.guide-sub-text {
-  font-size: 24rpx;
-  color: #ddd;
-}
-
-@keyframes pulse {
-  0% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.4); }
-  70% { box-shadow: 0 0 0 20px rgba(255, 255, 255, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(255, 255, 255, 0); }
-}
-
-@keyframes bounce {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-}
-
 /* ========== 引导弹窗内部样式（底部弹出） ========== */
 .guide-popup-content {
   padding: 40rpx 30rpx calc(120rpx + env(safe-area-inset-bottom));
@@ -575,72 +475,6 @@
   text-align: center;
   max-height: 70vh;
   overflow-y: auto;
-}
-
-/* ========== 引导时隐藏底部导航栏 ========== */
-/* 当引导进行时，强制隐藏 custom-tab-bar */
-page.guide-is-showing .custom-tab-bar {
-  display: none !important;
-}
-
-.guide-icon {
-  font-size: 80rpx;
-  margin-bottom: 30rpx;
-}
-
-.guide-message {
-  font-size: 30rpx;
-  color: #333;
-  line-height: 1.6;
-  margin-bottom: 20rpx;
-}
-
-.guide-message strong {
-  color: #00B0FF;
-  font-weight: bold;
-}
-
-.guide-sub-message {
-  font-size: 26rpx;
-  color: #999;
-  margin-bottom: 40rpx;
-}
-
-.guide-action-area {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  padding-top: 20rpx;
-  width: 100%;
-}
-
-.guide-start-btn {
-  padding: 0 !important;
-  font-weight: bold !important;
-  box-shadow: 0 4px 10px rgba(0, 176, 255, 0.3);
-  text-align: center !important;
-}
-
-.guide-start-btn .van-button__text {
-  display: block !important;
-  width: 100% !important;
-  text-align: center !important;
-}
-
-.guide-pointing-hand {
-  position: absolute;
-  top: 70rpx;
-  left: 50%;
-  margin-left: 60rpx;
-  font-size: 50rpx;
-  animation: finger-tap 1.5s infinite;
-  z-index: 10;
-  pointer-events: none;
-}
-
-@keyframes finger-tap {
-  0%, 100% { transform: translate(0, 0) rotate(-30deg); }
-  50% { transform: translate(-10rpx, -10rpx) rotate(-30deg); }
 }
 
 /* ========== 目标设置引导分步样式 ========== */
@@ -684,42 +518,6 @@ page.guide-is-showing .custom-tab-bar {
 .goal-mode-desc {
   font-size: 24rpx;
   color: #999;
-}
-
-/* 禁用状态卡片 */
-.disabled-card {
-  opacity: 0.6;
-  background: #f0f0f0;
-  border-color: #eee;
-  pointer-events: none; /* 禁止点击 */
-}
-
-/* 禁用状态职业 */
-.disabled-occupation {
-  opacity: 0.5;
-  background: #f0f0f0;
-  color: #999;
-  /* pointer-events: none; 不要完全禁用，以便弹出提示 */
-}
-
-/* 引导模式提示 */
-.guide-mode-tip {
-  text-align: center;
-  font-size: 24rpx;
-  color: #ff976a;
-  background: #fffbe8;
-  padding: 10rpx;
-  border-radius: 8rpx;
-  margin-bottom: 20rpx;
-}
-
-/* 小手动画通用类 */
-.guide-hand-animation {
-  position: absolute;
-  font-size: 50rpx;
-  animation: finger-tap 1.5s infinite;
-  z-index: 10;
-  pointer-events: none;
 }
 
 /* 输入框高亮 */

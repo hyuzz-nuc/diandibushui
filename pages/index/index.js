@@ -1,4 +1,4 @@
-﻿import Dialog from '@vant/weapp/dialog/dialog';
+import Dialog from '@vant/weapp/dialog/dialog';
 
 const app = getApp()
 
@@ -13,7 +13,7 @@ Page({
     },
     showRecommendDialog: false,
     weight: '',
-    occupation: 'office', // 默认职业: office (脑力/办公), light (轻体力), heavy (重体力)
+    occupation: 'office', // 默认职业：office (脑力/办公), light (轻体力), heavy (重体力)
     recommendGoal: 0,
     activeGoalTab: 0,
     customGoalInput: '',
@@ -26,8 +26,8 @@ Page({
       { name: '一次性纸杯', volume: 200, icon: '🥤' },
       { name: '标准马克杯', volume: 350, icon: '☕' },
       { name: '保温杯', volume: 450, icon: '🍵' },
-      { name: '矿泉水(小)', volume: 350, icon: '💧' },
-      { name: '矿泉水(中)', volume: 550, icon: '🍼' },
+      { name: '矿泉水 (小)', volume: 350, icon: '💧' },
+      { name: '矿泉水 (中)', volume: 550, icon: '🍼' },
       { name: '运动水壶', volume: 750, icon: '🏃' }
     ],
 
@@ -40,7 +40,7 @@ Page({
     
     // 新手引导相关
     showGuideOverlay: false, // 是否显示引导遮罩
-    guideStep: 0, // 0:无, 1:Welcome, 2:Goal, 3:Notify, 4:Action, 5:Social
+    guideStep: 0, // 0:无，1:Welcome, 2:Goal, 3:Notify, 4:Action, 5:Social
     
     // 引导弹窗控制
     showWelcomeDialog: false,
@@ -49,20 +49,22 @@ Page({
     
     // 目标设置引导分步状态
     // 0: 初始选择模式 (智能 vs 自定义)
-    // 1: 智能-输入体重
-    // 2: 智能-选择职业
-    // 3: 智能-结果确认
-    // 4: 自定义-输入数值
+    // 1: 智能 - 输入体重
+    // 2: 智能 - 选择职业
+    // 3: 智能 - 结果确认
+    // 4: 自定义 - 输入数值
     goalGuideSubStep: 0,
     
     // 原始数据备份（用于引导结束后恢复）
     originalDailyGoal: 2000,
+    
+    // 通知中心
+    showNotificationPanel: false,
+    notices: [],
+    hasUnreadNotice: false,
   },
 
   onLoad(options) {
-    // 【调试专用】每次重新编译都清除引导缓存，方便调试（上线前记得注释掉）
-    wx.removeStorageSync('has_guided_v2'); 
-
     if (options && options.inviteCode) {
       app.globalData.inviteCode = options.inviteCode;
     }
@@ -76,9 +78,6 @@ Page({
     
     this.loadTodayRecord();
     
-    // 检查是否需要新手引导
-    this.checkNewUserGuide();
-    
     // 加载通知
     this.loadNotices();
     
@@ -86,39 +85,17 @@ Page({
     if (app.globalData.inviteCode) {
       this.addNotice('invite', '好友邀请', '你有一个好友邀请你一起喝水打卡');
     }
-  },
-
-  // 检查是否需要新手引导
-  checkNewUserGuide() {
-    const hasGuided = wx.getStorageSync('has_guided_v2'); // 升级版本号，强制触发新引导
+    
+    // 检查是否需要启动新手引导
+    const hasGuided = wx.getStorageSync('has_guided_v2');
     if (!hasGuided) {
-      // 隐藏底部 tabbar，避免遮挡引导弹窗
-      setTimeout(() => {
-        try {
-          wx.hideTabBar();
-          if (typeof this.getTabBar === 'function') {
-            const tabBar = this.getTabBar();
-            if (tabBar && typeof tabBar.setVisibility === 'function') {
-              tabBar.setVisibility(true);
-            }
-          }
-        } catch (e) {
-          console.warn('[checkNewUserGuide] tabBar operation failed:', e);
-        }
-      }, 100);
-
-      // 步骤1：弹出欢迎致辞
-      setTimeout(() => {
-        this.setData({ 
-          showWelcomeDialog: true,
-          isSystemDialogShowing: true,
-          guideStep: 1 
-        });
-      }, 500);
+      this.startNewUserGuide();
     }
   },
   
   onShow() {
+    this.updateGreeting();
+    
     setTimeout(() => {
       try {
         if (typeof this.getTabBar === 'function') {
@@ -264,26 +241,6 @@ Page({
     });
   },
 
-  onShow() {
-    // 确保方法存在再调用，防止极端情况
-    if (this.updateGreeting) {
-      this.updateGreeting();
-    }
-    
-    try {
-      if (typeof this.getTabBar === 'function') {
-        const tabBar = this.getTabBar();
-        if (tabBar && typeof tabBar.setData === 'function') {
-          tabBar.setData({
-            active: 2 // 首页对应索引 2
-          });
-        }
-      }
-    } catch (e) {
-      console.warn('[onShow] tabBar setData failed:', e);
-    }
-  },
-
   loadTodayRecord() {
     wx.showLoading({ title: '加载中...' });
     wx.cloud.callFunction({
@@ -308,7 +265,7 @@ Page({
     if (this.isSubmitting) return; // 防止重复点击
     const amount = parseInt(e.currentTarget.dataset.amount);
 
-    // 新手引导模式：模拟加水
+    // 新手引导模式：模拟加水（不保存数据）
     if (this.data.guideStep === 4) {
       this.simulateAddWater(amount);
       return;
@@ -316,7 +273,8 @@ Page({
 
     this.promptAddWater(amount);
   },
-  // 模拟加水（不记录数据）
+  
+  // 模拟加水（不记录数据，仅演示）
   simulateAddWater(amount) {
     const startValue = this.data.currentWater;
     const endValue = startValue + amount;
@@ -336,7 +294,7 @@ Page({
       // 隐式结束引导状态（去掉遮罩）
       this.setData({ showGuideOverlay: false });
       
-      // 4. 恢复数据
+      // 4. 恢复数据（不保存，重置为 0）
       this.setData({
         currentWater: startValue,
         percent: this.calculatePercent(startValue, this.data.dailyGoal)
@@ -452,7 +410,7 @@ Page({
           if (shouldCelebrate) {
             Dialog.alert({
               title: '🎉 打卡成功',
-              message: titleUpgraded ? `称号升级：${newTitle}` : '连续7天达标，太强了！',
+              message: titleUpgraded ? `称号升级：${newTitle}` : '连续 7 天达标，太强了！',
               theme: 'round-button',
               confirmButtonText: '打开海报',
               messageAlign: 'center',
@@ -546,15 +504,6 @@ Page({
   // 选择目标设置模式
   selectGoalMode(e) {
     const mode = e.currentTarget.dataset.mode; // 'smart' or 'custom'
-    
-    // 引导模式下禁用自定义
-    if (this.data.guideStep === 2 && mode === 'custom') {
-      wx.showToast({
-        title: '引导模式下仅演示智能生成',
-        icon: 'none'
-      });
-      return;
-    }
 
     if (mode === 'smart') {
       this.setData({ goalGuideSubStep: 1, activeGoalTab: 0 });
@@ -582,9 +531,9 @@ Page({
   prevSmartStep() {
     const step = this.data.goalGuideSubStep;
     if (step > 0) {
-       // 如果是结果页(3)或自定义页(4)，返回选择模式(0)
-       // 如果是职业页(2)，返回体重页(1)
-       // 如果是体重页(1)，返回选择模式(0)
+       // 如果是结果页 (3) 或自定义页 (4)，返回选择模式 (0)
+       // 如果是职业页 (2)，返回体重页 (1)
+       // 如果是体重页 (1)，返回选择模式 (0)
        if (step === 4 || step === 1) {
          this.setData({ goalGuideSubStep: 0 });
        } else {
@@ -610,16 +559,6 @@ Page({
   // 监听职业选择
   onOccupationChange(e) {
     const type = e.currentTarget.dataset.type;
-
-    // 引导模式下，强制只能选择 office
-    if (this.data.guideStep === 2 && type !== 'office') {
-      wx.showToast({
-        title: '引导模式下仅演示标准流程',
-        icon: 'none'
-      });
-      return;
-    }
-
     this.setData({ occupation: type });
     this.calculateGoal();
   },
@@ -640,7 +579,7 @@ Page({
           factor = 35;
       }
       
-      const goal = Math.floor(weight * factor / 50) * 50; // 取50的倍数
+      const goal = Math.floor(weight * factor / 50) * 50; // 取 50 的倍数
       this.setData({ recommendGoal: goal });
     } else {
       this.setData({ recommendGoal: 0 });
@@ -884,5 +823,35 @@ Page({
   loadNotices() {
     const notices = wx.getStorageSync('notices') || [];
     this.setData({ notices, hasUnreadNotice: notices.some(n => !n.read) });
+  },
+  
+  noticeIcons: {
+    'invite': 'friends-o',
+    'welfare': 'gift-o',
+    'notice': 'bullhorn-o',
+    'system': 'setting-o'
+  },
+
+  // 启动新手引导流程
+  startNewUserGuide() {
+    // 隐藏底部 tabBar
+    try {
+      if (typeof this.getTabBar === 'function') {
+        const tabBar = this.getTabBar();
+        if (tabBar && typeof tabBar.setVisibility === 'function') {
+          tabBar.setVisibility(true);
+        }
+      }
+    } catch (e) {
+      console.warn('[startNewUserGuide] tabBar setVisibility failed:', e);
+    }
+
+    // 设置引导状态
+    this.setData({
+      showGuideOverlay: true,
+      guideStep: 1,
+      showWelcomeDialog: true,
+      isSystemDialogShowing: true
+    });
   }
 });
