@@ -266,8 +266,8 @@
         clear="{{ false }}"
       />
       <view class="step-actions" style="margin-top: 40rpx;">
-        <van-button round size="normal" type="default" bind:click="onCloseCustom" custom-class="cancel-btn">取消</van-button>
-        <van-button round size="normal" type="info" bind:click="onConfirmCustom" custom-class="confirm-btn">确认</van-button>
+        <van-button size="normal" type="default" bind:click="onCloseCustom" custom-class="cancel-btn">取消</van-button>
+        <van-button size="normal" type="info" bind:click="onConfirmCustom" custom-class="confirm-btn">确认</van-button>
       </view>
     </view>
   </van-popup>
