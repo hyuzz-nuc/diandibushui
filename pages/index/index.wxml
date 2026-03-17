@@ -6,7 +6,10 @@
         <view class="notification-dot" wx:if="{{ hasUnreadNotice }}"></view>
       </view>
     </view>
-    <text class="greeting">Hi, 记得喝水哦 💧</text>
+    <view class="header-center">
+      <text class="streak-tip" wx:if="{{ consecutiveDays > 0 }}">🔥 已连续打卡 {{ consecutiveDays }} 天，再坚持 {{ 7 - consecutiveDays > 0 ? 7 - consecutiveDays : 0 }} 天解锁海报</text>
+      <text class="greeting">Hi, 记得喝水哦 💧</text>
+    </view>
   </view>
   
   <!-- 通知中心弹窗 -->

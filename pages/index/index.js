@@ -11,6 +11,7 @@ Page({
       '0%': '#4FC3F7',
       '100%': '#00B0FF',
     },
+    consecutiveDays: 0, // 连续打卡天数
     showRecommendDialog: false,
     weight: '',
     occupation: 'office', // 默认职业：office (脑力/办公), light (轻体力), heavy (重体力)
@@ -250,7 +251,10 @@ Page({
       wx.hideLoading();
       if (res.result.success) {
         const total = res.result.data.totalAmount;
+        const consecutiveDays = res.result.data.consecutiveDays || 0;
         console.log('今日已喝水:', total);
+        console.log('连续打卡天数:', consecutiveDays);
+        this.setData({ consecutiveDays });
         this.updateProgress(total);
       }
     }).catch(err => {
@@ -258,6 +262,8 @@ Page({
       console.error('加载记录失败', err);
       // 降级使用本地缓存
       const today = wx.getStorageSync('today_water') || 0;
+      const consecutiveDays = wx.getStorageSync('consecutive_days') || 0;
+      this.setData({ consecutiveDays });
       this.updateProgress(today);
     });
   },
