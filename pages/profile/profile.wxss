@@ -114,6 +114,40 @@
   display: block;
 }
 
+/* ========== Dialog 按钮样式 ========== */
+.van-dialog__footer {
+  display: flex !important;
+  justify-content: space-between !important;
+  gap: 0 !important;
+  padding: 0 !important;
+}
+
+.van-dialog__button {
+  flex: 1 !important;
+  width: 50% !important;
+  height: 88rpx !important;
+  font-size: 32rpx !important;
+  border-radius: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.van-dialog__button--default,
+.van-dialog__button--primary {
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 0 !important;
+  text-align: center !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.van-dialog__confirm {
+  border-left: 1rpx solid #eee !important;
+}
+
 .save-btn-container {
   padding: 0 20rpx;
 }
