@@ -37,12 +37,12 @@
 
 .header {
   position: relative;
-  margin-top: calc(20rpx + env(safe-area-inset-top));
+  margin-top: 60rpx; /* 固定安全距离，适配刘海屏 */
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-top: env(safe-area-inset-top);
+  padding-top: 20rpx;
 }
 
 .header-left {
