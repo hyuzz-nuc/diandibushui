@@ -83,12 +83,12 @@
           <van-icon name="fire-o" /> +200
         </view>
       </van-button>
-      <van-button round type="info" size="normal" custom-class="water-btn {{ guideStep === 4 ? 'guide-highlight-target' : '' }}" data-amount="300" bind:click="addWater">
+      <van-button round type="info" size="normal" custom-class="water-btn" data-amount="300" bind:click="addWater">
         <view class="btn-content">
           <van-icon name="cup-o" /> +300
         </view>
       </van-button>
-      <van-button round type="info" size="normal" custom-class="water-btn {{ guideStep === 4 ? 'guide-highlight-target' : '' }}" data-amount="500" bind:click="addWater">
+      <van-button round type="info" size="normal" custom-class="water-btn" data-amount="500" bind:click="addWater">
          <view class="btn-content">
           <van-icon name="star-o" /> +500
         </view>
@@ -329,7 +329,7 @@
     </view>
   </van-popup>
 
-  <!-- 新手引导操作遮罩层（Step 4） -->
+  <!-- 新手引导遮罩层（Step 4） -->
   <view class="guide-overlay" wx:if="{{ guideStep === 4 }}" catch:touchmove="true">
     <view class="guide-mask-full"></view>
     

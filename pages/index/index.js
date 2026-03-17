@@ -263,11 +263,14 @@ Page({
   },
 
   addWater(e) {
+    console.log('[addWater] guideStep:', this.data.guideStep);
+    
     if (this.isSubmitting) return; // 防止重复点击
     const amount = parseInt(e.currentTarget.dataset.amount);
 
     // 新手引导模式：模拟加水（不保存数据）
     if (this.data.guideStep === 4) {
+      console.log('[addWater] Step 4 - 触发模拟喝水');
       // 关闭 Step 4 的提示弹窗
       this.setData({ showGuideOverlay: false });
       this.simulateAddWater(amount);
@@ -640,6 +643,7 @@ Page({
 
   // 询问开启提醒 (引导 Step 3)
   askForNotification() {
+    console.log('[askForNotification] 进入 Step 3');
     this.data.isSwitchingStep = true; // 标记正在切换
     this.setData({ 
       showRecommendDialog: false,
@@ -647,6 +651,7 @@ Page({
     });
     
     setTimeout(() => {
+      console.log('[askForNotification] setTimeout 触发，准备显示 Dialog');
       // 引导期间隐藏导航栏
       try { if (typeof this.getTabBar === 'function') { const tabBar = this.getTabBar(); if (tabBar && typeof tabBar.setVisibility === 'function') { tabBar.setVisibility(true); } } } catch (e) { console.warn('[tabBar] setVisibility failed:', e); }
       
@@ -658,6 +663,7 @@ Page({
         zIndex: 2000,
         closeOnClickOverlay: false
       }).then(() => {
+        console.log('[askForNotification] 用户点击开启');
         // 用户同意开启
         const TEMPLATE_ID = 'fZemoZCO7WILweXS6gV9n8bbp24bN1uH1h5Vu24-pjo';
         wx.requestSubscribeMessage({
@@ -672,11 +678,13 @@ Page({
             }
           },
           complete: () => {
+            console.log('[askForNotification] requestSubscribeMessage complete，调用 nextGuideStep');
             // 进入下一步：记录喝水
             this.nextGuideStep();
           }
         });
       }).catch(() => {
+        console.log('[askForNotification] 用户取消，调用 nextGuideStep');
         // 用户拒绝，也进入下一步
         this.nextGuideStep();
       });
