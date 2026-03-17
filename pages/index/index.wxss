@@ -534,6 +534,7 @@
   border-radius: 16rpx;
   position: relative;
   transition: all 0.3s;
+  min-height: 160rpx; /* 固定最小高度，确保两个卡片一样大 */
 }
 
 .goal-mode-card:active {
@@ -543,6 +544,14 @@
 .goal-mode-icon {
   font-size: 60rpx;
   margin-right: 24rpx;
+  flex-shrink: 0; /* 防止图标被压缩 */
+}
+
+.goal-mode-info {
+  flex: 1; /* 内容区域占满剩余空间 */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .goal-mode-title {
