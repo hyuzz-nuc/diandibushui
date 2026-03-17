@@ -54,27 +54,32 @@
 }
 
 /* 打卡天数提示栏 */
-.streak-header {
-  margin-top: calc(40rpx + env(safe-area-inset-top));
-  padding: 8rpx 24rpx;
-  background: linear-gradient(135deg, #FFE5E5 0%, #FFF0F0 100%);
-  border-radius: 24rpx;
-  border: 1rpx solid #FFD0D0;
-  display: inline-block;
-  align-self: center;
-  margin-bottom: 10rpx;
-}
-
-.streak-text {
-  font-size: 22rpx;
-  color: #FF6B6B;
-  font-weight: 600;
-}
 
 .greeting {
   font-size: 36rpx;
   font-weight: bold;
   color: #333;
+}
+
+/* 底部打卡天数提示栏 */
+.bottom-streak-bar {
+  position: fixed;
+  bottom: 120rpx;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12rpx 40rpx;
+  background: linear-gradient(135deg, #FFF3E0 0%, #FFE0B2 100%);
+  border-radius: 28rpx;
+  border: 1rpx solid #FFD54F;
+  box-shadow: 0 4rpx 12rpx rgba(255, 183, 77, 0.3);
+  z-index: 100;
+}
+
+.bottom-streak-text {
+  font-size: 24rpx;
+  color: #E65100;
+  font-weight: 600;
+  white-space: nowrap;
 }
 
 .notification-dot {

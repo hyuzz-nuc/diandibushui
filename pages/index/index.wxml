@@ -1,11 +1,4 @@
 <view class="container">
-  <!-- 打卡天数提示 -->
-  <view class="streak-header">
-    <text class="streak-text" wx:if="{{ consecutiveDays > 0 && consecutiveDays < 7 }}">🔥 已连续打卡 {{ consecutiveDays }} 天，再坚持 {{ 7 - consecutiveDays }} 天解锁海报</text>
-    <text class="streak-text" wx:elif="{{ consecutiveDays >= 7 }}">🎉 已连续打卡 {{ consecutiveDays }} 天，海报已解锁</text>
-    <text class="streak-text" wx:else>💪 开始打卡，连续 7 天解锁海报</text>
-  </view>
-  
   <view class="header">
     <view class="header-left">
       <view class="notification-bell" bind:tap="toggleNotificationPanel">
@@ -48,6 +41,17 @@
       </view>
     </view>
   </van-popup>
+
+  <!-- 底部打卡天数提示 -->
+  <view class="bottom-streak-bar" wx:if="{{ consecutiveDays > 0 && consecutiveDays < 7 }}">
+    <text class="bottom-streak-text">🔥 连续打卡 {{ consecutiveDays }} 天，再坚持 {{ 7 - consecutiveDays }} 天解锁惊喜海报</text>
+  </view>
+  <view class="bottom-streak-bar" wx:elif="{{ consecutiveDays >= 7 }}">
+    <text class="bottom-streak-text">🎉 连续打卡 {{ consecutiveDays }} 天，惊喜海报已解锁</text>
+  </view>
+  <view class="bottom-streak-bar" wx:else>
+    <text class="bottom-streak-text">💪 连续打卡 7 天解锁惊喜海报</text>
+  </view>
 
   <!-- 进度圆环 -->
   <view class="progress-container" wx:if="{{ !showConfirmPopup && !showCupGuide }}">
