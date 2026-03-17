@@ -54,7 +54,7 @@
   </view>
 
   <!-- 进度圆环 -->
-  <view class="progress-container" wx:if="{{ !showConfirmPopup && !showCupGuide }}">
+  <view class="progress-container" wx:if="{{ !showConfirmPopup && !showCupGuide && !isSystemDialogShowing && !showRecommendDialog && !showWelcomeDialog && !showSocialGuideDialog && !showFinalDialog }}">
     <van-circle 
       value="{{ percent }}" 
       color="{{ guideStep > 0 ? '#666666' : '#00B0FF' }}"
