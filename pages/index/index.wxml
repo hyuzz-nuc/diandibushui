@@ -78,17 +78,17 @@
 
   <view class="controls">
     <view class="btn-group">
-      <van-button round type="info" size="normal" custom-class="water-btn" data-amount="200" bind:click="addWater">
+      <van-button round type="info" size="normal" custom-class="water-btn {{ guideStep === 4 ? 'guide-highlight-target' : '' }}" data-amount="200" bind:click="addWater">
         <view class="btn-content">
           <van-icon name="fire-o" /> +200
         </view>
       </van-button>
-      <van-button round type="info" size="normal" custom-class="water-btn" data-amount="300" bind:click="addWater">
+      <van-button round type="info" size="normal" custom-class="water-btn {{ guideStep === 4 ? 'guide-highlight-target' : '' }}" data-amount="300" bind:click="addWater">
         <view class="btn-content">
           <van-icon name="cup-o" /> +300
         </view>
       </van-button>
-      <van-button round type="info" size="normal" custom-class="water-btn" data-amount="500" bind:click="addWater">
+      <van-button round type="info" size="normal" custom-class="water-btn {{ guideStep === 4 ? 'guide-highlight-target' : '' }}" data-amount="500" bind:click="addWater">
          <view class="btn-content">
           <van-icon name="star-o" /> +500
         </view>
@@ -322,26 +322,16 @@
     </view>
   </van-popup>
 
-  <!-- 新手引导操作指引弹窗（Step 4） -->
-  <van-popup
-    show="{{ guideStep === 4 && !showConfirmPopup }}"
-    position="center"
-    round
-    close-on-click-overlay="{{ false }}"
-    bind:close="onCloseDialog"
-    z-index="10002"
-  >
-    <view style="padding: 40rpx 30rpx; text-align: center; min-width: 500rpx;">
-      <view style="font-size: 80rpx; margin-bottom: 20rpx;">💧</view>
-      <view style="font-size: 36rpx; font-weight: bold; color: #333; margin-bottom: 20rpx;">来，喝第一杯水</view>
-      <view style="font-size: 28rpx; color: #666; line-height: 1.6; margin-bottom: 40rpx;">
-        点击下方任意喝水按钮，<br/>体验记录喝水的过程~
-      </view>
-      <view style="font-size: 24rpx; color: #999; margin-top: 20rpx;">
-        （提示：这是模拟操作，不会保存数据）
-      </view>
+  <!-- 新手引导操作遮罩层（Step 4） -->
+  <view class="guide-overlay" wx:if="{{ guideStep === 4 }}" catch:touchmove="true">
+    <view class="guide-mask-full"></view>
+    
+    <view class="guide-tip-container">
+      <view class="guide-hand">👆</view>
+      <view class="guide-text">点击上方的喝水按钮记录第一杯水</view>
+      <view class="guide-sub-text">（温馨提示：引导期间记录的喝水数据不会实际保存）</view>
     </view>
-  </van-popup>
+  </view>
 
   <!-- 社交引导弹窗（Step 5） -->
   <van-popup

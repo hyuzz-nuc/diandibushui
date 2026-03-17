@@ -691,9 +691,6 @@ Page({
       showGuideOverlay: true,
       isSystemDialogShowing: false
     });
-    
-    // Step 4 不需要额外弹窗，用户直接点击喝水按钮即可
-    // 提示弹窗在 WXML 中通过 guideStep === 4 控制显示
   },
 
   onCloseDialog() {
