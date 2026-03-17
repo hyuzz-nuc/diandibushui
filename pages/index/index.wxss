@@ -87,7 +87,7 @@
 
 /* ========== 通知中心面板 ========== */
 .notification-panel {
-  padding: 30rpx 20rpx;
+  padding: calc(30rpx + env(safe-area-inset-top)) 20rpx 30rpx;
   max-height: 60vh;
   overflow-y: auto;
 }
