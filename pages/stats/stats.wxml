@@ -1,4 +1,4 @@
-<view class="container">
+<view class="container" style="padding-top: calc(20rpx + env(safe-area-inset-top));">
   <view class="month-card">
     <view class="month-header">
       <van-icon name="arrow-left" size="18px" color="#00B0FF" bind:click="onPrevMonth" />

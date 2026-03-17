@@ -1,4 +1,4 @@
-<view class="container">
+<view class="container" style="padding-top: calc(20rpx + env(safe-area-inset-top));">
   <van-cell-group inset title="我的好友">
     <block wx:if="{{ friends.length > 0 }}">
       <van-cell 

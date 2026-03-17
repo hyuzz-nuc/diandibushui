@@ -1,4 +1,4 @@
-<view class="container">
+<view class="container" style="padding-top: calc(20rpx + env(safe-area-inset-top));">
   <view class="user-card">
     <button class="avatar-wrapper" bind:tap="onPickAvatar">
       <view class="avatar-ring">
