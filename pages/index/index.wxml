@@ -1,4 +1,9 @@
 <view class="container">
+  <!-- 打卡天数提示 -->
+  <view class="streak-header" wx:if="{{ consecutiveDays > 0 }}">
+    <text class="streak-text">🔥 已连续打卡 {{ consecutiveDays }} 天，再坚持 {{ 7 - consecutiveDays > 0 ? 7 - consecutiveDays : 0 }} 天解锁海报</text>
+  </view>
+  
   <view class="header">
     <view class="header-left">
       <view class="notification-bell" bind:tap="toggleNotificationPanel">
@@ -6,10 +11,7 @@
         <view class="notification-dot" wx:if="{{ hasUnreadNotice }}"></view>
       </view>
     </view>
-    <view class="header-center">
-      <text class="streak-tip" wx:if="{{ consecutiveDays > 0 }}">🔥 已连续打卡 {{ consecutiveDays }} 天，再坚持 {{ 7 - consecutiveDays > 0 ? 7 - consecutiveDays : 0 }} 天解锁海报</text>
-      <text class="greeting">Hi, 记得喝水哦 💧</text>
-    </view>
+    <text class="greeting">Hi, 记得喝水哦 💧</text>
   </view>
   
   <!-- 通知中心弹窗 -->
