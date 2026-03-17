@@ -54,7 +54,7 @@
   </view>
 
   <!-- 进度圆环 -->
-  <view class="progress-container" wx:if="{{ !showConfirmPopup && !showCupGuide && !isSystemDialogShowing && !showRecommendDialog && !showWelcomeDialog && !showSocialGuideDialog && !showFinalDialog && !showNotificationPanel }}">
+  <view class="progress-container" wx:if="{{ !showConfirmPopup && !showCupGuide && !showCustomDialog && !isSystemDialogShowing && !showRecommendDialog && !showWelcomeDialog && !showSocialGuideDialog && !showFinalDialog && !showNotificationPanel }}">
     <van-circle 
       value="{{ percent }}" 
       color="{{ guideStep > 0 ? '#666666' : '#00B0FF' }}"
@@ -76,7 +76,7 @@
   </view>
   
   <!-- 占位符，保持布局高度，防止闪烁 -->
-  <view class="progress-placeholder" wx:if="{{ showConfirmPopup || showCupGuide }}">
+  <view class="progress-placeholder" wx:if="{{ showConfirmPopup || showCupGuide || showCustomDialog }}">
       <view class="circle-text">
         <text class="water-num">{{ currentWater }}</text>
         <text class="water-unit">ml</text>
