@@ -812,7 +812,7 @@
 
 .guide-pointing-hand {
   font-size: 80rpx;
-  margin-bottom: -20rpx;
+  margin-bottom: -80rpx;
   animation: point-down 1.5s infinite;
   z-index: 10;
 }
