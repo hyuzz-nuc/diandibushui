@@ -1,6 +1,6 @@
 .page {
   min-height: 100vh;
-  padding: 0 40rpx;
+  padding: calc(20rpx + env(safe-area-inset-top)) 40rpx 40rpx;
   box-sizing: border-box;
   position: relative;
   overflow: hidden;
