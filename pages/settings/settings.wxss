@@ -3,3 +3,13 @@
   min-height: 100vh;
   background-color: #F0F8FF;
 }
+
+/* 引导设置高亮样式 */
+.restart-guide-cell {
+  color: #00B0FF;
+}
+
+.restart-guide-cell .van-cell__title {
+  color: #00B0FF;
+  font-weight: bold;
+}

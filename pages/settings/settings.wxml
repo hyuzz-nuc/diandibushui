@@ -11,6 +11,10 @@
     </van-cell>
   </van-cell-group>
 
+  <van-cell-group inset title="引导设置" style="margin-top: 20rpx;">
+    <van-cell title="重新开始新手引导" label="完整体验所有功能引导" is-link bind:click="restartGuide" />
+  </van-cell-group>
+
   <!-- 弹出层：开始时间 -->
   <van-popup show="{{ showStartTimePicker }}" position="bottom">
     <van-datetime-picker
@@ -42,4 +46,6 @@
   </van-popup>
 
   <van-dialog id="van-dialog" />
+  
+  <!-- 添加 van-dialog 用于 restartGuide 确认弹窗 -->
 </view>

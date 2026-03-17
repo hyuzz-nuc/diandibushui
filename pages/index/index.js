@@ -508,7 +508,12 @@ Page({
     if (mode === 'smart') {
       this.setData({ goalGuideSubStep: 1, activeGoalTab: 0 });
     } else {
-      this.setData({ goalGuideSubStep: 4, activeGoalTab: 1 });
+      // 自定义模式：确保 customGoalInput 有默认值
+      this.setData({ 
+        goalGuideSubStep: 4, 
+        activeGoalTab: 1,
+        customGoalInput: this.data.customGoalInput || this.data.dailyGoal || 2000
+      });
     }
   },
 
@@ -620,7 +625,11 @@ Page({
         // 正常模式：调用云函数真实更新
         this.updateDailyGoal(finalGoal);
       }
+    } else if (this.data.activeGoalTab === 0 && this.data.recommendGoal === 0) {
+      // 智能推荐模式下，如果还没输入体重/职业，提示用户
+      wx.showToast({ title: '请输入体重并选择职业', icon: 'none' });
     }
+    // 自定义模式下 finalGoal 为 0 的情况已在上面 return，不会执行到这里
   },
 
   // 询问开启提醒 (引导 Step 3)
@@ -853,5 +862,7 @@ Page({
       showWelcomeDialog: true,
       isSystemDialogShowing: true
     });
+    
+    console.log('[startNewUserGuide] Guide started');
   }
 });

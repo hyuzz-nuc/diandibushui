@@ -1,10 +1,12 @@
 {
+  "navigationStyle": "custom",
   "navigationBarTitleText": "点滴补水",
   "usingComponents": {
     "van-circle": "@vant/weapp/circle/index",
     "van-button": "@vant/weapp/button/index",
     "van-icon": "@vant/weapp/icon/index",
     "van-dialog": "@vant/weapp/dialog/index",
-    "van-field": "@vant/weapp/field/index"
+    "van-field": "@vant/weapp/field/index",
+    "van-popup": "@vant/weapp/popup/index"
   }
 }

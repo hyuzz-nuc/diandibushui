@@ -140,5 +140,34 @@ Page({
     }).catch(console.error);
     
     wx.showToast({ title: '设置已保存', icon: 'none' });
+  },
+
+  // 重新开始新手引导
+  restartGuide() {
+    Dialog.confirm({
+      title: '重新开始新手引导',
+      message: '将重置所有引导状态，完整体验欢迎、目标设置、提醒、喝水记录、社交等功能引导。确定继续？',
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      confirmButtonColor: '#00B0FF'
+    }).then(() => {
+      // 清除引导状态标记
+      wx.removeStorageSync('has_guided_v2');
+      
+      wx.showToast({
+        title: '即将重启引导',
+        icon: 'none',
+        duration: 1500
+      });
+
+      // 延迟跳转到首页，触发引导
+      setTimeout(() => {
+        wx.switchTab({
+          url: '/pages/index/index'
+        });
+      }, 1500);
+    }).catch(() => {
+      // 用户取消
+    });
   }
 })

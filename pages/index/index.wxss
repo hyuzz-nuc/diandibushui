@@ -8,6 +8,34 @@
   box-sizing: border-box;
 }
 
+/* ===================================
+   新手引导层级控制
+   确保引导弹窗不被导航栏和圆环遮挡
+   =================================== */
+
+/* 导航栏默认层级 */
+.weui-navigation-bar {
+  z-index: 100 !important;
+}
+
+/* 引导遮罩层和弹窗最高优先级 */
+.guide-overlay,
+.guide-modal,
+.van-dialog,
+.van-overlay,
+.van-popup {
+  z-index: 10000 !important;
+}
+
+/* 圆环进度条默认底层 */
+.progress-container,
+.progress-placeholder,
+.water-ring,
+.ring-decoration,
+.circle-progress {
+  z-index: 1 !important;
+}
+
 .header {
   position: relative;
   margin-top: 20rpx;
