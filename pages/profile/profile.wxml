@@ -42,4 +42,7 @@
       <view class="invite-tip">好友打开链接后会弹窗确认绑定</view>
     </view>
   </van-popup>
+
+  <!-- Dialog 组件 -->
+  <van-dialog id="van-dialog" />
 </view>
