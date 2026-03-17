@@ -21,4 +21,5 @@ page {
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
+  padding-top: env(safe-area-inset-top); /* 刘海屏安全区域适配 */
 }
