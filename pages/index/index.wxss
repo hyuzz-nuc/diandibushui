@@ -807,12 +807,14 @@
   flex-direction: column;
   align-items: center;
   margin-top: 20rpx;
+  position: relative;
 }
 
 .guide-pointing-hand {
   font-size: 80rpx;
-  margin-bottom: 20rpx;
+  margin-bottom: -20rpx;
   animation: point-down 1.5s infinite;
+  z-index: 10;
 }
 
 .guide-start-btn {
