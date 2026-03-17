@@ -1,7 +1,9 @@
 <view class="container">
   <!-- 打卡天数提示 -->
-  <view class="streak-header" wx:if="{{ consecutiveDays > 0 }}">
-    <text class="streak-text">🔥 已连续打卡 {{ consecutiveDays }} 天，再坚持 {{ 7 - consecutiveDays > 0 ? 7 - consecutiveDays : 0 }} 天解锁海报</text>
+  <view class="streak-header">
+    <text class="streak-text" wx:if="{{ consecutiveDays > 0 && consecutiveDays < 7 }}">🔥 已连续打卡 {{ consecutiveDays }} 天，再坚持 {{ 7 - consecutiveDays }} 天解锁海报</text>
+    <text class="streak-text" wx:elif="{{ consecutiveDays >= 7 }}">🎉 已连续打卡 {{ consecutiveDays }} 天，海报已解锁</text>
+    <text class="streak-text" wx:else>💪 开始打卡，连续 7 天解锁海报</text>
   </view>
   
   <view class="header">
