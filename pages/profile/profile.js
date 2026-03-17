@@ -1,4 +1,5 @@
 const app = getApp();
+import Dialog from '@vant/weapp/dialog/dialog';
 
 Page({
   data: {
@@ -138,19 +139,37 @@ Page({
   },
 
   restartGuide() {
-    wx.showModal({
+    Dialog.confirm({
       title: '重新进入新手引导',
-      content: '引导过程中的数据不会影响到您的实际记录，确认要重新开始吗？',
-      success: (res) => {
-        if (res.confirm) {
-          // 清除引导缓存
-          wx.removeStorageSync('has_guided_v2');
-          // 跳转到首页，由首页检测引导状态并启动引导
-          wx.switchTab({
-            url: '/pages/index/index'
-          });
-        }
-      }
+      message: '引导过程中的数据不会影响到您的实际记录，确认要重新开始吗？',
+      confirmButtonText: '现在重启',
+      cancelButtonText: '稍后重启',
+      confirmButtonColor: '#00B0FF'
+    }).then(() => {
+      // 用户选择「现在重启」
+      wx.removeStorageSync('has_guided_v2');
+      
+      wx.showToast({
+        title: '正在重启...',
+        icon: 'none',
+        duration: 1500
+      });
+
+      setTimeout(() => {
+        wx.reLaunch({
+          url: '/pages/index/index'
+        });
+      }, 1500);
+    }).catch(() => {
+      // 用户选择「稍后重启」
+      wx.removeStorageSync('has_guided_v2');
+      
+      Dialog.alert({
+        title: '已设置',
+        message: '下次启动小程序时将自动进入新手引导，敬请期待！',
+        confirmButtonText: '好的',
+        confirmButtonColor: '#00B0FF'
+      });
     });
   },
 
