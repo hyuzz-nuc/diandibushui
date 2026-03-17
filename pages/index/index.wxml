@@ -46,8 +46,8 @@
   <view class="progress-container" wx:if="{{ !showConfirmPopup && !showCupGuide }}">
     <van-circle 
       value="{{ percent }}" 
-      color="#00B0FF"
-      layer-color="rgba(238, 238, 238, 0.3)"
+      color="{{ guideStep > 0 ? '#666666' : '#00B0FF' }}"
+      layer-color="{{ guideStep > 0 ? 'rgba(100, 100, 100, 0.2)' : 'rgba(238, 238, 238, 0.3)' }}"
       stroke-width="10"
       size="220"
       text=""
@@ -117,7 +117,7 @@
     position="bottom"
     round
     bind:close="onCloseDialog"
-    z-index="2000"
+    z-index="10000"
     custom-style="border-radius: 16px 16px 0 0; max-height: 80vh;"
   >
     <view class="guide-popup-content" style="padding: 20rpx;" wx:if="{{ goalGuideSubStep === 0 }}">
@@ -257,7 +257,7 @@
     round
     bind:close="toggleCupGuide"
     custom-style="height: 50%;"
-    z-index="2000"
+    z-index="9999"
   >
     <view class="cup-guide-container">
       <view class="guide-title">常见杯型参考 (点击可直接记录)</view>
@@ -278,7 +278,7 @@
     round
     bind:close="onCancelAdd"
     safe-area-inset-bottom="{{ false }}"
-    z-index="2000"
+    z-index="9999"
   >
     <view class="confirm-popup-container">
       <view class="confirm-title">喝水确认</view>
@@ -300,25 +300,32 @@
   <!-- 新手引导欢迎弹窗（Step 1） -->
   <van-popup
     show="{{ showWelcomeDialog }}"
-    position="center"
+    position="bottom"
     round
     close-on-click-overlay="{{ false }}"
     bind:close="onCloseDialog"
-    z-index="10001"
+    z-index="10000"
+    custom-style="border-radius: 16px 16px 0 0;"
   >
-    <view style="padding: 40rpx 30rpx; text-align: center; min-width: 500rpx;">
-      <view style="font-size: 80rpx; margin-bottom: 20rpx;">👋</view>
-      <view style="font-size: 36rpx; font-weight: bold; color: #333; margin-bottom: 20rpx;">欢迎来到点滴补水</view>
-      <view style="font-size: 28rpx; color: #666; line-height: 1.6; margin-bottom: 40rpx;">
-        接下来我们会引导你设置每日喝水目标，<br/>并体验如何记录喝水哦~
+    <view class="guide-popup-content">
+      <view class="guide-icon">👋</view>
+      <view class="guide-message">
+        Hi～我是你的喝水小助手！忙碌的时候也别忘了养成喝水的好习惯哦～
       </view>
-      <van-button 
-        round 
-        block 
-        type="primary" 
-        bind:click="nextGuideStep"
-        style="background: linear-gradient(135deg, #4FC3F7 0%, #00B0FF 100%);"
-      >开始引导</van-button>
+      <view class="guide-sub-message">只需简单几步，开启健康一天！</view>
+      
+      <view class="guide-action-area">
+        <view class="guide-pointing-hand">👆</view>
+        <van-button 
+          type="primary" 
+          round 
+          color="#00B0FF"
+          custom-class="guide-start-btn"
+          bind:click="nextGuideStep"
+        >
+          开始引导
+        </van-button>
+      </view>
     </view>
   </van-popup>
 
@@ -336,25 +343,28 @@
   <!-- 社交引导弹窗（Step 5） -->
   <van-popup
     show="{{ showSocialGuideDialog }}"
-    position="center"
+    position="bottom"
     round
     close-on-click-overlay="{{ false }}"
     bind:close="onCloseDialog"
-    z-index="10001"
+    z-index="10000"
+    custom-style="border-radius: 16px 16px 0 0;"
   >
-    <view style="padding: 40rpx 30rpx; text-align: center; min-width: 500rpx;">
-      <view style="font-size: 80rpx; margin-bottom: 20rpx;">👯</view>
-      <view style="font-size: 36rpx; font-weight: bold; color: #333; margin-bottom: 20rpx;">好友监督更有趣</view>
-      <view style="font-size: 28rpx; color: #666; line-height: 1.6; margin-bottom: 40rpx;">
-        在社交页面可以绑定好友，<br/>互相监督一起喝水~
+    <view class="guide-popup-content">
+      <view class="guide-icon">👯</view>
+      <view class="guide-message">
+        一个人太孤单，去 <strong>「社交」</strong> 页面找好友监督吧！
       </view>
-      <van-button 
-        round 
-        block 
-        type="primary" 
-        bind:click="nextGuideStep"
-        style="background: linear-gradient(135deg, #4FC3F7 0%, #00B0FF 100%);"
-      >去社交页看看</van-button>
+      <view class="guide-sub-message">喝水打卡 PK 中，看看谁才是真正的「喝水王者」</view>
+      
+      <view style="margin-top: 40rpx; width: 80%; margin-left: auto; margin-right: auto;">
+        <van-button 
+          round 
+          block 
+          color="#00B0FF" 
+          bind:click="nextGuideStep"
+        >去社交页看看</van-button>
+      </view>
     </view>
   </van-popup>
 

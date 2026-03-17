@@ -771,6 +771,59 @@
 }
 
 /* ===================================
+   新手引导统一样式（底部弹窗）
+   =================================== */
+.guide-popup-content {
+  padding: 40rpx 30rpx calc(120rpx + env(safe-area-inset-bottom));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.guide-icon {
+  font-size: 100rpx;
+  margin-bottom: 30rpx;
+  animation: bounce-in 0.6s ease-out;
+}
+
+.guide-message {
+  font-size: 32rpx;
+  color: #333;
+  font-weight: bold;
+  margin-bottom: 20rpx;
+  line-height: 1.6;
+}
+
+.guide-sub-message {
+  font-size: 26rpx;
+  color: #999;
+  margin-bottom: 40rpx;
+  line-height: 1.5;
+}
+
+.guide-action-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20rpx;
+}
+
+.guide-pointing-hand {
+  font-size: 80rpx;
+  margin-bottom: 20rpx;
+  animation: point-down 1.5s infinite;
+}
+
+.guide-start-btn {
+  width: 80%;
+  min-width: 300rpx;
+  height: 88rpx;
+  font-size: 32rpx;
+  box-shadow: 0 6rpx 16rpx rgba(0, 176, 255, 0.35);
+}
+
+/* ===================================
    新手引导遮罩层（Step 4）
    =================================== */
 .guide-overlay {
@@ -847,5 +900,22 @@
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes bounce-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  70% {
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
   }
 }
