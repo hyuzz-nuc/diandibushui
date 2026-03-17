@@ -146,7 +146,7 @@ Page({
   restartGuide() {
     Dialog.confirm({
       title: '重新开始新手引导',
-      message: '将重置所有引导状态，完整体验欢迎、目标设置、提醒、喝水记录、社交等功能引导。\n\n您可以选择现在重启小程序进入引导，或者稍后在下次启动时体验。',
+      message: '引导过程中的数据不会影响到您的实际记录，确认要重新开始吗？',
       confirmButtonText: '现在重启',
       cancelButtonText: '稍后重启',
       confirmButtonColor: '#00B0FF'
