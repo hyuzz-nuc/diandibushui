@@ -146,28 +146,38 @@ Page({
   restartGuide() {
     Dialog.confirm({
       title: '重新开始新手引导',
-      message: '将重置所有引导状态，完整体验欢迎、目标设置、提醒、喝水记录、社交等功能引导。确定继续？',
-      confirmButtonText: '确定',
-      cancelButtonText: '取消',
+      message: '将重置所有引导状态，完整体验欢迎、目标设置、提醒、喝水记录、社交等功能引导。\n\n您可以选择现在重启小程序进入引导，或者稍后在下次启动时体验。',
+      confirmButtonText: '现在重启',
+      cancelButtonText: '稍后重启',
       confirmButtonColor: '#00B0FF'
     }).then(() => {
+      // 用户选择「现在重启」
       // 清除引导状态标记
       wx.removeStorageSync('has_guided_v2');
       
       wx.showToast({
-        title: '即将重启引导',
+        title: '正在重启...',
         icon: 'none',
         duration: 1500
       });
 
-      // 延迟跳转到首页，触发引导
+      // 延迟重启小程序
       setTimeout(() => {
-        wx.switchTab({
+        wx.reLaunch({
           url: '/pages/index/index'
         });
       }, 1500);
     }).catch(() => {
-      // 用户取消
+      // 用户选择「稍后重启」
+      // 清除引导状态标记，下次启动时进入引导
+      wx.removeStorageSync('has_guided_v2');
+      
+      Dialog.alert({
+        title: '已设置',
+        message: '下次启动小程序时将自动进入新手引导，敬请期待！',
+        confirmButtonText: '好的',
+        confirmButtonColor: '#00B0FF'
+      });
     });
   }
 })
