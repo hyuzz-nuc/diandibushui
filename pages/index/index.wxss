@@ -32,7 +32,7 @@
 .water-ring,
 .ring-decoration,
 .circle-progress {
-  z-index: 1 !important;
+  z-index: 0 !important; /* 改为 0，确保最低 */
 }
 
 .header {
