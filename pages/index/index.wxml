@@ -161,6 +161,8 @@
           border="{{ false }}"
           bind:change="onWeightChange"
           input-align="center"
+          adjust-position="{{ true }}"
+          clear="{{ false }}"
           custom-style="background: #F5F7FA; border-radius: 12px; font-size: 32rpx; padding: 20rpx;"
         />
       </view>
