@@ -240,6 +240,7 @@
         <van-button type="primary" custom-class="step-btn" bind:click="confirmRecommend">确认目标</van-button>
       </view>
     </view>
+    </scroll-view>
   </van-popup>
 
   <!-- 自定义喝水量弹窗（改为底部弹出） -->
