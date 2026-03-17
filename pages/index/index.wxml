@@ -239,17 +239,17 @@
     </view>
   </van-popup>
 
-  <!-- 自定义喝水弹窗 -->
-  <van-dialog
-    use-slot
-    title="自定义喝水量"
+  <!-- 自定义喝水量弹窗（改为底部弹出） -->
+  <van-popup
     show="{{ showCustomDialog }}"
-    show-cancel-button
-    bind:confirm="onConfirmCustom"
+    position="bottom"
+    round
     bind:close="onCloseCustom"
-    z-index="2000"
+    z-index="9999"
+    custom-style="border-radius: 16px 16px 0 0;"
   >
-    <view style="padding: 30px 20px;">
+    <view style="padding: 40rpx 30rpx calc(120rpx + env(safe-area-inset-bottom));">
+      <view style="font-size: 32rpx; font-weight: bold; color: #333; margin-bottom: 30rpx; text-align: center;">自定义喝水量</view>
       <van-field
         value="{{ customAmount }}"
         type="digit"
@@ -259,9 +259,27 @@
         bind:change="onCustomAmountChange"
         input-align="center"
         focus="{{ showCustomDialog }}"
+        adjust-position="{{ true }}"
+        clear="{{ false }}"
       />
+      <view style="display: flex; gap: 20rpx; margin-top: 40rpx;">
+        <van-button 
+          round 
+          block 
+          type="default" 
+          bind:click="onCloseCustom"
+          custom-style="height: 88rpx; font-size: 32rpx;"
+        >取消</van-button>
+        <van-button 
+          round 
+          block 
+          type="info" 
+          bind:click="onConfirmCustom"
+          custom-style="height: 88rpx; font-size: 32rpx;"
+        >确认</van-button>
+      </view>
     </view>
-  </van-dialog>
+  </van-popup>
 
   <!-- 杯型参考弹窗 -->
   <van-popup
