@@ -64,7 +64,7 @@
 /* 底部打卡天数提示栏 */
 .bottom-streak-bar {
   position: fixed;
-  bottom: 120rpx;
+  bottom: 210rpx; /* 往上移动 90rpx */
   left: 50%;
   transform: translateX(-50%);
   padding: 12rpx 40rpx;
