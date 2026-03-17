@@ -201,11 +201,18 @@
   box-shadow: 0 10rpx 20rpx rgba(2, 136, 209, 0.3);
 }
 
+.primary-btn .van-button__text {
+  color: #ffffff !important;
+}
+
 .secondary-btn {
   background: #fff !important;
-  color: #546E7A !important;
   border: none !important;
   box-shadow: 0 10rpx 20rpx rgba(0, 0, 0, 0.05);
+}
+
+.secondary-btn .van-button__text {
+  color: #546E7A !important;
 }
 
 .gap {
