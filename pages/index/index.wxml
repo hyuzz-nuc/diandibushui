@@ -262,21 +262,9 @@
         adjust-position="{{ true }}"
         clear="{{ false }}"
       />
-      <view style="display: flex; gap: 20rpx; margin-top: 40rpx;">
-        <van-button 
-          round 
-          block 
-          type="default" 
-          bind:click="onCloseCustom"
-          custom-style="height: 88rpx; font-size: 32rpx;"
-        >取消</van-button>
-        <van-button 
-          round 
-          block 
-          type="info" 
-          bind:click="onConfirmCustom"
-          custom-style="height: 88rpx; font-size: 32rpx;"
-        >确认</van-button>
+      <view class="step-actions" style="margin-top: 40rpx;">
+        <van-button round size="normal" type="default" bind:click="onCloseCustom" custom-class="cancel-btn">取消</van-button>
+        <van-button round size="normal" type="info" bind:click="onConfirmCustom" custom-class="confirm-btn">确认</van-button>
       </view>
     </view>
   </van-popup>
