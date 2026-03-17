@@ -19,7 +19,6 @@
 }
 
 /* 引导遮罩层和弹窗最高优先级 */
-.guide-overlay,
 .guide-modal,
 .van-dialog,
 .van-overlay,
