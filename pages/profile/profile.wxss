@@ -110,6 +110,10 @@
   margin-bottom: 40rpx;
 }
 
+.guide-cell {
+  display: block;
+}
+
 .save-btn-container {
   padding: 0 20rpx;
 }

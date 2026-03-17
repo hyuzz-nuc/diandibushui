@@ -139,6 +139,8 @@ Page({
   },
 
   restartGuide() {
+    console.log('[restartGuide] 点击了重新进入引导');
+    
     Dialog.confirm({
       title: '重新进入新手引导',
       message: '引导过程中的数据不会影响到您的实际记录，确认要重新开始吗？',
@@ -146,6 +148,7 @@ Page({
       cancelButtonText: '稍后重启',
       confirmButtonColor: '#00B0FF'
     }).then(() => {
+      console.log('[restartGuide] 用户选择现在重启');
       // 用户选择「现在重启」
       wx.removeStorageSync('has_guided_v2');
       
@@ -161,6 +164,7 @@ Page({
         });
       }, 1500);
     }).catch(() => {
+      console.log('[restartGuide] 用户选择稍后重启');
       // 用户选择「稍后重启」
       wx.removeStorageSync('has_guided_v2');
       
