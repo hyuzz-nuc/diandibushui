@@ -217,6 +217,7 @@ Page({
 
   // 展示社交引导 (Step 5)
   showSocialGuide() {
+    console.log('[showSocialGuide] 进入 Step 5 - 社交引导');
     this.setData({
       showSocialGuideDialog: true,
       guideStep: 5,
@@ -267,6 +268,8 @@ Page({
 
     // 新手引导模式：模拟加水（不保存数据）
     if (this.data.guideStep === 4) {
+      // 关闭 Step 4 的提示弹窗
+      this.setData({ showGuideOverlay: false });
       this.simulateAddWater(amount);
       return;
     }
@@ -278,6 +281,8 @@ Page({
   simulateAddWater(amount) {
     const startValue = this.data.currentWater;
     const endValue = startValue + amount;
+    
+    console.log('[simulateAddWater] Step 4 - 开始模拟喝水，amount:', amount);
     
     // 1. 动画演示
     this.animateValue(startValue, endValue, 1000);
@@ -291,8 +296,7 @@ Page({
 
     // 3. 延迟进入下一步
     setTimeout(() => {
-      // 隐式结束引导状态（去掉遮罩）
-      this.setData({ showGuideOverlay: false });
+      console.log('[simulateAddWater] setTimeout 触发，准备进入 Step 5');
       
       // 4. 恢复数据（不保存，重置为 0）
       this.setData({
@@ -309,8 +313,10 @@ Page({
           }
         }
       } catch (e) {
-        console.warn('[nextGuideStep] tabBar setVisibility failed:', e);
+        console.warn('[simulateAddWater] tabBar setVisibility failed:', e);
       }
+      
+      // 6. 显示社交引导弹窗（Step 5）
       this.showSocialGuide();
     }, 2000);
   },
@@ -679,11 +685,15 @@ Page({
 
   // 开始操作指引 (引导 Step 4)
   startGuideAction() {
+    console.log('[startGuideAction] 进入 Step 4 - 操作指引');
     this.setData({ 
       guideStep: 4,
       showGuideOverlay: true,
       isSystemDialogShowing: false
     });
+    
+    // Step 4 不需要额外弹窗，用户直接点击喝水按钮即可
+    // 提示弹窗在 WXML 中通过 guideStep === 4 控制显示
   },
 
   onCloseDialog() {

@@ -304,7 +304,7 @@
     round
     close-on-click-overlay="{{ false }}"
     bind:close="onCloseDialog"
-    z-index="9999"
+    z-index="10001"
   >
     <view style="padding: 40rpx 30rpx; text-align: center; min-width: 500rpx;">
       <view style="font-size: 80rpx; margin-bottom: 20rpx;">👋</view>
@@ -322,6 +322,27 @@
     </view>
   </van-popup>
 
+  <!-- 新手引导操作指引弹窗（Step 4） -->
+  <van-popup
+    show="{{ guideStep === 4 && !showConfirmPopup }}"
+    position="center"
+    round
+    close-on-click-overlay="{{ false }}"
+    bind:close="onCloseDialog"
+    z-index="10002"
+  >
+    <view style="padding: 40rpx 30rpx; text-align: center; min-width: 500rpx;">
+      <view style="font-size: 80rpx; margin-bottom: 20rpx;">💧</view>
+      <view style="font-size: 36rpx; font-weight: bold; color: #333; margin-bottom: 20rpx;">来，喝第一杯水</view>
+      <view style="font-size: 28rpx; color: #666; line-height: 1.6; margin-bottom: 40rpx;">
+        点击下方任意喝水按钮，<br/>体验记录喝水的过程~
+      </view>
+      <view style="font-size: 24rpx; color: #999; margin-top: 20rpx;">
+        （提示：这是模拟操作，不会保存数据）
+      </view>
+    </view>
+  </van-popup>
+
   <!-- 社交引导弹窗（Step 5） -->
   <van-popup
     show="{{ showSocialGuideDialog }}"
@@ -329,7 +350,7 @@
     round
     close-on-click-overlay="{{ false }}"
     bind:close="onCloseDialog"
-    z-index="9999"
+    z-index="10001"
   >
     <view style="padding: 40rpx 30rpx; text-align: center; min-width: 500rpx;">
       <view style="font-size: 80rpx; margin-bottom: 20rpx;">👯</view>
