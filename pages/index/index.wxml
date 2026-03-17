@@ -16,7 +16,7 @@
     round
     bind:close="toggleNotificationPanel"
     z-index="3000"
-    custom-style="border-radius: 0 0 16px 16px;"
+    custom-style="border-radius: 0 0 16px 16px; padding-top: env(safe-area-inset-top);"
   >
     <view class="notification-panel">
       <view class="panel-header">
