@@ -135,25 +135,27 @@
   >
     <scroll-view scroll-y style="max-height: 80vh;">
       <view class="guide-popup-content" style="padding: 20rpx;">
-      <view class="goal-mode-card" bind:tap="selectGoalMode" data-mode="smart">
-        <view class="goal-mode-icon">🤖</view>
-        <view class="goal-mode-info">
-          <view class="goal-mode-title">智能生成</view>
-          <view class="goal-mode-desc">根据体重/职业科学计算</view>
+        <!-- 步骤 0：选择模式 -->
+        <view wx:if="{{ goalGuideSubStep === 0 }}">
+          <view class="goal-mode-card" bind:tap="selectGoalMode" data-mode="smart">
+            <view class="goal-mode-icon">🤖</view>
+            <view class="goal-mode-info">
+              <view class="goal-mode-title">智能生成</view>
+              <view class="goal-mode-desc">根据体重/职业科学计算</view>
+            </view>
+          </view>
+          
+          <view class="goal-mode-card" data-mode="custom" bind:tap="selectGoalMode">
+            <view class="goal-mode-icon">📝</view>
+            <view class="goal-mode-info">
+              <view class="goal-mode-title">手动设置</view>
+              <view class="goal-mode-desc">自己输入每日目标</view>
+            </view>
+          </view>
         </view>
-      </view>
-      
-      <view class="goal-mode-card" data-mode="custom" bind:tap="selectGoalMode">
-        <view class="goal-mode-icon">📝</view>
-        <view class="goal-mode-info">
-          <view class="goal-mode-title">手动设置</view>
-          <view class="goal-mode-desc">自己输入每日目标</view>
-        </view>
-      </view>
-    </view>
 
-    <!-- 步骤 1：智能 - 输入体重 -->
-    <view class="goal-step-container" wx:if="{{ goalGuideSubStep === 1 }}">
+        <!-- 步骤 1：智能 - 输入体重 -->
+        <view class="goal-step-container" wx:if="{{ goalGuideSubStep === 1 }}">
       <view class="step-title">为了更准确的推荐，请输入您的体重</view>
       <view class="input-highlight-wrapper">
         <van-field
