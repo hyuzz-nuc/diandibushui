@@ -701,6 +701,11 @@ Page({
     });
   },
 
+  // 阻止遮罩层触摸移动
+  preventTouchMove() {
+    // 空方法，阻止默认行为
+  },
+
   onCloseDialog() {
     // 如果是步骤切换导致的关闭，直接忽略
     if (this.data.isSwitchingStep) {

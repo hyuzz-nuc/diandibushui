@@ -330,7 +330,7 @@
   </van-popup>
 
   <!-- 新手引导遮罩层（Step 4） -->
-  <view class="guide-overlay" wx:if="{{ guideStep === 4 }}" catch:touchmove="true">
+  <view class="guide-overlay" wx:if="{{ guideStep === 4 }}" catch:touchmove="preventTouchMove">
     <view class="guide-mask-full"></view>
     
     <view class="guide-tip-container">
