@@ -204,8 +204,8 @@ Page({
     
     return {
       title: `${myName} 邀请你一起喝水打卡，快来加入吧！`,
-      path: `/pages/index/index?inviteCode=${myOpenid}`
-      // imageUrl: '/images/share-cover.png' // 如果有分享封面图，取消注释
+      path: `/pages/index/index?inviteCode=${myOpenid}`,
+      imageUrl: '/images/share-cover.png' // 自定义分享封面图
     };
   },
 
