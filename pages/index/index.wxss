@@ -368,6 +368,36 @@
   align-items: center;
 }
 
+/* 自定义弹窗按钮样式 */
+.custom-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 40rpx;
+  gap: 20rpx;
+}
+
+.action-btn-cancel {
+  flex: 1;
+  height: 88rpx !important;
+  background: #f5f5f5 !important;
+  border: none !important;
+  border-radius: 44rpx !important;
+  font-size: 32rpx !important;
+  color: #999 !important;
+}
+
+.action-btn-confirm {
+  flex: 1;
+  height: 88rpx !important;
+  background: linear-gradient(135deg, #4FC3F7 0%, #00B0FF 100%) !important;
+  border: none !important;
+  border-radius: 44rpx !important;
+  font-size: 32rpx !important;
+  color: #fff !important;
+  box-shadow: 0 8rpx 24rpx rgba(0, 176, 255, 0.4) !important;
+}
+
 /* ========== 自定义 Dialog 样式 (打卡成功) ========== */
 .celebrate-dialog .van-button {
   background: linear-gradient(135deg, #81D4FA 0%, #29B6F6 100%) !important;
@@ -444,6 +474,7 @@
   height: 88rpx !important;
   text-align: center !important;
   padding: 0 !important;
+  border-radius: 44rpx !important;
 }
 
 .cancel-btn .van-button__text {
@@ -454,13 +485,14 @@
 
 .confirm-btn {
   width: 100% !important;
-  background-color: #00B0FF !important;
+  background: linear-gradient(135deg, #4FC3F7 0%, #00B0FF 100%) !important;
   border: none !important;
   font-size: 32rpx !important;
   height: 88rpx !important;
-  box-shadow: 0 8rpx 20rpx rgba(0, 176, 255, 0.3);
+  box-shadow: 0 8rpx 24rpx rgba(0, 176, 255, 0.4) !important;
   text-align: center !important;
   padding: 0 !important;
+  border-radius: 44rpx !important;
 }
 
 .confirm-btn .van-button__text {
