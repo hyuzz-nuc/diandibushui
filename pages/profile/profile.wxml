@@ -25,7 +25,7 @@
       <view class="guide-cell" bindtap="restartGuide">
         <van-cell title="重新进入引导" icon="replay" is-link />
       </view>
-      <van-cell title="用户反馈" icon="edit" is-link open-type="contact" />
+      <van-cell title="用户反馈" icon="edit" is-link bind:click="openFeedback" />
       <van-cell title="关于我们" icon="info-o" is-link />
     </van-cell-group>
   </view>
