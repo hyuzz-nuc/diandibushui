@@ -55,14 +55,18 @@ exports.main = async (event, context) => {
       }
     }
 
-    // 格式化时间（微信订阅消息要求格式）
+    // 格式化时间（微信订阅消息要求格式，转换为中国时区 UTC+8）
     const now = new Date();
-    const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, '0');
-    const day = String(now.getDate()).padStart(2, '0');
-    const hours = String(now.getHours()).padStart(2, '0');
-    const minutes = String(now.getMinutes()).padStart(2, '0');
+    // 转换为 UTC+8 时间（中国标准时间）
+    const utc8Time = new Date(now.getTime() + 8 * 60 * 60 * 1000);
+    const year = utc8Time.getUTCFullYear();
+    const month = String(utc8Time.getUTCMonth() + 1).padStart(2, '0');
+    const day = String(utc8Time.getUTCDate()).padStart(2, '0');
+    const hours = String(utc8Time.getUTCHours()).padStart(2, '0');
+    const minutes = String(utc8Time.getUTCMinutes()).padStart(2, '0');
     const timeStr = `${year}-${month}-${day} ${hours}:${minutes}`;
+    console.log('[sendRemind] 当前 UTC 时间:', now.toISOString());
+    console.log('[sendRemind] 转换后北京时间:', timeStr);
     
     console.log('[sendRemind] 发送数据:', {
       thing1: myName,
