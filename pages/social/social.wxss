@@ -3,13 +3,13 @@
   min-height: 100vh;
   background-color: var(--bg-color, #F0F8FF);
   padding-bottom: 150rpx;
+  /* 顶部安全距离：避开胶囊按钮 */
+  padding-top: 160px;
 }
 
 .tab-content {
   padding: 30rpx;
   min-height: 80vh;
-  /* 顶部安全距离：160px（除首页外） */
-  margin-top: 160px;
 }
 
 .invite-section {
