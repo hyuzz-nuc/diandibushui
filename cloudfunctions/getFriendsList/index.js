@@ -67,11 +67,11 @@ exports.main = async (event, context) => {
       if (user.avatarUrl) {
         console.log('[getFriendsList] 原始头像路径:', user.avatarUrl);
         
-        try {
-          // 检查是否是云存储路径
-          if (user.avatarUrl.startsWith('cloud://')) {
-            console.log('[getFriendsList] 检测到云存储路径，开始转换...');
-            
+        // 检查是否是云存储路径
+        if (user.avatarUrl.startsWith('cloud://')) {
+          console.log('[getFriendsList] 检测到云存储路径，开始转换...');
+          
+          try {
             const tempFilePath = await cloud.getTempFileURL({
               fileList: [user.avatarUrl]
             });
@@ -82,25 +82,25 @@ exports.main = async (event, context) => {
                 tempFilePath.fileList.length > 0 && 
                 tempFilePath.fileList[0].tempFileURL) {
               avatarUrl = tempFilePath.fileList[0].tempFileURL;
-              console.log('[getFriendsList] 转换后的临时 URL:', avatarUrl);
+              console.log('[getFriendsList] ✅ 转换成功，临时 URL:', avatarUrl);
             } else {
-              console.warn('[getFriendsList] tempFileURL 为空，使用默认头像');
-              avatarUrl = DEFAULT_AVATAR;
+              console.warn('[getFriendsList] ❌ tempFileURL 为空，使用默认头像');
             }
-          } else if (user.avatarUrl.startsWith('http://') || user.avatarUrl.startsWith('https://')) {
-            // 已经是 HTTP URL
-            console.log('[getFriendsList] 使用 HTTP URL:', user.avatarUrl);
-            avatarUrl = user.avatarUrl;
-          } else {
-            console.warn('[getFriendsList] 未知的头像路径格式，使用默认头像');
-            avatarUrl = DEFAULT_AVATAR;
+          } catch (err) {
+            console.error('[getFriendsList] ❌ getTempFileURL 异常:', err.message);
           }
-        } catch (err) {
-          console.error('[getFriendsList] 获取头像临时 URL 失败:', err);
-          avatarUrl = DEFAULT_AVATAR;
+        } else if (user.avatarUrl.startsWith('http://') || user.avatarUrl.startsWith('https://')) {
+          console.log('[getFriendsList] ✅ 使用 HTTP URL:', user.avatarUrl);
+          avatarUrl = user.avatarUrl;
+        } else {
+          console.warn('[getFriendsList] ❌ 未知路径格式，使用默认头像');
         }
-      } else {
-        console.log('[getFriendsList] 用户没有 avatarUrl 字段，使用默认头像');
+      }
+      
+      // 最终确认
+      if (!avatarUrl || avatarUrl.startsWith('cloud://')) {
+        console.log('[getFriendsList] 使用默认头像');
+        avatarUrl = DEFAULT_AVATAR;
       }
 
       return {
