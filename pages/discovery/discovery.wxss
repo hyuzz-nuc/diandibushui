@@ -4,8 +4,8 @@
   flex-direction: column;
   height: 100vh;
   background-color: #F0F8FF;
-  /* 顶部安全距离：80rpx（与首页一致） */
-  padding-top: 80rpx;
+  /* 顶部安全距离：120px（避开胶囊按钮） */
+  padding-top: 120px;
 }
 
 .header-section {
