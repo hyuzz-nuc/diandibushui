@@ -48,10 +48,12 @@ exports.main = async (event, context) => {
       [candidates[i], candidates[j]] = [candidates[j], candidates[i]];
     }
     
+    const DEFAULT_AVATAR = 'https://img.yzcdn.cn/vant/cat.jpeg'; // Vant 默认头像
+    
     const recommendedUsers = candidates.slice(0, 5).map(u => ({
       openid: u._openid,
       nickname: u.nickname || '神秘水友',
-      avatar_url: u.avatar_url || '',
+      avatar_url: u.avatar_url || u.avatarUrl || DEFAULT_AVATAR,
       current_title: u.current_title || '饮水萌新',
       consecutive_days: u.consecutive_days || 0
     }))

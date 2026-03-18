@@ -52,6 +52,8 @@ exports.main = async (event, context) => {
     const [friendsRes, recordsRes] = await Promise.all([friendsDataPromise, recordsPromise])
     
     // 5. 数据组装
+    const DEFAULT_AVATAR = 'https://img.yzcdn.cn/vant/cat.jpeg'; // Vant 默认头像
+    
     const result = friendsRes.data.map(user => {
       // 计算该好友今日总量
       const userRecords = recordsRes.data.filter(r => r._openid === user._openid)
@@ -62,7 +64,7 @@ exports.main = async (event, context) => {
       return {
         openid: user._openid,
         nickname: user.nickName || user.nickname || '未命名',
-        avatar_url: user.avatarUrl || user.avatar_url || '',
+        avatar_url: user.avatarUrl || user.avatar_url || DEFAULT_AVATAR,
         current_title: user.current_title || '饮水萌新',
         today_water: todayAmount,
         daily_goal: dailyGoal,
