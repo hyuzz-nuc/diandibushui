@@ -33,14 +33,12 @@ exports.main = async (event, context) => {
     // 注意：接收者必须之前已经授权过该模板 ID，否则会发送失败
     // 在实际生产环境中，应该先检查数据库中该用户是否有可用的订阅次数
     
-    // 临时调试：强制使用模拟模式（解决权限问题 -604101）
-    // 删除下面这行 `if (true ||` 和最后的 `)` 即可启用真实发送
-    // 注意：体验版小程序需要 miniprogramState: 'trial'
-    if (true || !TEMPLATE_ID || TEMPLATE_ID === 'YOUR_TEMPLATE_ID_HERE') {
+    // 如果没有配置模板 ID，返回模拟成功
+    if (!TEMPLATE_ID || TEMPLATE_ID === 'YOUR_TEMPLATE_ID_HERE') {
       console.log(`[模拟发送] 向用户 ${friendOpenid} 发送提醒：${myName} 叫你喝水啦！`)
       return {
         success: true,
-        message: '模拟提醒成功（模板权限问题，已临时禁用真实发送）',
+        message: '已模拟发送提醒（请配置真实模板 ID）',
         isSimulated: true
       }
     }
