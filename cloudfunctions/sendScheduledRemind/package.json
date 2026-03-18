@@ -1,0 +1,9 @@
+{
+  "name": "sendScheduledRemind",
+  "version": "1.0.0",
+  "description": "定时发送喝水提醒",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}
