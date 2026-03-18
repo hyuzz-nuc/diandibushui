@@ -43,6 +43,10 @@ exports.main = async (event, context) => {
       }
     }
 
+    // 格式化时间为微信要求的格式：YYYY-MM-DD HH:mm:ss
+    const now = new Date();
+    const timeStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
+    
     const result = await cloud.openapi.subscribeMessage.send({
       touser: friendOpenid,
       templateId: TEMPLATE_ID,
@@ -52,7 +56,7 @@ exports.main = async (event, context) => {
           value: '该喝水啦！'
         },
         time2: {
-          value: new Date().toLocaleString() // 简单格式化，实际建议用 dayjs
+          value: timeStr // 格式：2026-03-18 10:19:00
         },
         thing3: {
           value: `${myName} 喊你起来喝水~`
