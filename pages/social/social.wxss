@@ -65,14 +65,22 @@
 .friend-card, .recommend-card {
   background-color: var(--card-bg, #ffffff);
   border-radius: 12px;
-  padding: 24rpx;
+  padding: 20rpx;
   margin-bottom: 20rpx;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   box-shadow: 0 2rpx 8rpx var(--shadow-color, rgba(0, 0, 0, 0.05));
 }
 
 /* 好友列表样式 */
+.friend-left {
+  display: flex;
+  align-items: center;
+  gap: 16rpx;
+  flex: 1;
+}
+
 .friend-card van-image {
   flex-shrink: 0;
 }
@@ -83,24 +91,24 @@
 }
 
 .friend-info {
-  flex: 1;
-  margin: 0 16rpx;
-  min-width: 0; /* 允许文字换行 */
+  display: flex;
+  flex-direction: column;
+  gap: 6rpx;
+  min-width: 0;
 }
 
 .friend-name {
   font-size: 28rpx;
   font-weight: bold;
   color: var(--text-main, #333333);
-  margin-bottom: 6rpx;
 }
 
 .friend-status {
-  font-size: 24rpx;
+  font-size: 22rpx;
   color: var(--text-muted, #999999);
   display: flex;
   flex-direction: column;
-  gap: 6rpx;
+  gap: 4rpx;
 }
 
 .progress-bar {
@@ -108,7 +116,7 @@
   background-color: #e0e0e0;
   border-radius: 3rpx;
   overflow: hidden;
-  width: 180rpx;
+  width: 120rpx;
 }
 
 .progress-fill {
@@ -119,11 +127,13 @@
 }
 
 /* 提醒按钮 */
-.friend-card van-button {
+.friend-action {
   flex-shrink: 0;
-  width:100rpx;
-  font-size: 26rpx;
-  margin-right: 205rpx;
+}
+
+.friend-card van-button {
+  width: 120rpx;
+  font-size: 24rpx;
 }
 
 /* 推荐卡片样式 */
