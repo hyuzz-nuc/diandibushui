@@ -8,8 +8,8 @@
 .tab-content {
   padding: 30rpx;
   min-height: 80vh;
-  /* 顶部安全距离，与首页保持一致 */
-  margin-top: 80rpx;
+  /* 顶部安全距离：160px（除首页外） */
+  margin-top: 160px;
 }
 
 .invite-section {
