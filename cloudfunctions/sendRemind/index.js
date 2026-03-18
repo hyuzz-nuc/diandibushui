@@ -43,9 +43,9 @@ exports.main = async (event, context) => {
       }
     }
 
-    // 格式化时间为微信要求的格式：YYYY-MM-DD HH:mm:ss
+    // 格式化时间（简单格式，避免类型校验问题）
     const now = new Date();
-    const timeStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')} ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
+    const timeStr = `${now.getMonth() + 1}月${now.getDate()}日 ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
     
     const result = await cloud.openapi.subscribeMessage.send({
       touser: friendOpenid,
@@ -56,7 +56,7 @@ exports.main = async (event, context) => {
           value: '该喝水啦！'
         },
         time2: {
-          value: timeStr // 格式：2026-03-18 10:19:00
+          value: timeStr // 格式：3 月 18 日 10:21
         },
         thing3: {
           value: `${myName} 喊你起来喝水~`
