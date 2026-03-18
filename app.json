@@ -18,14 +18,14 @@
     "navigationStyle": "custom"
   },
   "tabBar": {
-    "custom": true,
+    "custom": false,
     "color": "#999999",
     "selectedColor": "#00B0FF",
     "backgroundColor": "#ffffff",
     "list": [
       {
         "pagePath": "pages/discovery/discovery",
-        "text": "AI对话"
+        "text": "AI 对话"
       },
       {
         "pagePath": "pages/social/social",

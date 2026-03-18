@@ -1,9 +1,0 @@
-/* custom-tab-bar/index.wxss */
-.van-tabbar {
-  z-index: 100 !important;
-}
-
-/* 确保 hidden 属性生效 */
-.van-tabbar[hidden] {
-  display: none !important;
-}
