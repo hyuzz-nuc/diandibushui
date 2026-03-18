@@ -1,4 +1,4 @@
-<view class="container" style="padding-top: calc(20rpx + env(safe-area-inset-top));">
+<view class="container">
   <van-tabs active="{{ activeTab }}" bind:change="onTabChange" color="#00B0FF" sticky animated swipeable>
     <!-- Tab 1: 我的好友 -->
     <van-tab title="我的好友">
@@ -6,7 +6,7 @@
         <!-- 邀请按钮区域 -->
         <view class="invite-section">
           <view class="invite-text">邀请好友一起喝水，建立绑定关系</view>
-          <van-button icon="share-o" round open-type="share" custom-class="invite-btn" size="small">去邀请</van-button>
+          <van-button icon="share-o" round open-type="share" custom-class="invite-btn" size="normal">去邀请</van-button>
         </view>
         
         <!-- 订阅消息授权提示 -->
@@ -19,27 +19,22 @@
         <block wx:if="{{ friends.length > 0 }}">
           <view class="friend-card" wx:for="{{ friends }}" wx:key="openid">
             <van-image 
-              width="50" 
-              height="50" 
+              width="100" 
+              height="100" 
               round 
-              src="{{ item.avatar_url ? item.avatar_url : (item.avatarUrl ? item.avatarUrl : 'https://img.yzcdn.cn/vant/cat.jpeg') }}"
-              use-loading-slot
-            >
-              <view slot="loading" style="display: flex; align-items: center; justify-content: center; width: 50px; height: 50px; background: #f0f0f0; border-radius: 50%;">
-                <van-loading type="spinner" size="20" />
-              </view>
-            </van-image>
+              src="{{ item.avatar_url || 'https://img.yzcdn.cn/vant/cat.jpeg' }}"
+            />
             <view class="friend-info">
               <view class="friend-name">{{ item.nickname }}</view>
               <view class="friend-status">
-                <text>今日已喝 {{ item.today_water }}ml</text>
+                <view>今日已喝 {{ item.today_water }}ml</view>
                 <view class="progress-bar">
                   <view class="progress-fill" style="width: {{ item.today_water / item.daily_goal * 100 }}%"></view>
                 </view>
               </view>
             </view>
             <van-button 
-              size="small" 
+              size="normal"
               round 
               color="{{ item.today_water >= item.daily_goal ? '#FF9800' : '#00B0FF' }}"
               bind:click="onRemind"
