@@ -9,7 +9,7 @@
   padding: 30rpx;
   min-height: 80vh;
   /* 顶部安全距离，与首页保持一致 */
-  padding-top: 80rpx;
+  margin-top: 80rpx;
 }
 
 .invite-section {
