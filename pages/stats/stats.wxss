@@ -2,8 +2,8 @@
   padding: 20rpx;
   min-height: 100vh;
   background-color: #F0F8FF;
-  /* 顶部安全距离：120px（避开胶囊按钮） */
-  padding-top: 120px;
+  /* 顶部安全距离：200px（避开胶囊按钮） */
+  padding-top: 200px;
 }
 
 .month-card {
