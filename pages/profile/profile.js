@@ -78,16 +78,57 @@ Page({
       cloudPath,
       filePath,
       success: res => {
-        this.setData({
-          'userInfo.avatarUrl': res.fileID
+        const fileID = res.fileID;
+        
+        // 转换为临时 URL（HTTP 格式）
+        wx.cloud.getTempFileURL({
+          fileList: [fileID],
+          success: tempRes => {
+            if (tempRes.fileList && tempRes.fileList[0] && tempRes.fileList[0].tempFileURL) {
+              const httpUrl = tempRes.fileList[0].tempFileURL;
+              
+              this.setData({
+                'userInfo.avatarUrl': httpUrl
+              });
+              
+              // 保存到本地存储，供登录时使用
+              wx.setStorageSync('avatarUrl', httpUrl);
+              
+              // 同步到云端数据库
+              this.saveUserInfoToCloud(httpUrl);
+              
+              wx.showToast({ title: '头像更新成功', icon: 'success' });
+            }
+          },
+          fail: err => {
+            console.error('获取临时 URL 失败:', err);
+            // 降级使用 fileID
+            this.setData({
+              'userInfo.avatarUrl': fileID
+            });
+            wx.showToast({ title: '头像已保存', icon: 'success' });
+          },
+          complete: () => {
+            wx.hideLoading();
+          }
         });
-        wx.hideLoading();
       },
       fail: err => {
         wx.hideLoading();
         wx.showToast({ title: '上传失败', icon: 'none' });
       }
     });
+  },
+  
+  saveUserInfoToCloud(avatarUrl) {
+    const nickName = this.data.userInfo.nickName;
+    wx.cloud.callFunction({
+      name: 'updateUserInfo',
+      data: {
+        avatarUrl: avatarUrl,
+        nickName: nickName
+      }
+    }).catch(console.error);
   },
 
   onInputChange(e) {

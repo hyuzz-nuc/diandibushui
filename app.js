@@ -65,9 +65,14 @@ App({
   },
 
   userLogin() {
+    // 获取用户头像（用于转换为 HTTP URL）
+    const avatarUrl = wx.getStorageSync('avatarUrl') || '';
+    
     wx.cloud.callFunction({
       name: 'login',
-      data: {},
+      data: {
+        avatarUrl: avatarUrl
+      },
       success: res => {
         console.log('[云函数] [login] user openid: ', res.result.openid)
         this.globalData.openid = res.result.openid
