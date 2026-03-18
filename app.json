@@ -25,24 +25,28 @@
     "backgroundColor": "#ffffff",
     "list": [
       {
-        "pagePath": "pages/discovery/discovery",
-        "text": "AI 对话"
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "images/home.png",
+        "selectedIconPath": "images/home-active.png"
       },
       {
         "pagePath": "pages/social/social",
-        "text": "社交"
-      },
-      {
-        "pagePath": "pages/index/index",
-        "text": "首页"
+        "text": "搭子",
+        "iconPath": "images/friends.png",
+        "selectedIconPath": "images/friends-active.png"
       },
       {
         "pagePath": "pages/stats/stats",
-        "text": "统计"
+        "text": "统计",
+        "iconPath": "images/stats.png",
+        "selectedIconPath": "images/stats-active.png"
       },
       {
         "pagePath": "pages/profile/profile",
-        "text": "我的"
+        "text": "我的",
+        "iconPath": "images/profile.png",
+        "selectedIconPath": "images/profile-active.png"
       }
     ]
   },

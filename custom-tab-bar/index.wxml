@@ -1,7 +1,6 @@
 <van-tabbar active="{{ active }}" bind:change="onChange" active-color="#00B0FF" inactive-color="#999999" hidden="{{ hideTabbar }}">
-  <van-tabbar-item icon="search">AI 对话</van-tabbar-item>
-  <van-tabbar-item icon="friends-o">社交</van-tabbar-item>
   <van-tabbar-item icon="home-o">首页</van-tabbar-item>
+  <van-tabbar-item icon="friends-o">搭子</van-tabbar-item>
   <van-tabbar-item icon="chart-trending-o">统计</van-tabbar-item>
   <van-tabbar-item icon="user-o">我的</van-tabbar-item>
 </van-tabbar>

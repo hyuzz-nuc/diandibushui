@@ -7,9 +7,8 @@ Component({
     onChange(event) {
       this.setData({ active: event.detail });
       const urls = [
-        '/pages/discovery/discovery',
-        '/pages/social/social',
         '/pages/index/index',
+        '/pages/social/social',
         '/pages/stats/stats',
         '/pages/profile/profile'
       ];
