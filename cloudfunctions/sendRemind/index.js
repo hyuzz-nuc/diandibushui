@@ -30,16 +30,21 @@ exports.main = async (event, context) => {
     console.log('[sendRemind] 接收者 openid:', friendOpenid);
     
     let myInfo = {};
+    let myName = '好友';
+    
     try {
+      console.log('[sendRemind] 开始查询用户信息...');
       const userRes = await db.collection('users').doc(myOpenid).get();
-      myInfo = userRes.data;
-      console.log('[sendRemind] 用户信息:', myInfo);
+      myInfo = userRes.data || {};
+      console.log('[sendRemind] 用户信息完整数据:', JSON.stringify(myInfo));
+      
+      // 尝试多个字段获取昵称
+      myName = myInfo.nickName || myInfo.nickname || myInfo.name || myInfo.openid || '好友';
+      console.log('[sendRemind] 最终使用的昵称:', myName);
     } catch (err) {
       console.error('[sendRemind] 获取用户信息失败:', err);
+      console.error('[sendRemind] 错误堆栈:', err.stack);
     }
-    
-    const myName = myInfo.nickName || myInfo.nickname || '好友';
-    console.log('[sendRemind] 提醒人昵称:', myName);
 
     // 2. 发送订阅消息
     // 注意：接收者必须之前已经授权过该模板 ID，否则会发送失败
