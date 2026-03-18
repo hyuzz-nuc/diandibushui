@@ -9,7 +9,15 @@ Page({
     totalDays: 0,
     reachRate: 0,
     avgAmount: 0,
-    weekSeries: []
+    weekSeries: [],
+    safeAreaTop: 110
+  },
+  onLoad() {
+    // 设置顶部安全距离（自动适配胶囊按钮）
+    const app = getApp();
+    this.setData({ 
+      safeAreaTop: app.globalData.safeAreaTop || 110 
+    });
   },
   onShow() {
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {

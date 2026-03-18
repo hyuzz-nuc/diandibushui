@@ -1,4 +1,4 @@
-<view class="container" style="padding-top: calc(20rpx + env(safe-area-inset-top));">
+<view class="container" style="padding-top: {{safeAreaTop}}px;">
   <!-- 顶部场景选择 -->
   <view class="header-section">
     <van-dropdown-menu active-color="#00B0FF">

@@ -24,7 +24,17 @@ Page({
       { text: '精简版', value: 'concise' },
       { text: '科普版', value: 'popular' },
       { text: '方案版', value: 'plan' },
-    ]
+    ],
+    
+    safeAreaTop: 110
+  },
+
+  onLoad() {
+    // 设置顶部安全距离（自动适配胶囊按钮）
+    const app = getApp();
+    this.setData({ 
+      safeAreaTop: app.globalData.safeAreaTop || 110 
+    });
   },
 
   onShow() {

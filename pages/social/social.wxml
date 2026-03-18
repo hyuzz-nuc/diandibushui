@@ -1,4 +1,4 @@
-<view class="container">
+<view class="container" style="padding-top: {{safeAreaTop}}px;">
   <van-tabs active="{{ activeTab }}" bind:change="onTabChange" color="#00B0FF" sticky animated swipeable>
     <!-- Tab 1: 我的好友 -->
     <van-tab title="我的好友">

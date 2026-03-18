@@ -12,7 +12,16 @@ Page({
       daily_goal: 2000
     },
     hasUserInfo: false,
-    showInvitePopup: false
+    showInvitePopup: false,
+    safeAreaTop: 110
+  },
+
+  onLoad() {
+    // 设置顶部安全距离（自动适配胶囊按钮）
+    const app = getApp();
+    this.setData({ 
+      safeAreaTop: app.globalData.safeAreaTop || 110 
+    });
   },
 
   onShow() {

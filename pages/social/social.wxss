@@ -3,8 +3,7 @@
   min-height: 100vh;
   background-color: var(--bg-color, #F0F8FF);
   padding-bottom: 150rpx;
-  /* 顶部安全距离：110px（避开胶囊按钮） */
-  padding-top: 110px;
+  /* 顶部安全距离：通过 WXML 内联 style 动态设置 */
 }
 
 .tab-content {

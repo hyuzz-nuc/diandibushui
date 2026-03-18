@@ -16,9 +16,20 @@ Page({
     showSocialGuideAction: false
   },
 
-  onLoad(options) {
+  onLoad() {
+    // 设置顶部安全距离（自动适配胶囊按钮）
+    this.setTopBarStyle();
+    
     this.loadFriends();
     this.loadRecommendations();
+  },
+  
+  // 设置顶部安全距离（自动适配胶囊按钮）
+  setTopBarStyle() {
+    const app = getApp();
+    this.setData({ 
+      safeAreaTop: app.globalData.safeAreaTop || 110 
+    });
   },
 
   onShow() {

@@ -5,7 +5,7 @@ App({
     } else {
       wx.cloud.init({
         // ⚠️ 留空让小程序自动寻找已绑定的当前环境
-        // 只有当你明确知道环境ID且不一致时才需要填，否则留空或只填 traceUser 即可
+        // 只有当你明确知道环境 ID 且不一致时才需要填，否则留空或只填 traceUser 即可
         traceUser: true,
       });
     }
@@ -15,8 +15,12 @@ App({
       openid: null,
       inviteCode: null,
       dailyGoal: 2000, // 默认目标
-      cupCapacity: 200 // 默认杯量
+      cupCapacity: 200, // 默认杯量
+      safeAreaTop: 110 // 顶部安全距离默认值（px）
     };
+
+    // 获取胶囊按钮信息，自动计算安全距离
+    this.initSafeArea();
 
     // 检查启动参数中的邀请码
     if (options && options.query && options.query.inviteCode) {
@@ -25,6 +29,26 @@ App({
     
     // 自动登录
     this.userLogin();
+  },
+
+  // 初始化安全区域（自动适配胶囊按钮）
+  initSafeArea() {
+    try {
+      // 获取胶囊按钮信息
+      const menuButtonInfo = wx.getMenuButtonBoundingClientRect();
+      
+      // 计算安全距离 = 胶囊顶部距离 + 胶囊高度 + 额外间距 (10px)
+      const safeAreaTop = menuButtonInfo.top + menuButtonInfo.height + 10;
+      
+      console.log('[安全区域] 胶囊信息:', menuButtonInfo);
+      console.log('[安全区域] 计算安全距离:', safeAreaTop, 'px');
+      
+      this.globalData.safeAreaTop = safeAreaTop;
+    } catch (err) {
+      console.error('[安全区域] 获取失败:', err);
+      // 使用默认值
+      this.globalData.safeAreaTop = 110;
+    }
   },
 
   onShow(options) {
@@ -59,33 +83,48 @@ App({
         }
       },
       fail: err => {
-        console.error('[云函数] [login] 调用失败', err)
+        console.error('[云函数] [login] 失败：', err)
+      },
+      complete: res => {
+        console.log('[云函数] [login] 完成')
       }
     })
   },
 
-  tryBindFriend(friendOpenid) {
-    if (!this.globalData.openid) return; // 还未登录
-    
-    wx.showModal({
-      title: '好友邀请',
-      content: '是否接受好友的监督邀请？',
-      success: (res) => {
-        if (res.confirm) {
-          wx.showLoading({ title: '绑定中...' });
-          wx.cloud.callFunction({
-            name: 'bindFriend',
-            data: { friendOpenid }
-          }).then(res => {
-            wx.hideLoading();
-            if (res.result.success) {
-              wx.showToast({ title: '绑定成功' });
-            } else {
-              wx.showToast({ title: res.result.message, icon: 'none' });
-            }
+  tryBindFriend(inviteCode) {
+    if (!inviteCode || inviteCode === this.globalData.openid) {
+      return; // 邀请码无效或自己邀请自己
+    }
+
+    wx.cloud.callFunction({
+      name: 'bindFriend',
+      data: {
+        friendOpenid: inviteCode
+      },
+      success: res => {
+        if (res.result.success) {
+          wx.showToast({
+            title: '好友绑定成功',
+            icon: 'success'
+          });
+        } else {
+          wx.showToast({
+            title: res.result.message || '绑定失败',
+            icon: 'none'
           });
         }
+      },
+      fail: err => {
+        console.error('[绑定好友] 失败：', err);
+        wx.showToast({
+          title: '网络错误',
+          icon: 'none'
+        });
       }
-    })
+    });
+  },
+
+  globalData: {
+    userInfo: null
   }
 });
