@@ -26,8 +26,20 @@ exports.main = async (event, context) => {
 
   try {
     // 1. 获取发送者（我）的信息，用于在消息中显示是谁提醒的
-    const myInfo = await db.collection('users').doc(myOpenid).get().then(res => res.data).catch(() => ({}))
-    const myName = myInfo.nickName || myInfo.nickname || '你的好友';
+    console.log('[sendRemind] 发送者 openid:', myOpenid);
+    console.log('[sendRemind] 接收者 openid:', friendOpenid);
+    
+    let myInfo = {};
+    try {
+      const userRes = await db.collection('users').doc(myOpenid).get();
+      myInfo = userRes.data;
+      console.log('[sendRemind] 用户信息:', myInfo);
+    } catch (err) {
+      console.error('[sendRemind] 获取用户信息失败:', err);
+    }
+    
+    const myName = myInfo.nickName || myInfo.nickname || '好友';
+    console.log('[sendRemind] 提醒人昵称:', myName);
 
     // 2. 发送订阅消息
     // 注意：接收者必须之前已经授权过该模板 ID，否则会发送失败
@@ -43,9 +55,20 @@ exports.main = async (event, context) => {
       }
     }
 
-    // 格式化时间（简单格式，避免类型校验问题）
+    // 格式化时间（微信订阅消息要求格式）
     const now = new Date();
-    const timeStr = `${now.getMonth() + 1}月${now.getDate()}日 ${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}`;
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const timeStr = `${year}-${month}-${day} ${hours}:${minutes}`;
+    
+    console.log('[sendRemind] 发送数据:', {
+      thing1: myName,
+      time2: timeStr,
+      thing3: '该喝水啦！记得及时补充水分哦～'
+    });
     
     const result = await cloud.openapi.subscribeMessage.send({
       touser: friendOpenid,
@@ -53,10 +76,10 @@ exports.main = async (event, context) => {
       page: 'pages/index/index', // 点击消息卡片跳转的页面
       data: {
         thing1: {
-          value: myName // 提醒人：好友昵称
+          value: myName // 提醒人
         },
         time2: {
-          value: timeStr // 时间：3 月 18 日 10:21
+          value: timeStr // 时间：2026-03-18 10:21
         },
         thing3: {
           value: '该喝水啦！记得及时补充水分哦～' // 温馨提醒
