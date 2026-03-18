@@ -18,6 +18,34 @@
     "navigationStyle": "custom"
   },
 
+  "tabBar": {
+    "custom": true,
+    "color": "#999999",
+    "selectedColor": "#00B0FF",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/discovery/discovery",
+        "text": "AI 对话"
+      },
+      {
+        "pagePath": "pages/social/social",
+        "text": "社交"
+      },
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/stats/stats",
+        "text": "统计"
+      },
+      {
+        "pagePath": "pages/profile/profile",
+        "text": "我的"
+      }
+    ]
+  },
   "usingComponents": {
     "van-button": "@vant/weapp/button/index",
     "van-cell": "@vant/weapp/cell/index",
