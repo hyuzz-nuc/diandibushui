@@ -29,5 +29,6 @@
   },
   "appid": "wx54e2d3d99e56f5fc",
   "editorSetting": {},
-  "cloudfunctionTemplateRoot": "cloudfunctionTemplate/"
+  "cloudfunctionTemplateRoot": "cloudfunctionTemplate/",
+  "cloud": "cloud1-4gf7u8sfdbdaa5d6"
 }
