@@ -67,7 +67,9 @@ exports.main = async (event, context) => {
 
     return {
       success: true,
-      data: result
+      message: '提醒发送成功',
+      // 不返回 result.data，避免 BigInt 序列化问题
+      sendTime: timeStr
     }
 
   } catch (err) {
