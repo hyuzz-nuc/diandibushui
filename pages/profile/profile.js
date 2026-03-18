@@ -227,10 +227,28 @@ Page({
     });
   },
 
+  // 我的好友（跳转社交页）
+  goToSocial() {
+    wx.switchTab({
+      url: '/pages/social/social'
+    });
+  },
+  
   // 用户反馈（打开微信官方反馈页面）
   openFeedback() {
     wx.openOfficialAccountArticle({
       url: ''
+    });
+  },
+  
+  // 关于我们
+  showAbout() {
+    wx.showModal({
+      title: '关于我们',
+      content: '点滴补水 - 你的健康喝水助手\n\n版本：1.0.0\n开发：点滴补水团队',
+      showCancel: false,
+      confirmText: '知道了',
+      confirmColor: '#00B0FF'
     });
   },
   

@@ -1,4 +1,4 @@
-<view class="container" style="padding-top: calc(20rpx + env(safe-area-inset-top));">
+<view class="container" style="padding-top: {{safeAreaTop}}px;">
   <van-cell-group inset title="提醒设置">
     <van-cell title="订阅消息授权" label="点击授权后可接收好友提醒">
       <van-button slot="right-icon" size="small" type="{{ hasSubscribed ? 'success' : 'primary' }}" bind:click="onSubscribeMsg">

@@ -20,13 +20,13 @@
   <!-- 功能列表 -->
   <view class="menu-list">
     <van-cell-group inset>
-      <van-cell title="我的好友" icon="friends-o" is-link url="/pages/social/social" />
+      <van-cell title="我的好友" icon="friends-o" is-link bind:click="goToSocial" />
       <van-cell title="提醒设置" icon="clock-o" is-link url="/pages/settings/settings" />
       <view class="guide-cell" bindtap="restartGuide">
         <van-cell title="重新进入引导" icon="replay" is-link />
       </view>
       <van-cell title="用户反馈" icon="edit" is-link bind:click="openFeedback" />
-      <van-cell title="关于我们" icon="info-o" is-link />
+      <van-cell title="关于我们" icon="info-o" is-link bind:click="showAbout" />
     </van-cell-group>
   </view>
 

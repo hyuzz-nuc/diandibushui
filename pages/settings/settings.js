@@ -18,6 +18,11 @@ Page({
   },
 
   onLoad() {
+    // 设置顶部安全距离（自动适配胶囊按钮）
+    const app = getApp();
+    const safeAreaTop = app.globalData.safeAreaTop || 110;
+    this.setData({ safeAreaTop });
+    
     // 从缓存或数据库加载设置
     const settings = wx.getStorageSync('user_settings') || {};
     const hasSubscribed = wx.getStorageSync('has_subscribed_water_remind') || false;
