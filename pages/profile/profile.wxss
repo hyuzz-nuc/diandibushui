@@ -1,9 +1,12 @@
 .container {
-  padding: 20rpx;
   background-color: #F0F8FF;
   min-height: 100vh;
-  /* 顶部安全距离：110px（避开胶囊按钮） */
-  padding-top: 110px;
+  /* 顶部安全距离：90px（避开胶囊按钮） */
+  padding-top: 90px;
+  /* 左右和底部内边距 */
+  padding-left: 20rpx;
+  padding-right: 20rpx;
+  padding-bottom: 20rpx;
 }
 
 .user-card {
