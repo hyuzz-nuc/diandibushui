@@ -169,10 +169,8 @@ Page({
       console.log('[finishGuide] tabBar:', tabBar);
       if (typeof this.getTabBar === 'function' && tabBar) {
         console.log('[finishGuide] 调用 setVisibility(false)');
-        tabBar.setVisibility(false);
+        tabBar.setVisibility(false); // false = 显示 TabBar
       }
-      console.log('[finishGuide] 调用 wx.showTabBar()');
-      wx.showTabBar();
     }, 300);
   },
 
