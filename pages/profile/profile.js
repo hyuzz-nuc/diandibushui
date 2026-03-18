@@ -227,6 +227,13 @@ Page({
     });
   },
 
+  // 用户反馈（打开微信官方反馈页面）
+  openFeedback() {
+    wx.openOfficialAccountArticle({
+      url: ''
+    });
+  },
+  
   onShareAppMessage() {
     return {
       title: '快来和我一起喝水打卡吧！',
