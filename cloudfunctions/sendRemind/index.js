@@ -35,6 +35,7 @@ exports.main = async (event, context) => {
     
     // 临时调试：强制使用模拟模式（解决权限问题 -604101）
     // 删除下面这行 `if (true ||` 和最后的 `)` 即可启用真实发送
+    // 注意：体验版小程序需要 miniprogramState: 'trial'
     if (true || !TEMPLATE_ID || TEMPLATE_ID === 'YOUR_TEMPLATE_ID_HERE') {
       console.log(`[模拟发送] 向用户 ${friendOpenid} 发送提醒：${myName} 叫你喝水啦！`)
       return {
@@ -59,7 +60,7 @@ exports.main = async (event, context) => {
           value: `${myName} 喊你起来喝水~`
         }
       },
-      miniprogramState: 'developer' // 跳转小程序类型：developer 为开发版；trial 为体验版；formal 为正式版
+      miniprogramState: 'trial' // 跳转小程序类型：developer 为开发版；trial 为体验版；formal 为正式版
     })
 
     return {
