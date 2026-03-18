@@ -11,7 +11,11 @@
   ],
   "window": {
     "backgroundTextStyle": "light",
-    "backgroundColor": "#F0F8FF"
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTitleText": "点滴补水",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#F0F8FF",
+    "navigationStyle": "custom"
   },
   "tabBar": {
     "custom": true,

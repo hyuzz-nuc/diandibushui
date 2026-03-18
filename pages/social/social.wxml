@@ -8,6 +8,12 @@
           <view class="invite-text">邀请好友一起喝水，建立绑定关系</view>
           <van-button icon="share-o" round open-type="share" custom-class="invite-btn" size="small">去邀请</van-button>
         </view>
+        
+        <!-- 订阅消息授权提示 -->
+        <view class="subscribe-section" wx:if="{{ false }}">
+          <view class="subscribe-text">💡 开启喝水提醒，好友提醒不错过</view>
+          <van-button icon="bell" round type="primary" size="small" bind:click="onSubscribeMsg">开启提醒权限</van-button>
+        </view>
 
         <view class="friend-list" wx:if="{{ !loadingFriends }}">
         <block wx:if="{{ friends.length > 0 }}">
@@ -16,8 +22,13 @@
               width="50" 
               height="50" 
               round 
-              src="{{ item.avatar_url || 'https://img.yzcdn.cn/vant/cat.jpeg' }}" 
-            />
+              src="{{ item.avatar_url ? item.avatar_url : (item.avatarUrl ? item.avatarUrl : 'https://img.yzcdn.cn/vant/cat.jpeg') }}"
+              use-loading-slot
+            >
+              <view slot="loading" style="display: flex; align-items: center; justify-content: center; width: 50px; height: 50px; background: #f0f0f0; border-radius: 50%;">
+                <van-loading type="spinner" size="20" />
+              </view>
+            </van-image>
             <view class="friend-info">
               <view class="friend-name">{{ item.nickname }}</view>
               <view class="friend-status">
@@ -33,9 +44,10 @@
               color="{{ item.today_water >= item.daily_goal ? '#FF9800' : '#00B0FF' }}"
               bind:click="onRemind"
               data-id="{{ item.openid }}"
+              data-name="{{ item.nickname }}"
               disabled="{{ item.today_water >= item.daily_goal }}"
             >
-              {{ item.today_water >= item.daily_goal ? '已达标' : '提醒TA' }}
+              {{ item.today_water >= item.daily_goal ? '已达标' : '提醒 TA' }}
             </van-button>
           </view>
         </block>
@@ -72,8 +84,13 @@
                 width="60" 
                 height="60" 
                 round 
-                src="{{ item.avatar_url || 'https://img.yzcdn.cn/vant/cat.jpeg' }}" 
-              />
+                src="{{ item.avatar_url ? item.avatar_url : (item.avatarUrl ? item.avatarUrl : 'https://img.yzcdn.cn/vant/cat.jpeg') }}"
+                use-loading-slot
+              >
+                <view slot="loading" style="display: flex; align-items: center; justify-content: center; width: 60px; height: 60px; background: #f0f0f0; border-radius: 50%;">
+                  <van-loading type="spinner" size="24" />
+                </view>
+              </van-image>
               <view class="user-meta">
                 <view class="user-name">{{ item.nickname }}</view>
                 <view class="user-badge">

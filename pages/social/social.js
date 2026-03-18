@@ -1,8 +1,8 @@
 import Dialog from '@vant/weapp/dialog/dialog';
 
-// TODO: 请在此处填入您在微信公众平台申请的“订阅消息”模板ID
+// TODO: 请在此处填入您在微信公众平台申请的"订阅消息"模板 ID
 // 模板标题建议：喝水提醒
-// 关键词建议：温馨提示(thing1)、提醒时间(time2)、备注(thing3)
+// 关键词建议：温馨提示 (thing1)、提醒时间 (time2)、备注 (thing3)
 const REMIND_TEMPLATE_ID = 'fZemoZCO7WILweXS6gV9n8bbp24bN1uH1h5Vu24-pjo'; 
 
 Page({
@@ -149,28 +149,85 @@ Page({
 
   // 提醒好友
   onRemind(e) {
+    console.log('[onRemind] 触发提醒，e:', e);
     const id = e.currentTarget.dataset.id;
     const name = e.currentTarget.dataset.name || '好友';
+    
+    console.log('[onRemind] friendOpenid:', id, 'friendName:', name);
     
     // 防抖
     if (this._reminding) return;
     this._reminding = true;
 
-    wx.showLoading({ title: '发送中...' });
+    // 先检查用户是否已授权订阅消息
+    const hasSubscribed = wx.getStorageSync('has_subscribed_water_remind');
+    
+    if (!hasSubscribed) {
+      // 用户还未授权，先引导授权
+      this.requestSubscribeAndRemind(id, name);
+    } else {
+      // 已授权，直接发送
+      this.sendRemindRequest(id, name);
+    }
+  },
+  
+  // 请求订阅授权并发送提醒
+  requestSubscribeAndRemind(friendOpenid, friendName) {
+    console.log('[requestSubscribeAndRemind] 引导用户授权订阅消息');
+    
+    wx.showModal({
+      title: '开启喝水提醒',
+      content: '需要您先授权订阅消息权限，才能给好友发送提醒哦～',
+      confirmText: '去授权',
+      cancelText: '取消',
+      success: (res) => {
+        if (res.confirm) {
+          // 调用订阅消息授权弹窗
+          wx.requestSubscribeMessage({
+            tmplIds: [REMIND_TEMPLATE_ID],
+            success: (subscribeRes) => {
+              console.log('[requestSubscribeAndRemind] 订阅结果:', subscribeRes);
+              
+              if (subscribeRes[REMIND_TEMPLATE_ID] === 'accept') {
+                // 用户同意，记录授权状态
+                wx.setStorageSync('has_subscribed_water_remind', true);
+                wx.showToast({ title: '授权成功', icon: 'success' });
+                
+                // 发送提醒
+                this.sendRemindRequest(friendOpenid, friendName);
+              } else {
+                wx.showToast({ title: '您取消了授权', icon: 'none', duration: 2000 });
+              }
+            },
+            fail: (err) => {
+              console.error('[requestSubscribeAndRemind] 订阅失败:', err);
+              wx.showToast({ title: '授权失败', icon: 'none', duration: 2000 });
+            }
+          });
+        }
+      }
+    });
+  },
+  
+  // 发送提醒请求
+  sendRemindRequest(friendOpenid, friendName) {
+    wx.showLoading({ title: '发送中...', mask: true });
 
     wx.cloud.callFunction({
       name: 'sendRemind',
       data: {
-        friendOpenid: id,
-        friendName: name,
+        friendOpenid: friendOpenid,
+        friendName: friendName,
         templateId: REMIND_TEMPLATE_ID
       }
     }).then(res => {
+      console.log('[sendRemindRequest] 云函数返回:', res);
       wx.hideLoading();
       if (res.result.success) {
         wx.showToast({ 
           title: res.result.isSimulated ? '模拟提醒成功' : '已提醒', 
-          icon: 'success' 
+          icon: 'success',
+          duration: 2000
         });
       } else {
         // 特殊处理未订阅的情况
@@ -183,16 +240,18 @@ Page({
         } else {
           wx.showToast({ 
             title: res.result.message || '发送失败', 
-            icon: 'none' 
+            icon: 'none',
+            duration: 2000
           });
         }
       }
     }).catch(err => {
       wx.hideLoading();
-      console.error(err);
-      wx.showToast({ title: '网络错误', icon: 'none' });
+      console.error('[sendRemindRequest] 云函数调用失败:', err);
+      wx.showToast({ title: '网络错误', icon: 'none', duration: 2000 });
     }).finally(() => {
       this._reminding = false;
+      console.log('[sendRemindRequest] 防抖解锁');
     });
   },
 
@@ -211,11 +270,16 @@ Page({
 
   // 添加好友
   onAddFriend(e) {
+    console.log('[onAddFriend] 触发添加好友，e:', e);
     const id = e.currentTarget.dataset.id;
+    console.log('[onAddFriend] friendOpenid:', id);
+    
     Dialog.confirm({
       title: '添加好友',
-      message: '确定要添加对方为好友吗？'
+      message: '确定要添加对方为好友吗？',
+      confirmButtonColor: '#00B0FF'
     }).then(() => {
+      console.log('[onAddFriend] 用户确认添加');
       wx.showLoading({ title: '添加中...', mask: true });
       
       wx.cloud.callFunction({
@@ -224,26 +288,27 @@ Page({
           friendOpenid: id
         }
       }).then(res => {
+        console.log('[onAddFriend] 云函数返回:', res);
         wx.hideLoading();
         if (res.result.success) {
-          wx.showToast({ title: '添加成功', icon: 'success' });
+          wx.showToast({ title: '添加成功', icon: 'success', duration: 2000 });
           // 刷新推荐列表和好友列表
           this.loadRecommendations();
           this.loadFriends();
-          // 自动切回好友列表Tab? 可选，这里暂不切换，保持在找搭子页面继续添加
         } else {
           wx.showToast({ 
             title: res.result.message || '添加失败', 
-            icon: 'none' 
+            icon: 'none',
+            duration: 2000
           });
         }
       }).catch(err => {
         wx.hideLoading();
-        console.error(err);
-        wx.showToast({ title: '网络错误', icon: 'none' });
+        console.error('[onAddFriend] 云函数调用失败:', err);
+        wx.showToast({ title: '网络错误', icon: 'none', duration: 2000 });
       });
     }).catch(() => {
-      // 取消操作
+      console.log('[onAddFriend] 用户取消添加');
     });
   }
 })

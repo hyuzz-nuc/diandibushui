@@ -1,30 +1,63 @@
 import Dialog from '@vant/weapp/dialog/dialog';
 
-const TEMPLATE_ID = 'fZemoZCO7WILweXS6gV9n8bbp24bN1uH1h5Vu24-pjo'; // 请替换为真实的模板ID
+const TEMPLATE_ID = 'fZemoZCO7WILweXS6gV9n8bbp24bN1uH1h5Vu24-pjo'; // 请替换为真实的模板 ID
 
 Page({
   data: {
     startTime: '09:00',
     endTime: '21:00',
-    interval: '1小时',
+    interval: '1 小时',
     soundEnabled: true,
     subscribeEnabled: false, // 订阅提醒开关
+    hasSubscribed: false, // 是否已授权订阅消息
     showStartTimePicker: false,
     showEndTimePicker: false,
     showIntervalPicker: false,
     currentTimeValue: '09:00',
-    intervalColumns: ['30分钟', '1小时', '1.5小时', '2小时']
+    intervalColumns: ['30 分钟', '1 小时', '1.5 小时', '2 小时']
   },
 
   onLoad() {
     // 从缓存或数据库加载设置
     const settings = wx.getStorageSync('user_settings') || {};
+    const hasSubscribed = wx.getStorageSync('has_subscribed_water_remind') || false;
+    
     this.setData({
       startTime: settings.startTime || '09:00',
       endTime: settings.endTime || '21:00',
-      interval: settings.interval || '1小时',
+      interval: settings.interval || '1 小时',
       soundEnabled: settings.soundEnabled !== false,
-      subscribeEnabled: settings.subscribeEnabled || false
+      subscribeEnabled: settings.subscribeEnabled || false,
+      hasSubscribed: hasSubscribed
+    });
+  },
+  
+  onShow() {
+    // 每次进入页面重新检查授权状态
+    const hasSubscribed = wx.getStorageSync('has_subscribed_water_remind') || false;
+    this.setData({ hasSubscribed: hasSubscribed });
+  },
+  
+  // 订阅消息授权按钮
+  onSubscribeMsg() {
+    console.log('[settings] 用户点击订阅授权');
+    
+    wx.requestSubscribeMessage({
+      tmplIds: [TEMPLATE_ID],
+      success: (res) => {
+        console.log('[settings] 订阅结果:', res);
+        if (res[TEMPLATE_ID] === 'accept') {
+          wx.setStorageSync('has_subscribed_water_remind', true);
+          wx.showToast({ title: '授权成功', icon: 'success' });
+          this.setData({ hasSubscribed: true });
+        } else {
+          wx.showToast({ title: '您取消了授权', icon: 'none', duration: 2000 });
+        }
+      },
+      fail: (err) => {
+        console.error('[settings] 订阅失败:', err);
+        wx.showToast({ title: '授权失败', icon: 'none', duration: 2000 });
+      }
     });
   },
 
@@ -33,7 +66,7 @@ Page({
     if (detail) {
       // 开启订阅
       if (TEMPLATE_ID === 'YOUR_TEMPLATE_ID_HERE') {
-         wx.showToast({ title: '请先配置模板ID', icon: 'none' });
+         wx.showToast({ title: '请先配置模板 ID', icon: 'none' });
          // 模拟开启成功，仅供演示
          this.setData({ subscribeEnabled: true });
          this.saveSettings();

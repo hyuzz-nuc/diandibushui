@@ -1,5 +1,10 @@
 <view class="container" style="padding-top: calc(20rpx + env(safe-area-inset-top));">
   <van-cell-group inset title="提醒设置">
+    <van-cell title="订阅消息授权" label="点击授权后可接收好友提醒">
+      <van-button slot="right-icon" size="small" type="{{ hasSubscribed ? 'success' : 'primary' }}" bind:click="onSubscribeMsg">
+        {{ hasSubscribed ? '已授权' : '去授权' }}
+      </van-button>
+    </van-cell>
     <van-cell title="接收好友提醒" label="开启后允许好友提醒你喝水">
        <van-switch slot="right-icon" checked="{{ subscribeEnabled }}" bind:change="onSubscribeChange" size="24px" active-color="#00B0FF" />
     </van-cell>
