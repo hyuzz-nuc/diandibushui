@@ -22,7 +22,7 @@ Page({
   onShow() {
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       this.getTabBar().setData({
-        active: 3 // 统计页对应索引 3
+        active: 2 // 统计页
       })
     }
     if (!this.data.year) {

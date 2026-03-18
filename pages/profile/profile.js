@@ -29,7 +29,7 @@ Page({
     
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       this.getTabBar().setData({
-        active: 4 // 我的页对应索引 4
+        active: 3 // 我的页
       })
     }
   },

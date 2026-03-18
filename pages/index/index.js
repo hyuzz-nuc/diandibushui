@@ -103,7 +103,7 @@ Page({
           const tabBar = this.getTabBar();
           if (tabBar && typeof tabBar.setData === 'function') {
             tabBar.setData({
-              active: 2
+              active: 0 // 首页
             });
           }
         }

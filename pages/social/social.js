@@ -35,7 +35,7 @@ Page({
   onShow() {
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       this.getTabBar().setData({
-        active: 1
+        active: 1 // 搭子页
       })
     }
     
