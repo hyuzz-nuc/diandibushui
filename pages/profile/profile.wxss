@@ -2,6 +2,8 @@
   padding: 20rpx;
   background-color: #F0F8FF;
   min-height: 100vh;
+  /* 顶部安全距离：80rpx（与首页一致） */
+  padding-top: 80rpx;
 }
 
 .user-card {
