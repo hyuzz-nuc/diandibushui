@@ -98,10 +98,12 @@ exports.main = async (event, context) => {
       }
       
       // 最终确认
+      console.log('[getFriendsList] 最终 avatarUrl:', avatarUrl);
       if (!avatarUrl || avatarUrl.startsWith('cloud://')) {
-        console.log('[getFriendsList] 使用默认头像');
+        console.log('[getFriendsList] ⚠️ 头像 URL 无效，使用默认头像');
         avatarUrl = DEFAULT_AVATAR;
       }
+      console.log('[getFriendsList] 📤 返回的 avatar_url:', avatarUrl);
 
       return {
         openid: user._openid,
