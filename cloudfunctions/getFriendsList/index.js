@@ -51,70 +51,26 @@ exports.main = async (event, context) => {
 
     const [friendsRes, recordsRes] = await Promise.all([friendsDataPromise, recordsPromise])
     
-    // 5. 数据组装
-    const DEFAULT_AVATAR = 'https://img.yzcdn.cn/vant/cat.jpeg'; // Vant 默认头像
+    // 5. 数据组装 - 直接使用默认头像（cloud://路径无法访问）
+    const DEFAULT_AVATAR = 'https://img.yzcdn.cn/vant/cat.jpeg';
     
-    const result = await Promise.all(friendsRes.data.map(async (user) => {
+    const result = friendsRes.data.map((user) => {
       // 计算该好友今日总量
       const userRecords = recordsRes.data.filter(r => r._openid === user._openid)
       const todayAmount = userRecords.reduce((sum, r) => sum + r.amount, 0)
       
       const dailyGoal = user.daily_goal || 2000
-      
-      // 处理头像：如果是云存储路径，转换为临时访问 URL
-      let avatarUrl = DEFAULT_AVATAR;
-      
-      if (user.avatarUrl) {
-        console.log('[getFriendsList] 原始头像路径:', user.avatarUrl);
-        
-        // 检查是否是云存储路径
-        if (user.avatarUrl.startsWith('cloud://')) {
-          console.log('[getFriendsList] 检测到云存储路径，开始转换...');
-          
-          try {
-            const tempFilePath = await cloud.getTempFileURL({
-              fileList: [user.avatarUrl]
-            });
-            
-            console.log('[getFriendsList] getTempFileURL 返回:', JSON.stringify(tempFilePath));
-            
-            if (tempFilePath.fileList && 
-                tempFilePath.fileList.length > 0 && 
-                tempFilePath.fileList[0].tempFileURL) {
-              avatarUrl = tempFilePath.fileList[0].tempFileURL;
-              console.log('[getFriendsList] ✅ 转换成功，临时 URL:', avatarUrl);
-            } else {
-              console.warn('[getFriendsList] ❌ tempFileURL 为空，使用默认头像');
-            }
-          } catch (err) {
-            console.error('[getFriendsList] ❌ getTempFileURL 异常:', err.message);
-          }
-        } else if (user.avatarUrl.startsWith('http://') || user.avatarUrl.startsWith('https://')) {
-          console.log('[getFriendsList] ✅ 使用 HTTP URL:', user.avatarUrl);
-          avatarUrl = user.avatarUrl;
-        } else {
-          console.warn('[getFriendsList] ❌ 未知路径格式，使用默认头像');
-        }
-      }
-      
-      // 最终确认
-      console.log('[getFriendsList] 最终 avatarUrl:', avatarUrl);
-      if (!avatarUrl || avatarUrl.startsWith('cloud://')) {
-        console.log('[getFriendsList] ⚠️ 头像 URL 无效，使用默认头像');
-        avatarUrl = DEFAULT_AVATAR;
-      }
-      console.log('[getFriendsList] 📤 返回的 avatar_url:', avatarUrl);
 
       return {
         openid: user._openid,
         nickname: user.nickName || user.nickname || '未命名',
-        avatar_url: avatarUrl,
+        avatar_url: DEFAULT_AVATAR, // 统一使用默认猫咪头像
         current_title: user.current_title || '饮水萌新',
         today_water: todayAmount,
         daily_goal: dailyGoal,
         is_target_reached: todayAmount >= dailyGoal
       }
-    }))
+    })
 
     return {
       success: true,
