@@ -53,13 +53,13 @@ exports.main = async (event, context) => {
       page: 'pages/index/index', // 点击消息卡片跳转的页面
       data: {
         thing1: {
-          value: '该喝水啦！'
+          value: myName // 提醒人：好友昵称
         },
         time2: {
-          value: timeStr // 格式：3 月 18 日 10:21
+          value: timeStr // 时间：3 月 18 日 10:21
         },
         thing3: {
-          value: `${myName} 喊你起来喝水~`
+          value: '该喝水啦！记得及时补充水分哦～' // 温馨提醒
         }
       },
       miniprogramState: 'trial' // 跳转小程序类型：developer 为开发版；trial 为体验版；formal 为正式版
