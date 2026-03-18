@@ -65,5 +65,6 @@
     "van-tab": "@vant/weapp/tab/index"
   },
   "sitemapLocation": "sitemap.json",
-  "style": "v2"
+  "style": "v2",
+  "cloud": "cloud1-4gf7u8sfdbdaa5d6"
 }
