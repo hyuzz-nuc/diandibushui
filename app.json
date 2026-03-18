@@ -26,27 +26,19 @@
     "list": [
       {
         "pagePath": "pages/index/index",
-        "text": "首页",
-        "iconPath": "images/home.png",
-        "selectedIconPath": "images/home-active.png"
+        "text": "首页"
       },
       {
         "pagePath": "pages/social/social",
-        "text": "搭子",
-        "iconPath": "images/friends.png",
-        "selectedIconPath": "images/friends-active.png"
+        "text": "搭子"
       },
       {
         "pagePath": "pages/stats/stats",
-        "text": "统计",
-        "iconPath": "images/stats.png",
-        "selectedIconPath": "images/stats-active.png"
+        "text": "统计"
       },
       {
         "pagePath": "pages/profile/profile",
-        "text": "我的",
-        "iconPath": "images/profile.png",
-        "selectedIconPath": "images/profile-active.png"
+        "text": "我的"
       }
     ]
   },
