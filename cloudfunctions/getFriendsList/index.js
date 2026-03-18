@@ -54,23 +54,46 @@ exports.main = async (event, context) => {
     // 5. 数据组装
     const DEFAULT_AVATAR = 'https://img.yzcdn.cn/vant/cat.jpeg'; // Vant 默认头像
     
-    const result = friendsRes.data.map(user => {
+    const result = await Promise.all(friendsRes.data.map(async (user) => {
       // 计算该好友今日总量
       const userRecords = recordsRes.data.filter(r => r._openid === user._openid)
       const todayAmount = userRecords.reduce((sum, r) => sum + r.amount, 0)
       
       const dailyGoal = user.daily_goal || 2000
+      
+      // 处理头像：如果是云存储路径，转换为临时访问 URL
+      let avatarUrl = DEFAULT_AVATAR;
+      if (user.avatarUrl) {
+        try {
+          // 检查是否是云存储路径
+          if (user.avatarUrl.startsWith('cloud://')) {
+            const tempFilePath = await cloud.getTempFileURL({
+              fileList: [user.avatarUrl]
+            });
+            if (tempFilePath.fileList && tempFilePath.fileList[0] && tempFilePath.fileList[0].tempFileURL) {
+              avatarUrl = tempFilePath.fileList[0].tempFileURL;
+              console.log('[getFriendsList] 头像临时 URL:', avatarUrl);
+            }
+          } else {
+            // 已经是 HTTP URL
+            avatarUrl = user.avatarUrl;
+          }
+        } catch (err) {
+          console.error('[getFriendsList] 获取头像临时 URL 失败:', err);
+          avatarUrl = DEFAULT_AVATAR;
+        }
+      }
 
       return {
         openid: user._openid,
         nickname: user.nickName || user.nickname || '未命名',
-        avatar_url: user.avatarUrl || user.avatar_url || DEFAULT_AVATAR,
+        avatar_url: avatarUrl,
         current_title: user.current_title || '饮水萌新',
         today_water: todayAmount,
         daily_goal: dailyGoal,
         is_target_reached: todayAmount >= dailyGoal
       }
-    })
+    }))
 
     return {
       success: true,
