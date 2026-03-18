@@ -23,6 +23,7 @@ desktop.ini
 npm-debug.log*
 
 # 项目私有配置（含敏感信息）
+project.config.json
 project.private.config.json
 
 # 临时文件
