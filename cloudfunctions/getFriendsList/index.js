@@ -51,20 +51,23 @@ exports.main = async (event, context) => {
 
     const [friendsRes, recordsRes] = await Promise.all([friendsDataPromise, recordsPromise])
     
-    // 5. 数据组装 - 直接使用默认头像（cloud://路径无法访问）
+    // 5. 数据组装
     const DEFAULT_AVATAR = 'https://img.yzcdn.cn/vant/cat.jpeg';
-    
+
     const result = friendsRes.data.map((user) => {
       // 计算该好友今日总量
       const userRecords = recordsRes.data.filter(r => r._openid === user._openid)
       const todayAmount = userRecords.reduce((sum, r) => sum + r.amount, 0)
-      
+
       const dailyGoal = user.daily_goal || 2000
+
+      // 获取用户头像，优先使用 avatarUrl，其次 avatar_url，最后默认头像
+      const avatarUrl = user.avatarUrl || user.avatar_url || DEFAULT_AVATAR
 
       return {
         openid: user._openid,
         nickname: user.nickName || user.nickname || '未命名',
-        avatar_url: DEFAULT_AVATAR, // 统一使用默认猫咪头像
+        avatar_url: avatarUrl,
         current_title: user.current_title || '饮水萌新',
         today_water: todayAmount,
         daily_goal: dailyGoal,

@@ -1,8 +1,0 @@
-{
-  "timeout": 60,
-  "envVariables": {},
-  "permissions": {
-    "openapi": []
-  },
-  "triggers": []
-}
