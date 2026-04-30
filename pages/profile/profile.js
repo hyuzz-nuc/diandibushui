@@ -236,8 +236,21 @@ Page({
   
   // 用户反馈（打开微信官方反馈页面）
   openFeedback() {
-    wx.openOfficialAccountArticle({
-      url: ''
+    // 使用小程序内置的反馈功能
+    wx.showModal({
+      title: '用户反馈',
+      content: '如有问题或建议，欢迎反馈给我们！',
+      confirmText: '去反馈',
+      cancelText: '取消',
+      confirmColor: '#00B0FF',
+      success: (res) => {
+        if (res.confirm) {
+          // 打开微信官方反馈页面（需要在小程序后台配置）
+          wx.openFeedback({
+            type: 'general'
+          });
+        }
+      }
     });
   },
   
