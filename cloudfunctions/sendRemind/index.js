@@ -28,27 +28,21 @@ exports.main = async (event, context) => {
     // 1. 获取发送者（我）的信息，用于在消息中显示是谁提醒的
     console.log('[sendRemind] 发送者 openid:', myOpenid);
     console.log('[sendRemind] 接收者 openid:', friendOpenid);
-    console.log('[sendRemind] 传入的 friendName:', friendName);
-    
-    // 优先使用传入的 friendName，如果为空再查询数据库
-    let myName = friendName || '好友';
-    
-    // 如果 friendName 为空，尝试从数据库获取
-    if (!friendName || friendName === '好友') {
-      try {
-        console.log('[sendRemind] friendName 为空，查询数据库...');
-        const userRes = await db.collection('users').doc(myOpenid).get();
-        const myInfo = userRes.data || {};
-        console.log('[sendRemind] 用户信息完整数据:', JSON.stringify(myInfo));
-        
-        // 尝试多个字段获取昵称
-        myName = myInfo.nickName || myInfo.nickname || myInfo.name || '好友';
-        console.log('[sendRemind] 从数据库获取的昵称:', myName);
-      } catch (err) {
-        console.error('[sendRemind] 数据库查询失败:', err);
-      }
+
+    // 从数据库获取发送者的昵称
+    let myName = '好友';
+    try {
+      const userRes = await db.collection('users').where({ _openid: myOpenid }).get();
+      const myInfo = userRes.data && userRes.data[0] || {};
+      console.log('[sendRemind] 发送者信息:', JSON.stringify(myInfo));
+
+      // 尝试多个字段获取昵称
+      myName = myInfo.nickName || myInfo.nickname || myInfo.name || '好友';
+      console.log('[sendRemind] 发送者昵称:', myName);
+    } catch (err) {
+      console.error('[sendRemind] 数据库查询失败:', err);
     }
-    
+
     console.log('[sendRemind] 最终使用的提醒人:', myName);
 
     // 2. 发送订阅消息
