@@ -119,26 +119,16 @@
                 <!-- 分割线 -->
                 <view class="poster-divider"></view>
 
-                <!-- 祝贺语（已解锁显示完整，未解锁显示解锁条件） -->
-                <view class="poster-desc-wrap" wx:if="{{ (item.unlockType === 'total' ? totalDays : consecutiveDays) >= item.unlockDays }}">
-                  <text class="poster-desc">{{ item.fullDesc }}</text>
-                </view>
-                <view class="poster-unlock-tip" wx:else>
-                  <text class="unlock-tip-icon">🔒</text>
-                  <text class="unlock-tip-text">{{ item.unlockType === 'total' ? '累计打卡' : '连续打卡' }} {{ item.unlockDays }} 天解锁</text>
-                  <view class="unlock-progress-bar">
-                    <view class="unlock-progress-fill" style="width: {{ (item.unlockType === 'total' ? totalDays : consecutiveDays) / item.unlockDays * 100 }}%;"></view>
-                  </view>
-                  <text class="unlock-tip-progress">{{ item.unlockType === 'total' ? totalDays : consecutiveDays }}/{{ item.unlockDays }}</text>
-                </view>
+                <!-- 祝贺语 -->
+                <text class="poster-desc">{{ item.fullDesc }}</text>
 
-                <!-- 打卡天数徽章（已解锁显示） -->
-                <view class="poster-badge" wx:if="{{ (item.unlockType === 'total' ? totalDays : consecutiveDays) >= item.unlockDays }}">
+                <!-- 打卡天数徽章 -->
+                <view class="poster-badge">
                   <text class="badge-icon">{{ item.emoji }}</text>
                   <text class="badge-text">{{ item.unlockType === 'total' ? '累计打卡' : '连续打卡' }} {{ item.unlockDays }} 天</text>
                 </view>
 
-                <!-- 小程序码（已解锁显示） -->
+                <!-- 小程序码 -->
                 <view class="poster-qrcode" wx:if="{{ (item.unlockType === 'total' ? totalDays : consecutiveDays) >= item.unlockDays }}">
                   <view class="qrcode-wrap">
                     <image wx:if="{{ qrCodeUrl }}" class="qrcode-img" src="{{ qrCodeUrl }}" mode="aspectFit" />
@@ -161,7 +151,12 @@
             <view class="poster-lock-overlay" wx:if="{{ (item.unlockType === 'total' ? totalDays : consecutiveDays) < item.unlockDays }}">
               <view class="lock-content">
                 <text class="lock-emoji">🔒</text>
-                <text class="lock-text">尚未解锁</text>
+                <text class="lock-title">{{ item.name }}</text>
+                <text class="lock-condition">{{ item.unlockType === 'total' ? '累计打卡' : '连续打卡' }} {{ item.unlockDays }} 天解锁</text>
+                <view class="lock-progress-bar">
+                  <view class="lock-progress-fill" style="width: {{ (item.unlockType === 'total' ? totalDays : consecutiveDays) / item.unlockDays * 100 }}%;"></view>
+                </view>
+                <text class="lock-progress-text">{{ item.unlockType === 'total' ? totalDays : consecutiveDays }}/{{ item.unlockDays }}</text>
               </view>
             </view>
           </view>
@@ -190,7 +185,7 @@
   </van-popup>
 
   <!-- 进度圆环 -->
-  <view class="progress-container" wx:if="{{ !showConfirmPopup && !showCupGuide && !showCustomDialog && !isSystemDialogShowing && !showRecommendDialog && !showWelcomeDialog && !showSocialGuideDialog && !showFinalDialog && !showNotificationPanel }}">
+  <view class="progress-container" wx:if="{{ !showConfirmPopup && !showCupGuide && !showCustomDialog && !isSystemDialogShowing && !showRecommendDialog && !showWelcomeDialog && !showSocialGuideDialog && !showFinalDialog && !showNotificationPanel && !showPosterPopup }}">
     <van-circle 
       value="{{ percent }}" 
       color="{{ guideStep > 0 ? '#666666' : '#00B0FF' }}"

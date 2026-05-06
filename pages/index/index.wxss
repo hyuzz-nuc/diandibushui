@@ -1275,13 +1275,6 @@
 }
 
 /* 祝贺语 */
-.poster-desc-wrap {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 28rpx;
-}
-
 .poster-desc {
   font-size: 28rpx;
   line-height: 1.8;
@@ -1289,45 +1282,7 @@
   text-shadow: 0 2rpx 4rpx rgba(0, 0, 0, 0.2);
   white-space: pre-line;
   text-align: center;
-}
-
-/* 解锁提示 */
-.poster-unlock-tip {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   margin-bottom: 28rpx;
-}
-
-.unlock-tip-icon {
-  font-size: 48rpx;
-  margin-bottom: 12rpx;
-}
-
-.unlock-tip-text {
-  font-size: 28rpx;
-  color: rgba(255, 255, 255, 0.9);
-  margin-bottom: 16rpx;
-}
-
-.unlock-progress-bar {
-  width: 200rpx;
-  height: 12rpx;
-  background: rgba(255, 255, 255, 0.3);
-  border-radius: 6rpx;
-  overflow: hidden;
-  margin-bottom: 8rpx;
-}
-
-.unlock-progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #fff, rgba(255, 255, 255, 0.8));
-  border-radius: 6rpx;
-}
-
-.unlock-tip-progress {
-  font-size: 24rpx;
-  color: rgba(255, 255, 255, 0.8);
 }
 
 /* 打卡徽章 */
@@ -1422,17 +1377,22 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(0, 0, 0, 0.4);
+  background: rgba(0, 0, 0, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 10;
+  backdrop-filter: blur(8rpx);
 }
 
 .lock-content {
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 40rpx 60rpx;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 30rpx;
+  border: 2rpx solid rgba(255, 255, 255, 0.3);
 }
 
 .lock-content .lock-emoji {
@@ -1440,9 +1400,38 @@
   margin-bottom: 16rpx;
 }
 
-.lock-content .lock-text {
-  font-size: 28rpx;
+.lock-content .lock-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 12rpx;
+}
+
+.lock-content .lock-condition {
+  font-size: 26rpx;
   color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 20rpx;
+}
+
+.lock-progress-bar {
+  width: 200rpx;
+  height: 12rpx;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 6rpx;
+  overflow: hidden;
+  margin-bottom: 12rpx;
+}
+
+.lock-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #fff, rgba(255, 255, 255, 0.8));
+  border-radius: 6rpx;
+}
+
+.lock-progress-text {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #fff;
 }
 
 /* 页码指示 */
