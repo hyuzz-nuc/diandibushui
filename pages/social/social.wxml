@@ -19,10 +19,9 @@
         <block wx:if="{{ friends.length > 0 }}">
           <view class="friend-card" wx:for="{{ friends }}" wx:key="openid">
             <view class="friend-left">
-              <van-image 
-                width="80" 
-                height="80" 
-                round 
+              <image
+                class="friend-avatar"
+                mode="aspectFill"
                 src="{{ item.avatar_url || 'https://img.yzcdn.cn/vant/cat.jpeg' }}"
               />
               <view class="friend-info">
@@ -36,9 +35,9 @@
               </view>
             </view>
             <view class="friend-action">
-              <van-button 
+              <van-button
                 size="small"
-                round 
+                round
                 color="{{ item.today_water >= item.daily_goal ? '#FF9800' : '#00B0FF' }}"
                 bind:click="onRemind"
                 data-id="{{ item.openid }}"
@@ -79,17 +78,11 @@
         <block wx:if="{{ recommendations.length > 0 }}">
           <view class="recommend-card" wx:for="{{ recommendations }}" wx:key="openid">
             <view class="card-left">
-              <van-image 
-                width="60" 
-                height="60" 
-                round 
-                src="{{ item.avatar_url ? item.avatar_url : (item.avatarUrl ? item.avatarUrl : 'https://img.yzcdn.cn/vant/cat.jpeg') }}"
-                use-loading-slot
-              >
-                <view slot="loading" style="display: flex; align-items: center; justify-content: center; width: 60px; height: 60px; background: #f0f0f0; border-radius: 50%;">
-                  <van-loading type="spinner" size="24" />
-                </view>
-              </van-image>
+              <image
+                class="recommend-avatar"
+                mode="aspectFill"
+                src="{{ item.avatar_url || item.avatarUrl || 'https://img.yzcdn.cn/vant/cat.jpeg' }}"
+              />
               <view class="user-meta">
                 <view class="user-name">{{ item.nickname }}</view>
                 <view class="user-badge">
@@ -98,10 +91,10 @@
                 <view class="user-streak">已连续打卡 {{ item.consecutive_days }} 天</view>
               </view>
             </view>
-            <van-button 
-              icon="plus" 
-              round 
-              type="primary" 
+            <van-button
+              icon="plus"
+              round
+              type="primary"
               size="small"
               bind:click="onAddFriend"
               data-id="{{ item.openid }}"

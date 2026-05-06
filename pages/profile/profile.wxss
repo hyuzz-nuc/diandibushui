@@ -51,6 +51,12 @@
   border-radius: 50%;
 }
 
+.avatar-img {
+  width: 168rpx;
+  height: 168rpx;
+  border-radius: 50%;
+}
+
 .avatar-ring {
   width: 188rpx;
   height: 188rpx;

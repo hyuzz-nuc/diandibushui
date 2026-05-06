@@ -5,7 +5,7 @@
         <view class="avatar placeholder" wx:if="{{ !userInfo.avatarUrl }}">
           <van-icon name="user-circle-o" size="64px" color="#B3E5FC" />
         </view>
-        <van-image wx:else round width="168rpx" height="168rpx" fit="cover" src="{{ userInfo.avatarUrl }}" />
+        <image wx:else class="avatar-img" mode="aspectFill" src="{{ userInfo.avatarUrl }}" />
       </view>
     </button>
     <view class="nickname-wrapper">

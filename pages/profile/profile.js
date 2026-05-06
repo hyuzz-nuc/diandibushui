@@ -97,40 +97,21 @@ Page({
       cloudPath,
       filePath,
       success: res => {
-        const fileID = res.fileID;
-        
-        // 转换为临时 URL（HTTP 格式）
-        wx.cloud.getTempFileURL({
-          fileList: [fileID],
-          success: tempRes => {
-            if (tempRes.fileList && tempRes.fileList[0] && tempRes.fileList[0].tempFileURL) {
-              const httpUrl = tempRes.fileList[0].tempFileURL;
-              
-              this.setData({
-                'userInfo.avatarUrl': httpUrl
-              });
-              
-              // 保存到本地存储，供登录时使用
-              wx.setStorageSync('avatarUrl', httpUrl);
-              
-              // 同步到云端数据库
-              this.saveUserInfoToCloud(httpUrl);
-              
-              wx.showToast({ title: '头像更新成功', icon: 'success' });
-            }
-          },
-          fail: err => {
-            console.error('获取临时 URL 失败:', err);
-            // 降级使用 fileID
-            this.setData({
-              'userInfo.avatarUrl': fileID
-            });
-            wx.showToast({ title: '头像已保存', icon: 'success' });
-          },
-          complete: () => {
-            wx.hideLoading();
-          }
+        const fileID = res.fileID; // cloud:// 格式的文件 ID
+
+        // 直接使用 fileID（小程序 image 组件支持 cloud:// 协议）
+        this.setData({
+          'userInfo.avatarUrl': fileID
         });
+
+        // 保存到本地存储
+        wx.setStorageSync('avatarUrl', fileID);
+
+        // 同步到云端数据库（存储 cloud:// 格式）
+        this.saveUserInfoToCloud(fileID);
+
+        wx.hideLoading();
+        wx.showToast({ title: '头像更新成功', icon: 'success' });
       },
       fail: err => {
         wx.hideLoading();
