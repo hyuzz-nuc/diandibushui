@@ -28,6 +28,8 @@ exports.main = async (event, context) => {
       _openid: openid
     }).get()
 
+    let userData = null
+
     if (userQuery.data.length > 0) {
       // 用户存在，更新
       await db.collection('users').where({
@@ -36,16 +38,12 @@ exports.main = async (event, context) => {
         data: updateData
       })
 
-      // 返回更新后的完整用户数据
+      // 获取更新后的用户数据
       const updatedUser = await db.collection('users').where({
         _openid: openid
       }).get()
 
-      return {
-        success: true,
-        message: '更新成功',
-        userInfo: updatedUser.data[0]
-      }
+      userData = updatedUser.data[0]
     } else {
       // 用户不存在，创建新用户
       const newUser = {
@@ -62,11 +60,13 @@ exports.main = async (event, context) => {
         data: newUser
       })
 
-      return {
-        success: true,
-        message: '创建并更新成功',
-        userInfo: newUser
-      }
+      userData = newUser
+    }
+
+    return {
+      success: true,
+      message: '更新成功',
+      userInfo: userData
     }
   } catch (e) {
     console.error(e)

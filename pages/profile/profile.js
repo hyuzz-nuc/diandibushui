@@ -99,19 +99,34 @@ Page({
       success: res => {
         const fileID = res.fileID; // cloud:// 格式的文件 ID
 
-        // 直接使用 fileID（小程序 image 组件支持 cloud:// 协议）
-        this.setData({
-          'userInfo.avatarUrl': fileID
+        // 获取永久访问链接（公有读配置后，链接永久有效）
+        wx.cloud.getTempFileURL({
+          fileList: [fileID],
+          success: tempRes => {
+            if (tempRes.fileList && tempRes.fileList[0] && tempRes.fileList[0].tempFileURL) {
+              const httpUrl = tempRes.fileList[0].tempFileURL;
+
+              this.setData({
+                'userInfo.avatarUrl': httpUrl
+              });
+
+              wx.setStorageSync('avatarUrl', httpUrl);
+
+              // 存储永久链接
+              this.saveUserInfoToCloud(httpUrl);
+
+              wx.hideLoading();
+              wx.showToast({ title: '头像更新成功', icon: 'success' });
+            } else {
+              wx.hideLoading();
+              wx.showToast({ title: '头像保存失败', icon: 'none' });
+            }
+          },
+          fail: () => {
+            wx.hideLoading();
+            wx.showToast({ title: '获取链接失败', icon: 'none' });
+          }
         });
-
-        // 保存到本地存储
-        wx.setStorageSync('avatarUrl', fileID);
-
-        // 同步到云端数据库（存储 cloud:// 格式）
-        this.saveUserInfoToCloud(fileID);
-
-        wx.hideLoading();
-        wx.showToast({ title: '头像更新成功', icon: 'success' });
       },
       fail: err => {
         wx.hideLoading();

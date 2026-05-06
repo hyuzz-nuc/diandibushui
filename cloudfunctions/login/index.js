@@ -23,8 +23,8 @@ exports.main = async (event, context) => {
       // 用户已存在，返回用户数据
       userData = result.data[0]
 
-      // 如果前端传入了新的头像URL（HTTP格式），更新数据库
-      if (avatarUrl && avatarUrl.startsWith('http')) {
+      // 如果前端传入了新的头像URL，更新数据库
+      if (avatarUrl) {
         try {
           await db.collection('users').where({
             _openid: openid
@@ -69,8 +69,7 @@ exports.main = async (event, context) => {
         createTime: db.serverDate()
       }
 
-      // 如果有传入头像和昵称，一并保存
-      if (avatarUrl && avatarUrl.startsWith('http')) {
+      if (avatarUrl) {
         newUser.avatarUrl = avatarUrl
       }
       if (nickName) {

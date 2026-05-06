@@ -22,38 +22,34 @@ exports.main = async (event, context) => {
 
     const friendIds = new Set()
     friendIds.add(openid) // 排除自己
-    
+
     myRelations.data.forEach(rel => {
       friendIds.add(rel.user_a)
       friendIds.add(rel.user_b)
     })
 
-    // 2. 查找活跃用户 (最近 7 天有打卡记录的)
-    // 简单起见，这里直接查 users 表，排除好友
-    // 实际生产环境应该查 checkins 表聚合，或者 users 表里有 last_checkin_time 索引
+    // 2. 查找活跃用户
     const users = await db.collection('users')
       .where({
         _openid: _.nin(Array.from(friendIds)),
-        // 假设 users 表有 last_checkin_date 字段，且不为空
-        last_checkin_date: _.neq(null) 
+        last_checkin_date: _.neq(null)
       })
-      .limit(20) // 先取 20 个候选
+      .limit(20)
       .get()
 
     // 3. 随机选取 5 个
     let candidates = users.data
-    // 简单的洗牌算法
     for (let i = candidates.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [candidates[i], candidates[j]] = [candidates[j], candidates[i]];
     }
-    
-    const DEFAULT_AVATAR = 'https://img.yzcdn.cn/vant/cat.jpeg'; // Vant 默认头像
-    
+
+    const DEFAULT_AVATAR = 'https://img.yzcdn.cn/vant/cat.jpeg';
+
     const recommendedUsers = candidates.slice(0, 5).map(u => ({
       openid: u._openid,
-      nickname: u.nickname || '神秘水友',
-      avatar_url: u.avatar_url || u.avatarUrl || DEFAULT_AVATAR,
+      nickname: u.nickname || u.nickName || '神秘水友',
+      avatar_url: u.avatarUrl || u.avatar_url || DEFAULT_AVATAR,
       current_title: u.current_title || '饮水萌新',
       consecutive_days: u.consecutive_days || 0
     }))
