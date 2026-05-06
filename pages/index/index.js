@@ -26,9 +26,9 @@ Page({
     cupTypes: [
       { name: '一次性纸杯', volume: 200, icon: '🥤' },
       { name: '标准马克杯', volume: 350, icon: '☕' },
-      { name: '保温杯', volume: 450, icon: '🍵' },
+      { name: '保温杯', volume: 450, icon: '🥛' },
       { name: '矿泉水 (小)', volume: 350, icon: '💧' },
-      { name: '矿泉水 (中)', volume: 550, icon: '🍼' },
+      { name: '矿泉水 (中)', volume: 550, icon: '🧴' },
       { name: '运动水壶', volume: 750, icon: '🏃' }
     ],
 
