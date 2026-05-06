@@ -42,16 +42,152 @@
     </view>
   </van-popup>
 
-  <!-- 底部打卡天数提示 -->
-  <view class="bottom-streak-bar" wx:if="{{ consecutiveDays == 0 }}">
-    <text class="bottom-streak-text">💪 开始打卡，连续 7 天解锁惊喜海报</text>
+  <!-- 底部打卡天数提示（可点击预览海报） -->
+  <view class="bottom-streak-bar" bind:tap="showPosterPreview">
+    <text class="bottom-streak-text" wx:if="{{ consecutiveDays == 0 }}">💪 开始打卡，连续 7 天解锁惊喜海报</text>
+    <text class="bottom-streak-text" wx:elif="{{ consecutiveDays > 0 && consecutiveDays < 7 }}">🔥 已连续打卡 {{ consecutiveDays }} 天，再坚持 {{ 7 - consecutiveDays }} 天解锁惊喜海报</text>
+    <text class="bottom-streak-text" wx:else>🎉 已连续打卡 {{ consecutiveDays }} 天，点击查看惊喜海报</text>
   </view>
-  <view class="bottom-streak-bar" wx:elif="{{ consecutiveDays > 0 && consecutiveDays < 7 }}">
-    <text class="bottom-streak-text">🔥 已连续打卡 {{ consecutiveDays }} 天，再坚持 {{ 7 - consecutiveDays }} 天解锁惊喜海报</text>
-  </view>
-  <view class="bottom-streak-bar" wx:elif="{{ consecutiveDays >= 7 }}">
-    <text class="bottom-streak-text">🎉 已连续打卡 {{ consecutiveDays }} 天</text>
-  </view>
+
+  <!-- 海报预览弹窗 -->
+  <van-popup
+    show="{{ showPosterPopup }}"
+    position="bottom"
+    round
+    custom-style="height: 92vh; background: #f5f7fa;"
+    bind:close="closePosterPreview"
+  >
+    <view class="poster-popup">
+      <!-- 关闭按钮 -->
+      <view class="poster-close" bind:tap="closePosterPreview">
+        <text class="close-icon">✕</text>
+      </view>
+
+      <!-- 全屏海报内容 -->
+      <swiper
+        class="poster-swiper"
+        current="{{ currentPosterIndex }}"
+        bindchange="onPosterSwiperChange"
+        indicator-dots="{{ false }}"
+      >
+        <swiper-item wx:for="{{ posterList }}" wx:key="id">
+          <view class="poster-fullscreen poster-{{ item.id }}" style="background: {{ item.bgColor }};">
+
+            <!-- 装饰元素 -->
+            <view class="poster-decor">
+              <!-- 海报1：星星 -->
+              <view class="stars" wx:if="{{ item.id === 1 }}">
+                <text class="star s1">✨</text>
+                <text class="star s2">⭐</text>
+                <text class="star s3">✨</text>
+                <text class="star s4">⭐</text>
+              </view>
+              <!-- 海报2：波浪 -->
+              <view class="waves" wx:if="{{ item.id === 2 }}">
+                <view class="wave wave1"></view>
+                <view class="wave wave2"></view>
+              </view>
+              <!-- 海报3：水滴 -->
+              <view class="drops" wx:if="{{ item.id === 3 }}">
+                <text class="drop d1">💧</text>
+                <text class="drop d2">💧</text>
+                <text class="drop d3">💧</text>
+                <text class="drop d4">💧</text>
+              </view>
+              <!-- 海报4：星光 -->
+              <view class="sparkles" wx:if="{{ item.id === 4 }}">
+                <text class="sparkle sp1">✨</text>
+                <text class="sparkle sp2">⭐</text>
+                <text class="sparkle sp3">✨</text>
+                <text class="sparkle sp4">⭐</text>
+                <text class="sparkle sp5">✨</text>
+              </view>
+            </view>
+
+            <!-- 海报卡片 -->
+            <view class="poster-card-wrapper {{ item.id === 4 ? 'golden-border' : '' }}">
+              <view class="poster-content">
+                <!-- Emoji -->
+                <view class="poster-emoji-wrap">
+                  <text class="poster-emoji">{{ item.emoji }}</text>
+                  <text class="emoji-sparkle" wx:if="{{ item.id >= 3 }}">✨</text>
+                </view>
+
+                <!-- 称号 -->
+                <text class="poster-title">{{ item.name }}</text>
+
+                <!-- 分割线 -->
+                <view class="poster-divider"></view>
+
+                <!-- 祝贺语（已解锁显示完整，未解锁显示解锁条件） -->
+                <view class="poster-desc-wrap" wx:if="{{ (item.unlockType === 'total' ? totalDays : consecutiveDays) >= item.unlockDays }}">
+                  <text class="poster-desc">{{ item.fullDesc }}</text>
+                </view>
+                <view class="poster-unlock-tip" wx:else>
+                  <text class="unlock-tip-icon">🔒</text>
+                  <text class="unlock-tip-text">{{ item.unlockType === 'total' ? '累计打卡' : '连续打卡' }} {{ item.unlockDays }} 天解锁</text>
+                  <view class="unlock-progress-bar">
+                    <view class="unlock-progress-fill" style="width: {{ (item.unlockType === 'total' ? totalDays : consecutiveDays) / item.unlockDays * 100 }}%;"></view>
+                  </view>
+                  <text class="unlock-tip-progress">{{ item.unlockType === 'total' ? totalDays : consecutiveDays }}/{{ item.unlockDays }}</text>
+                </view>
+
+                <!-- 打卡天数徽章（已解锁显示） -->
+                <view class="poster-badge" wx:if="{{ (item.unlockType === 'total' ? totalDays : consecutiveDays) >= item.unlockDays }}">
+                  <text class="badge-icon">{{ item.emoji }}</text>
+                  <text class="badge-text">{{ item.unlockType === 'total' ? '累计打卡' : '连续打卡' }} {{ item.unlockDays }} 天</text>
+                </view>
+
+                <!-- 小程序码（已解锁显示） -->
+                <view class="poster-qrcode" wx:if="{{ (item.unlockType === 'total' ? totalDays : consecutiveDays) >= item.unlockDays }}">
+                  <view class="qrcode-wrap">
+                    <image wx:if="{{ qrCodeUrl }}" class="qrcode-img" src="{{ qrCodeUrl }}" mode="aspectFit" />
+                    <view wx:else class="qrcode-placeholder">
+                      <text>点击分享好友加载</text>
+                    </view>
+                  </view>
+                  <text class="qrcode-text">长按识别小程序码</text>
+                </view>
+
+                <!-- 品牌信息 -->
+                <view class="poster-brand">
+                  <text class="brand-name">💧 点滴补水</text>
+                  <text class="brand-slogan">每一滴水，都是对身体的宠爱</text>
+                </view>
+              </view>
+            </view>
+
+            <!-- 锁定遮罩（未解锁时显示） -->
+            <view class="poster-lock-overlay" wx:if="{{ (item.unlockType === 'total' ? totalDays : consecutiveDays) < item.unlockDays }}">
+              <view class="lock-content">
+                <text class="lock-emoji">🔒</text>
+                <text class="lock-text">尚未解锁</text>
+              </view>
+            </view>
+          </view>
+        </swiper-item>
+      </swiper>
+
+      <!-- 页码指示 -->
+      <view class="poster-pagination">
+        <view class="page-dots">
+          <view class="dot {{ currentPosterIndex === index ? 'active' : '' }}" wx:for="{{ posterList }}" wx:key="id"></view>
+        </view>
+      </view>
+
+      <!-- 底部按钮 -->
+      <view class="poster-footer">
+        <view class="action-btn primary" bind:tap="savePosterToAlbum">
+          <text class="btn-icon">📷</text>
+          <text class="btn-text">保存海报</text>
+        </view>
+        <view class="action-btn secondary" bind:tap="sharePoster">
+          <text class="btn-icon">📤</text>
+          <text class="btn-text">分享好友</text>
+        </view>
+      </view>
+    </view>
+  </van-popup>
 
   <!-- 进度圆环 -->
   <view class="progress-container" wx:if="{{ !showConfirmPopup && !showCupGuide && !showCustomDialog && !isSystemDialogShowing && !showRecommendDialog && !showWelcomeDialog && !showSocialGuideDialog && !showFinalDialog && !showNotificationPanel }}">
@@ -427,3 +563,6 @@
   </van-popup>
 
 </view>
+
+<!-- 隐藏的 Canvas 用于生成海报 -->
+<canvas type="2d" id="posterCanvas" style="position: fixed; left: -9999px; top: -9999px;"></canvas>

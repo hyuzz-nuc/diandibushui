@@ -18,7 +18,7 @@ Page({
     recommendGoal: 0,
     activeGoalTab: 0,
     customGoalInput: '',
-    
+
     // 自定义与参考相关
     showCustomDialog: false,
     customAmount: '',
@@ -35,19 +35,19 @@ Page({
     // 底部确认弹窗相关
     showConfirmPopup: false,
     pendingAmount: 0,
-    
+
     // 系统弹窗显示状态（用于控制圆环隐藏）
     isSystemDialogShowing: false,
-    
+
     // 新手引导相关
     showGuideOverlay: false, // 是否显示引导遮罩
     guideStep: 0, // 0:无，1:Welcome, 2:Goal, 3:Notify, 4:Action, 5:Social
-    
+
     // 引导弹窗控制
     showWelcomeDialog: false,
     showSocialGuideDialog: false,
     showFinalDialog: false, // 最终完成弹窗
-    
+
     // 目标设置引导分步状态
     // 0: 初始选择模式 (智能 vs 自定义)
     // 1: 智能 - 输入体重
@@ -55,14 +55,72 @@ Page({
     // 3: 智能 - 结果确认
     // 4: 自定义 - 输入数值
     goalGuideSubStep: 0,
-    
+
     // 原始数据备份（用于引导结束后恢复）
     originalDailyGoal: 2000,
-    
+
     // 通知中心
     showNotificationPanel: false,
     notices: [],
     hasUnreadNotice: false,
+
+    // 海报预览相关
+    showPosterPopup: false,
+    currentPosterIndex: 0,
+    qrCodeUrl: null, // 小程序码URL
+    totalDays: 0, // 累计打卡天数
+    posterList: [
+      {
+        id: 1,
+        name: '坚持达人',
+        emoji: '🏆',
+        unlockDays: 7,
+        unlockType: 'consecutive', // 连续打卡
+        fullDesc: '恭喜你连续打卡7天！\n万事开头难，你已经迈出了健康生活的第一步！',
+        bgColor: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+      },
+      {
+        id: 2,
+        name: '健康先锋',
+        emoji: '💪',
+        unlockDays: 30,
+        unlockType: 'consecutive',
+        fullDesc: '坚持打卡一个月！\n好习惯已经养成，身体正在悄悄变好～',
+        bgColor: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)'
+      },
+      {
+        id: 3,
+        name: '水润达人',
+        emoji: '🌊',
+        unlockDays: 180,
+        unlockType: 'consecutive',
+        fullDesc: '半年坚持，水润常伴！\n你的身体已经爱上了这种健康的生活方式',
+        bgColor: 'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)'
+      },
+      {
+        id: 4,
+        name: '年度传奇',
+        emoji: '👑',
+        unlockDays: 365,
+        unlockType: 'total', // 累计打卡
+        fullDesc: '一年365天的坚持！\n你是真正的传奇！\n健康已经成为你的本能',
+        bgColor: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)'
+      }
+    ]
+  },
+
+  // 判断海报是否解锁
+  isPosterUnlocked(poster) {
+    if (poster.unlockType === 'total') {
+      return this.data.totalDays >= poster.unlockDays;
+    } else {
+      return this.data.consecutiveDays >= poster.unlockDays;
+    }
+  },
+
+  // 海报滑动切换
+  onPosterSwiperChange(e) {
+    this.setData({ currentPosterIndex: e.detail.current });
   },
 
   onLoad(options) {
@@ -70,11 +128,15 @@ Page({
       app.globalData.inviteCode = options.inviteCode;
     }
 
-    // 备份原始目标
+    // 备份原始目标，并加载打卡天数
     const dailyGoal = app.globalData.dailyGoal || 2000;
+    const consecutiveDays = app.globalData.consecutiveDays || 0;
+    const totalDays = app.globalData.totalDays || 0;
     this.setData({
       dailyGoal: dailyGoal,
-      originalDailyGoal: dailyGoal
+      originalDailyGoal: dailyGoal,
+      consecutiveDays: consecutiveDays,
+      totalDays: totalDays
     })
 
     this.loadTodayRecord();
@@ -894,7 +956,330 @@ Page({
       showWelcomeDialog: true,
       isSystemDialogShowing: true
     });
-    
+
     console.log('[startNewUserGuide] Guide started');
+  },
+
+  // ========== 海报预览相关方法 ==========
+
+  showPosterPreview() {
+    // 找到第一个已解锁的海报
+    let firstUnlockedIndex = 0;
+    for (let i = 0; i < this.data.posterList.length; i++) {
+      const poster = this.data.posterList[i];
+      const currentDays = poster.unlockType === 'total' ? this.data.totalDays : this.data.consecutiveDays;
+      if (currentDays >= poster.unlockDays) {
+        firstUnlockedIndex = i;
+        break;
+      }
+    }
+
+    this.setData({
+      showPosterPopup: true,
+      currentPosterIndex: firstUnlockedIndex,
+      qrCodeUrl: null // 不预加载，点击分享时才加载
+    });
+  },
+
+  // 加载小程序码
+  loadWxQrCode() {
+    wx.cloud.callFunction({
+      name: 'getWxQrCode',
+      data: {
+        page: 'pages/index/index',
+        scene: 'share'
+      },
+      success: res => {
+        wx.hideLoading();
+        if (res.result && res.result.success && res.result.tempFileURL) {
+          this.setData({ qrCodeUrl: res.result.tempFileURL });
+          wx.showToast({ title: '小程序码已加载', icon: 'success' });
+        } else {
+          wx.showToast({ title: res.result?.error || '加载失败', icon: 'none' });
+        }
+      },
+      fail: err => {
+        wx.hideLoading();
+        console.warn('获取小程序码失败:', err);
+        wx.showToast({ title: '加载失败', icon: 'none' });
+      }
+    });
+  },
+
+  closePosterPreview() {
+    this.setData({ showPosterPopup: false });
+  },
+
+  // 分享海报
+  sharePoster() {
+    const poster = this.data.posterList[this.data.currentPosterIndex];
+    const currentDays = poster.unlockType === 'total' ? this.data.totalDays : this.data.consecutiveDays;
+    if (currentDays < poster.unlockDays) {
+      wx.showToast({ title: '该海报尚未解锁', icon: 'none' });
+      return;
+    }
+
+    // 加载小程序码
+    if (!this.data.qrCodeUrl) {
+      wx.showLoading({ title: '加载中...' });
+      this.loadWxQrCode();
+    }
+
+    // 触发分享
+    wx.showShareMenu({
+      withShareTicket: true,
+      menus: ['shareAppMessage', 'shareTimeline']
+    });
+  },
+
+  savePosterToAlbum() {
+    const poster = this.data.posterList[this.data.currentPosterIndex];
+    const currentDays = poster.unlockType === 'total' ? this.data.totalDays : this.data.consecutiveDays;
+    if (currentDays < poster.unlockDays) {
+      wx.showToast({ title: '该海报尚未解锁', icon: 'none' });
+      return;
+    }
+
+    wx.showLoading({ title: '生成中...' });
+
+    // 使用 canvas 生成海报
+    this.generatePoster().then(tempPath => {
+      wx.hideLoading();
+      wx.saveImageToPhotosAlbum({
+        filePath: tempPath,
+        success: () => {
+          wx.showToast({ title: '已保存到相册', icon: 'success' });
+        },
+        fail: (err) => {
+          if (err.errMsg.includes('auth deny')) {
+            wx.showModal({
+              title: '提示',
+              content: '需要您授权保存图片到相册',
+              confirmText: '去授权',
+              success: (res) => {
+                if (res.confirm) {
+                  wx.openSetting();
+                }
+              }
+            });
+          } else {
+            wx.showToast({ title: '保存失败', icon: 'none' });
+          }
+        }
+      });
+    }).catch(err => {
+      wx.hideLoading();
+      console.error('生成海报失败:', err);
+      wx.showToast({ title: '生成失败', icon: 'none' });
+    });
+  },
+
+  generatePoster() {
+    return new Promise((resolve, reject) => {
+      // 先获取小程序码
+      this.getWxQrCode().then(qrCodeUrl => {
+        this.drawPoster(qrCodeUrl, resolve, reject);
+      }).catch(err => {
+        console.warn('获取小程序码失败，使用默认样式:', err);
+        // 获取失败时使用默认样式
+        this.drawPoster(null, resolve, reject);
+      });
+    });
+  },
+
+  // 获取小程序码
+  getWxQrCode() {
+    return new Promise((resolve, reject) => {
+      wx.cloud.callFunction({
+        name: 'getWxQrCode',
+        data: {
+          page: 'pages/index/index',
+          scene: 'share'
+        },
+        success: res => {
+          if (res.result && res.result.success && res.result.tempFileURL) {
+            resolve(res.result.tempFileURL);
+          } else {
+            reject(new Error(res.result?.error || '获取小程序码失败'));
+          }
+        },
+        fail: err => {
+          reject(err);
+        }
+      });
+    });
+  },
+
+  // 绘制海报
+  drawPoster(qrCodeUrl, resolve, reject) {
+    const query = wx.createSelectorQuery().in(this);
+    query.select('#posterCanvas')
+      .fields({ node: true, size: true })
+      .exec((res) => {
+        if (!res[0] || !res[0].node) {
+          reject(new Error('Canvas not found'));
+          return;
+        }
+
+        const canvas = res[0].node;
+        const ctx = canvas.getContext('2d');
+        const dpr = wx.getSystemInfoSync().pixelRatio;
+
+        const width = 600;
+        const height = 900;
+        canvas.width = width * dpr;
+        canvas.height = height * dpr;
+        ctx.scale(dpr, dpr);
+
+        const poster = this.data.posterList[this.data.currentPosterIndex];
+
+        // 绘制渐变背景
+        const grd = ctx.createLinearGradient(0, 0, width, height);
+        if (poster.id === 1) {
+          grd.addColorStop(0, '#667eea');
+          grd.addColorStop(1, '#764ba2');
+        } else if (poster.id === 2) {
+          grd.addColorStop(0, '#4facfe');
+          grd.addColorStop(1, '#00f2fe');
+        } else if (poster.id === 3) {
+          grd.addColorStop(0, '#43e97b');
+          grd.addColorStop(1, '#38f9d7');
+        } else {
+          grd.addColorStop(0, '#fa709a');
+          grd.addColorStop(1, '#fee140');
+        }
+        ctx.fillStyle = grd;
+        ctx.fillRect(0, 0, width, height);
+
+        // 绘制装饰圆
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+        ctx.beginPath();
+        ctx.arc(100, 150, 200, 0, Math.PI * 2);
+        ctx.fill();
+          ctx.beginPath();
+          ctx.arc(500, 700, 150, 0, Math.PI * 2);
+          ctx.fill();
+
+          // 绘制标题
+          ctx.fillStyle = '#ffffff';
+          ctx.font = 'bold 48px sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText('点滴补水', width / 2, 100);
+
+          // 绘制 emoji
+          ctx.font = '120px sans-serif';
+          ctx.textAlign = 'center';
+          ctx.fillText(poster.emoji, width / 2, 320);
+
+          // 绘制海报名称
+          ctx.font = 'bold 56px sans-serif';
+          ctx.fillText(poster.name, width / 2, 450);
+
+          // 绘制描述
+          ctx.font = '28px sans-serif';
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+          ctx.fillText(poster.desc, width / 2, 510);
+
+          // 绘制打卡天数
+          ctx.font = 'bold 36px sans-serif';
+          ctx.fillStyle = '#ffffff';
+          ctx.fillText(`连续打卡 ${this.data.consecutiveDays} 天`, width / 2, 600);
+
+          // 绘制底部提示
+          ctx.font = '24px sans-serif';
+          ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+          ctx.fillText('扫码一起喝水打卡', width / 2, 750);
+
+          // 小程序码
+          const qrSize = 120;
+          const qrX = width / 2 - qrSize / 2;
+          const qrY = 780;
+
+          if (qrCodeUrl) {
+            // 绘制真实小程序码
+            const qrImage = canvas.createImage();
+            qrImage.onload = () => {
+              // 绘制白色背景
+              ctx.fillStyle = '#ffffff';
+              ctx.beginPath();
+              ctx.arc(width / 2, qrY + qrSize / 2, qrSize / 2 + 5, 0, Math.PI * 2);
+              ctx.fill();
+
+              // 绘制小程序码图片
+              ctx.save();
+              ctx.beginPath();
+              ctx.arc(width / 2, qrY + qrSize / 2, qrSize / 2, 0, Math.PI * 2);
+              ctx.clip();
+              ctx.drawImage(qrImage, qrX, qrY, qrSize, qrSize);
+              ctx.restore();
+
+              // 导出图片
+              this.exportPoster(canvas, resolve, reject);
+            };
+            qrImage.onerror = () => {
+              console.warn('小程序码图片加载失败，使用默认样式');
+              this.drawDefaultQrCode(ctx, width, qrY, qrSize);
+              this.exportPoster(canvas, resolve, reject);
+            };
+            qrImage.src = qrCodeUrl;
+          } else {
+            // 使用默认样式
+            this.drawDefaultQrCode(ctx, width, qrY, qrSize);
+            this.exportPoster(canvas, resolve, reject);
+          }
+      });
+  },
+
+  // 绘制默认小程序码样式
+  drawDefaultQrCode(ctx, width, qrY, qrSize) {
+    // 白色圆形背景
+    ctx.fillStyle = '#ffffff';
+    ctx.beginPath();
+    ctx.arc(width / 2, qrY + qrSize / 2, qrSize / 2, 0, Math.PI * 2);
+    ctx.fill();
+
+    // 中心logo圆
+    ctx.fillStyle = '#00B0FF';
+    ctx.beginPath();
+    ctx.arc(width / 2, qrY + qrSize / 2, 30, 0, Math.PI * 2);
+    ctx.fill();
+
+    // 水滴emoji
+    ctx.font = '24px sans-serif';
+    ctx.fillStyle = '#ffffff';
+    ctx.fillText('💧', width / 2, qrY + qrSize / 2 + 8);
+
+    // 外圈
+    ctx.strokeStyle = 'rgba(0, 176, 255, 0.3)';
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.arc(width / 2, qrY + qrSize / 2, 50, 0, Math.PI * 2);
+    ctx.stroke();
+
+    // 装饰点
+    ctx.fillStyle = '#333333';
+    const dots = [
+      { x: -45, y: -40 }, { x: 40, y: -35 },
+      { x: -50, y: 0 }, { x: 45, y: 5 },
+      { x: -40, y: 40 }, { x: 35, y: 45 }
+    ];
+    dots.forEach(d => {
+      ctx.beginPath();
+      ctx.arc(width / 2 + d.x, qrY + qrSize / 2 + d.y, 6, 0, Math.PI * 2);
+      ctx.fill();
+    });
+  },
+
+  // 导出海报
+  exportPoster(canvas, resolve, reject) {
+    setTimeout(() => {
+      wx.canvasToTempFilePath({
+        canvas: canvas,
+        destWidth: 1200,
+        destHeight: 1800,
+        success: res => resolve(res.tempFilePath),
+        fail: err => reject(err)
+      });
+    }, 100);
   }
 });

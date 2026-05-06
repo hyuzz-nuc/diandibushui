@@ -17,7 +17,9 @@ App({
       dailyGoal: 2000, // 默认目标
       cupCapacity: 200, // 默认杯量
       safeAreaTop: 110, // 顶部安全距离默认值（px）
-      hasGuided: false // 新手引导标记（内存标记，防止存储失败）
+      hasGuided: false, // 新手引导标记（内存标记，防止存储失败）
+      consecutiveDays: 0, // 连续打卡天数
+      totalDays: 0 // 累计打卡天数
     };
 
     // 从本地存储恢复引导标记
@@ -86,6 +88,8 @@ App({
           this.globalData.userInfo = res.result.userInfo
           this.globalData.dailyGoal = res.result.userInfo.daily_goal || 2000
           this.globalData.cupCapacity = res.result.userInfo.cup_capacity || 200
+          this.globalData.consecutiveDays = res.result.userInfo.consecutive_days || 0
+          this.globalData.totalDays = res.result.userInfo.total_days || 0
         }
         
         // 如果有邀请码，尝试绑定
