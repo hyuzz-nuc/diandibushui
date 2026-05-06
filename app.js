@@ -101,6 +101,9 @@ App({
       return; // 邀请码无效或自己邀请自己
     }
 
+    // 立即清除邀请码，防止重复触发
+    this.globalData.inviteCode = null;
+
     wx.cloud.callFunction({
       name: 'bindFriend',
       data: {
@@ -113,10 +116,14 @@ App({
             icon: 'success'
           });
         } else {
-          wx.showToast({
-            title: res.result.message || '绑定失败',
-            icon: 'none'
-          });
+          // 已经是好友的情况，静默处理，不显示提示
+          const message = res.result.message || '绑定失败';
+          if (message !== '你们已经是好友啦') {
+            wx.showToast({
+              title: message,
+              icon: 'none'
+            });
+          }
         }
       },
       fail: err => {
