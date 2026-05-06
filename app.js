@@ -16,8 +16,14 @@ App({
       inviteCode: null,
       dailyGoal: 2000, // 默认目标
       cupCapacity: 200, // 默认杯量
-      safeAreaTop: 110 // 顶部安全距离默认值（px）
+      safeAreaTop: 110, // 顶部安全距离默认值（px）
+      hasGuided: false // 新手引导标记（内存标记，防止存储失败）
     };
+
+    // 从本地存储恢复引导标记
+    if (wx.getStorageSync('has_guided_v2')) {
+      this.globalData.hasGuided = true;
+    }
 
     // 获取胶囊按钮信息，自动计算安全距离
     this.initSafeArea();

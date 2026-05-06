@@ -69,29 +69,35 @@ Page({
     if (options && options.inviteCode) {
       app.globalData.inviteCode = options.inviteCode;
     }
-    
+
     // 备份原始目标
     const dailyGoal = app.globalData.dailyGoal || 2000;
     this.setData({
       dailyGoal: dailyGoal,
       originalDailyGoal: dailyGoal
     })
-    
+
     this.loadTodayRecord();
-    
+
     // 加载通知
     this.loadNotices();
-    
+
     // 模拟测试：如果有邀请码，添加邀请通知
     if (app.globalData.inviteCode) {
       this.addNotice('invite', '好友邀请', '你有一个好友邀请你一起喝水打卡');
     }
-    
-    // 检查是否需要启动新手引导
-    const hasGuided = wx.getStorageSync('has_guided_v2');
-    if (!hasGuided) {
-      this.startNewUserGuide();
-    }
+
+    // 检查是否需要启动新手引导（延迟检查，避免页面未加载完成）
+    setTimeout(() => {
+      const hasGuided = wx.getStorageSync('has_guided_v2');
+      console.log('[onLoad] has_guided_v2:', hasGuided);
+      if (!hasGuided) {
+        // 再次检查全局标记（防止存储失败）
+        if (!app.globalData.hasGuided) {
+          this.startNewUserGuide();
+        }
+      }
+    }, 500);
   },
   
   onShow() {
@@ -141,11 +147,11 @@ Page({
   // 结束引导
   finishGuide() {
     console.log('[finishGuide] 开始恢复导航栏');
-    
+
     // 恢复数据
     const originalGoal = this.data.originalDailyGoal;
-    this.setData({ 
-      showGuideOverlay: false, 
+    this.setData({
+      showGuideOverlay: false,
       guideStep: 0,
       showFinalDialog: false,
       showRecommendDialog: false,
@@ -156,12 +162,14 @@ Page({
       currentWater: 0,
       percent: this.calculatePercent(0, originalGoal)
     });
-    
+
     // 同步到全局
     if (app.globalData) app.globalData.dailyGoal = originalGoal;
 
+    // 双重保存：本地存储 + 全局标记
     wx.setStorageSync('has_guided_v2', true);
-    
+    app.globalData.hasGuided = true;
+
     // 恢复底部 tabbar（延迟执行，确保 DOM 渲染完成）
     setTimeout(() => {
       console.log('[finishGuide] setTimeout 执行');

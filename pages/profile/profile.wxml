@@ -9,7 +9,7 @@
       </view>
     </button>
     <view class="nickname-wrapper">
-       <input type="nickname" class="nickname-input" placeholder="点击输入昵称" value="{{ userInfo.nickName }}" bind:change="onInputChange" />
+       <input class="nickname-input" placeholder="点击输入昵称" value="{{ userInfo.nickName }}" bind:change="onInputChange" />
        <van-icon name="edit" size="16px" color="#999" />
     </view>
     <view class="title-badge" wx:if="{{ userInfo.current_title }}" bind:tap="onViewPoster">
