@@ -67,7 +67,26 @@ Page({
     }).then(res => {
       const tempFilePath = res.tempFiles && res.tempFiles[0] && res.tempFiles[0].tempFilePath;
       if (!tempFilePath) return;
-      this.uploadAvatar(tempFilePath);
+
+      // 使用微信内置的图片编辑功能，支持裁剪
+      wx.editImage({
+        src: tempFilePath,
+        success: (editRes) => {
+          // 用户完成编辑后，上传裁剪后的图片
+          this.uploadAvatar(editRes.tempFilePath);
+        },
+        fail: (err) => {
+          // 用户取消编辑，使用原图
+          if (err.errMsg && err.errMsg.includes('cancel')) {
+            console.log('用户取消编辑，使用原图');
+            this.uploadAvatar(tempFilePath);
+          } else {
+            console.error('编辑图片失败:', err);
+            // 编辑失败也使用原图
+            this.uploadAvatar(tempFilePath);
+          }
+        }
+      });
     }).catch(() => {});
   },
 
