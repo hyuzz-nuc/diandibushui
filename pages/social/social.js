@@ -163,16 +163,32 @@ Page({
     console.log('[onRemind] 触发提醒，e:', e);
     const id = e.currentTarget.dataset.id;
     const name = e.currentTarget.dataset.name || '好友';
-    
+
     console.log('[onRemind] friendOpenid:', id, 'friendName:', name);
-    
+
     // 防抖
     if (this._reminding) return;
     this._reminding = true;
 
+    // 检查2小时限制
+    const lastRemindTime = wx.getStorageSync(`last_remind_${id}`) || 0;
+    const now = Date.now();
+    const twoHours = 2 * 60 * 60 * 1000; // 2小时的毫秒数
+
+    if (now - lastRemindTime < twoHours) {
+      const remainingMinutes = Math.ceil((twoHours - (now - lastRemindTime)) / 60000);
+      wx.showToast({
+        title: `请等待 ${remainingMinutes} 分钟后再提醒`,
+        icon: 'none',
+        duration: 2000
+      });
+      this._reminding = false;
+      return;
+    }
+
     // 先检查用户是否已授权订阅消息
     const hasSubscribed = wx.getStorageSync('has_subscribed_water_remind');
-    
+
     if (!hasSubscribed) {
       // 用户还未授权，先引导授权
       this.requestSubscribeAndRemind(id, name);
@@ -235,8 +251,11 @@ Page({
       console.log('[sendRemindRequest] 云函数返回:', res);
       wx.hideLoading();
       if (res.result.success) {
-        wx.showToast({ 
-          title: res.result.isSimulated ? '模拟提醒成功' : '已提醒', 
+        // 记录提醒时间（用于2小时限制）
+        wx.setStorageSync(`last_remind_${friendOpenid}`, Date.now());
+
+        wx.showToast({
+          title: res.result.isSimulated ? '模拟提醒成功' : '已提醒',
           icon: 'success',
           duration: 2000
         });
@@ -249,7 +268,7 @@ Page({
             showCancel: false
           });
         } else {
-          wx.showToast({ 
+          wx.showToast({
             title: res.result.message || '发送失败', 
             icon: 'none',
             duration: 2000

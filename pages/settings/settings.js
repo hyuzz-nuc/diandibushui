@@ -165,18 +165,31 @@ Page({
       soundEnabled: this.data.soundEnabled,
       subscribeEnabled: this.data.subscribeEnabled
     };
-    
+
     // 1. 本地存储
     wx.setStorageSync('user_settings', settings);
-    
-    // 2. 云端同步 (可选，如果不强制要求多端同步可只存本地)
+
+    // 2. 云端同步
     wx.cloud.callFunction({
       name: 'updateUserInfo',
       data: {
         settings: settings
       }
-    }).catch(console.error);
-    
-    wx.showToast({ title: '设置已保存', icon: 'none' });
+    }).then(() => {
+      wx.showToast({ title: '设置已保存', icon: 'none' });
+
+      // 如果开启了订阅提醒，提示用户
+      if (settings.subscribeEnabled) {
+        wx.showModal({
+          title: '提醒设置',
+          content: '设置已保存！系统将在设定时间段内按间隔发送喝水提醒。\n\n注意：需要在云开发控制台配置定时触发器才能生效。',
+          showCancel: false,
+          confirmText: '知道了'
+        });
+      }
+    }).catch(err => {
+      console.error('保存设置失败:', err);
+      wx.showToast({ title: '保存失败', icon: 'none' });
+    });
   }
 })
