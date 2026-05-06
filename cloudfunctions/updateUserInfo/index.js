@@ -11,48 +11,61 @@ const db = cloud.database()
 exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext()
   const openid = wxContext.OPENID
-  
+
   const { nickName, avatarUrl, daily_goal } = event
-  
+
   const updateData = {}
   if (nickName !== undefined) updateData.nickName = nickName
   if (avatarUrl !== undefined) updateData.avatarUrl = avatarUrl
   if (daily_goal !== undefined) updateData.daily_goal = daily_goal
-  
+
   // 更新时间
   updateData.updateTime = db.serverDate()
-  
+
   try {
     // 先查询用户是否存在
     const userQuery = await db.collection('users').where({
       _openid: openid
     }).get()
-    
+
     if (userQuery.data.length > 0) {
-      // 更新
+      // 用户存在，更新
       await db.collection('users').where({
         _openid: openid
       }).update({
         data: updateData
       })
-      
+
+      // 返回更新后的完整用户数据
+      const updatedUser = await db.collection('users').where({
+        _openid: openid
+      }).get()
+
       return {
         success: true,
-        message: '更新成功'
+        message: '更新成功',
+        userInfo: updatedUser.data[0]
       }
     } else {
-      // 如果用户不存在（理论上不应该，因为有login），则创建
+      // 用户不存在，创建新用户
+      const newUser = {
+        _openid: openid,
+        ...updateData,
+        daily_goal: daily_goal || 2000,
+        current_title: '饮水萌新',
+        consecutive_days: 0,
+        total_days: 0,
+        createTime: db.serverDate()
+      }
+
       await db.collection('users').add({
-        data: {
-          _openid: openid,
-          ...updateData,
-          createTime: db.serverDate()
-        }
+        data: newUser
       })
-      
+
       return {
         success: true,
-        message: '创建并更新成功'
+        message: '创建并更新成功',
+        userInfo: newUser
       }
     }
   } catch (e) {

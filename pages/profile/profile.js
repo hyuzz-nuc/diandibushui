@@ -128,6 +128,12 @@ Page({
         avatarUrl: avatarUrl,
         nickName: nickName
       }
+    }).then(res => {
+      if (res.result.success && res.result.userInfo) {
+        // 更新全局数据
+        app.globalData.userInfo = res.result.userInfo;
+        console.log('[saveUserInfoToCloud] 全局数据已更新');
+      }
     }).catch(console.error);
   },
 
@@ -143,9 +149,9 @@ Page({
       wx.showToast({ title: '请输入昵称', icon: 'none' });
       return;
     }
-    
+
     wx.showLoading({ title: '保存中...' });
-    
+
     wx.cloud.callFunction({
       name: 'updateUserInfo',
       data: {
@@ -156,8 +162,15 @@ Page({
       wx.hideLoading();
       if (res.result.success) {
         wx.showToast({ title: '保存成功' });
-        // 更新全局数据
-        app.globalData.userInfo = this.data.userInfo;
+        // 更新全局数据（使用服务器返回的最新数据）
+        if (res.result.userInfo) {
+          app.globalData.userInfo = res.result.userInfo;
+          this.setData({
+            userInfo: res.result.userInfo
+          });
+        } else {
+          app.globalData.userInfo = this.data.userInfo;
+        }
       } else {
         wx.showToast({ title: '保存失败', icon: 'none' });
       }
