@@ -164,7 +164,10 @@ Page({
   
   onShow() {
     this.updateGreeting();
-    
+
+    // 检查是否需要自动请求订阅消息
+    this.checkAndRequestSubscribe();
+
     setTimeout(() => {
       try {
         if (typeof this.getTabBar === 'function') {
@@ -179,12 +182,12 @@ Page({
         console.warn('[onShow] tabBar setData failed:', e);
       }
     }, 100);
-    
+
     // 检查是否有结束引导的任务（从 Social 页面跳回）
     const app = getApp();
     if (app.globalData && app.globalData.finishGuidePending) {
       app.globalData.finishGuidePending = false; // 清除标记
-      
+
       // 强制重置其他弹窗状态，避免冲突
       this.setData({
         showRecommendDialog: false,
@@ -197,6 +200,30 @@ Page({
       setTimeout(() => {
         this.setData({ showFinalDialog: true });
       }, 600);
+    }
+  },
+
+  // 检查并请求订阅消息
+  checkAndRequestSubscribe() {
+    const settings = wx.getStorageSync('user_settings') || {};
+    const hasSubscribed = wx.getStorageSync('has_subscribed_water_remind') || false;
+
+    // 如果用户开启了订阅提醒，但还没有授权，自动请求授权
+    if (settings.subscribeEnabled && !hasSubscribed) {
+      console.log('[onShow] 用户开启了订阅提醒，自动请求授权');
+      const TEMPLATE_ID = 'fZemoZCO7WILweXS6gV9n8bbp24bN1uH1h5Vu24-pjo';
+      wx.requestSubscribeMessage({
+        tmplIds: [TEMPLATE_ID],
+        success: (res) => {
+          if (res[TEMPLATE_ID] === 'accept') {
+            wx.setStorageSync('has_subscribed_water_remind', true);
+            console.log('[onShow] 订阅消息授权成功');
+          }
+        },
+        fail: (err) => {
+          console.warn('[onShow] 订阅消息授权失败:', err);
+        }
+      });
     }
   },
 
