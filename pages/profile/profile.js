@@ -13,20 +13,23 @@ Page({
     },
     hasUserInfo: false,
     showInvitePopup: false,
+    showLoginPopup: false, // 登录弹窗
+    loginAvatarUrl: '', // 登录弹窗中的临时头像
+    loginNickName: '', // 登录弹窗中的临时昵称
     safeAreaTop: 110
   },
 
   onLoad() {
     // 设置顶部安全距离（自动适配胶囊按钮）
     const app = getApp();
-    this.setData({ 
-      safeAreaTop: app.globalData.safeAreaTop || 110 
+    this.setData({
+      safeAreaTop: app.globalData.safeAreaTop || 110
     });
   },
 
   onShow() {
     this.loadUserInfo();
-    
+
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       this.getTabBar().setData({
         active: 3 // 我的页
@@ -36,27 +39,136 @@ Page({
 
   loadUserInfo() {
     // 优先从全局数据获取
-    if (app.globalData.userInfo) {
+    if (app.globalData.userInfo && app.globalData.userInfo.nickName) {
       this.setData({
         userInfo: app.globalData.userInfo,
         hasUserInfo: true
       });
     } else {
-      // 否则尝试从云端拉取（这里简化，复用 login 的逻辑或者单独查）
-      // 由于 login 已经运行过，理论上 app.globalData 应该有数据，除非是新用户
-      // 这里我们尝试再次调用 login 获取最新数据
+      // 否则尝试从云端拉取
       wx.cloud.callFunction({
         name: 'login'
       }).then(res => {
-        if (res.result.userInfo) {
+        if (res.result.userInfo && res.result.userInfo.nickName) {
           app.globalData.userInfo = res.result.userInfo;
           this.setData({
             userInfo: res.result.userInfo,
             hasUserInfo: true
           });
+        } else {
+          // 用户未设置昵称，视为未登录
+          this.setData({
+            userInfo: res.result.userInfo || this.data.userInfo,
+            hasUserInfo: false
+          });
         }
       });
     }
+  },
+
+  // 点击登录按钮
+  onTapLogin() {
+    this.setData({
+      showLoginPopup: true,
+      loginAvatarUrl: '',
+      loginNickName: ''
+    });
+  },
+
+  // 登录弹窗中选择头像
+  onChooseLoginAvatar(e) {
+    const avatarUrl = e.detail.avatarUrl;
+    this.setData({ loginAvatarUrl: avatarUrl });
+  },
+
+  // 登录弹窗中输入昵称
+  onLoginNickNameChange(e) {
+    this.setData({ loginNickName: e.detail.value });
+  },
+
+  // 确认登录
+  onConfirmLogin() {
+    if (!this.data.loginNickName) {
+      wx.showToast({ title: '请输入昵称', icon: 'none' });
+      return;
+    }
+
+    wx.showLoading({ title: '登录中...' });
+
+    // 如果选择了微信头像，需要上传到云存储
+    const uploadPromise = this.data.loginAvatarUrl
+      ? this.uploadLoginAvatar(this.data.loginAvatarUrl)
+      : Promise.resolve('');
+
+    uploadPromise.then(avatarUrl => {
+      // 调用云函数更新用户信息
+      wx.cloud.callFunction({
+        name: 'updateUserInfo',
+        data: {
+          avatarUrl: avatarUrl,
+          nickName: this.data.loginNickName
+        }
+      }).then(res => {
+        wx.hideLoading();
+        if (res.result.success) {
+          const userInfo = res.result.userInfo || {
+            avatarUrl: avatarUrl,
+            nickName: this.data.loginNickName,
+            ...this.data.userInfo
+          };
+
+          // 更新全局和本地数据
+          app.globalData.userInfo = userInfo;
+          this.setData({
+            userInfo: userInfo,
+            hasUserInfo: true,
+            showLoginPopup: false
+          });
+
+          wx.showToast({ title: '登录成功', icon: 'success' });
+        } else {
+          wx.showToast({ title: '登录失败', icon: 'none' });
+        }
+      }).catch(err => {
+        wx.hideLoading();
+        console.error(err);
+        wx.showToast({ title: '网络错误', icon: 'none' });
+      });
+    }).catch(err => {
+      wx.hideLoading();
+      console.error('头像上传失败:', err);
+      wx.showToast({ title: '头像上传失败', icon: 'none' });
+    });
+  },
+
+  // 上传登录头像
+  uploadLoginAvatar(filePath) {
+    return new Promise((resolve, reject) => {
+      const cloudPath = `avatars/${app.globalData.openid}_${Date.now()}.jpg`;
+      wx.cloud.uploadFile({
+        cloudPath,
+        filePath,
+        success: res => {
+          wx.cloud.getTempFileURL({
+            fileList: [res.fileID],
+            success: tempRes => {
+              if (tempRes.fileList && tempRes.fileList[0] && tempRes.fileList[0].tempFileURL) {
+                resolve(tempRes.fileList[0].tempFileURL);
+              } else {
+                reject(new Error('获取链接失败'));
+              }
+            },
+            fail: reject
+          });
+        },
+        fail: reject
+      });
+    });
+  },
+
+  // 关闭登录弹窗
+  onCloseLoginPopup() {
+    this.setData({ showLoginPopup: false });
   },
 
   onPickAvatar() {

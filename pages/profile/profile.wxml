@@ -1,20 +1,35 @@
 <view class="container" style="padding-top: {{safeAreaTop}}px;">
   <view class="user-card">
-    <button class="avatar-wrapper" bind:tap="onPickAvatar">
-      <view class="avatar-ring">
-        <view class="avatar placeholder" wx:if="{{ !userInfo.avatarUrl }}">
+    <!-- 未登录状态 -->
+    <block wx:if="{{ !hasUserInfo }}">
+      <view class="avatar-ring" bind:tap="onTapLogin">
+        <view class="avatar placeholder">
           <van-icon name="user-circle-o" size="64px" color="#B3E5FC" />
         </view>
-        <image wx:else class="avatar-img" mode="aspectFill" src="{{ userInfo.avatarUrl }}" />
       </view>
-    </button>
-    <view class="nickname-wrapper">
-       <input class="nickname-input" placeholder="点击输入昵称" value="{{ userInfo.nickName }}" bind:change="onInputChange" />
-       <van-icon name="edit" size="16px" color="#999" />
-    </view>
-    <view class="title-badge" wx:if="{{ userInfo.current_title }}" bind:tap="onViewPoster">
-      <van-icon name="medal-o" /> {{ userInfo.current_title }} <van-icon name="arrow" size="12px" style="margin-left: 4px;" />
-    </view>
+      <view class="login-btn" bind:tap="onTapLogin">
+        <text class="login-text">点击登录</text>
+      </view>
+      <view class="title-badge" wx:if="{{ userInfo.current_title }}" bind:tap="onViewPoster">
+        <van-icon name="medal-o" /> {{ userInfo.current_title }} <van-icon name="arrow" size="12px" style="margin-left: 4px;" />
+      </view>
+    </block>
+
+    <!-- 已登录状态 -->
+    <block wx:else>
+      <button class="avatar-wrapper" bind:tap="onPickAvatar">
+        <view class="avatar-ring">
+          <image class="avatar-img" mode="aspectFill" src="{{ userInfo.avatarUrl }}" />
+        </view>
+      </button>
+      <view class="nickname-wrapper">
+        <input class="nickname-input" placeholder="点击输入昵称" value="{{ userInfo.nickName }}" bind:change="onInputChange" />
+        <van-icon name="edit" size="16px" color="#999" />
+      </view>
+      <view class="title-badge" wx:if="{{ userInfo.current_title }}" bind:tap="onViewPoster">
+        <van-icon name="medal-o" /> {{ userInfo.current_title }} <van-icon name="arrow" size="12px" style="margin-left: 4px;" />
+      </view>
+    </block>
   </view>
 
   <!-- 功能列表 -->
@@ -30,11 +45,45 @@
     </van-cell-group>
   </view>
 
-  <!-- 保存按钮 (仅当有修改时显示，或者简化为自动保存) -->
-  <view class="save-btn-container">
+  <!-- 保存按钮 (已登录状态显示) -->
+  <view class="save-btn-container" wx:if="{{ hasUserInfo }}">
     <van-button type="primary" block round bind:click="saveUserInfo">同步个人信息</van-button>
   </view>
 
+  <!-- 登录弹窗 -->
+  <van-popup show="{{ showLoginPopup }}" position="bottom" round bind:close="onCloseLoginPopup">
+    <view class="login-popup">
+      <view class="login-popup-title">登录账号</view>
+
+      <!-- 头像选择 -->
+      <button class="login-avatar-btn" open-type="chooseAvatar" bind:chooseavatar="onChooseLoginAvatar">
+        <view class="login-avatar-wrapper">
+          <image wx:if="{{ loginAvatarUrl }}" class="login-avatar-img" src="{{ loginAvatarUrl }}" />
+          <view wx:else class="login-avatar-placeholder">
+            <van-icon name="user-circle-o" size="48px" color="#B3E5FC" />
+          </view>
+        </view>
+        <text class="login-avatar-tip">点击选择头像</text>
+      </button>
+
+      <!-- 昵称输入 -->
+      <view class="login-nickname-wrapper">
+        <input
+          class="login-nickname-input"
+          type="nickname"
+          placeholder="请输入昵称"
+          value="{{ loginNickName }}"
+          bind:change="onLoginNickNameChange"
+        />
+      </view>
+
+      <!-- 登录按钮 -->
+      <van-button type="primary" block round bind:click="onConfirmLogin">确认登录</van-button>
+      <view class="login-popup-tip">登录后可同步数据，享受完整功能</view>
+    </view>
+  </van-popup>
+
+  <!-- 邀请好友弹窗 -->
   <van-popup show="{{ showInvitePopup }}" position="bottom" round bind:close="onCloseInvite">
     <view class="invite-popup">
       <view class="invite-title">邀请好友成为喝水搭子</view>
