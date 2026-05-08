@@ -62,36 +62,19 @@
 }
 
 /* 底部打卡天数提示栏 */
-.bottom-bar {
+.bottom-streak-bar {
   position: fixed;
   bottom: 210rpx;
   left: 50%;
   transform: translateX(-50%);
-  display: flex;
-  align-items: center;
-  gap: 16rpx;
-  z-index: 100;
-}
-
-.bottom-streak-bar {
   padding: 12rpx 40rpx;
   background: linear-gradient(135deg, #FFF3E0 0%, #FFE0B2 100%);
   border-radius: 28rpx;
   border: 1rpx solid #FFD54F;
   box-shadow: 0 4rpx 12rpx rgba(255, 183, 77, 0.3);
+  z-index: 100;
   display: flex;
   justify-content: center;
-}
-
-.reminder-entry {
-  width: 64rpx;
-  height: 64rpx;
-  background: linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4rpx 12rpx rgba(0, 176, 255, 0.2);
 }
 
 .bottom-streak-text {

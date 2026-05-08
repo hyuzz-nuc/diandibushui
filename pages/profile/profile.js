@@ -32,7 +32,7 @@ Page({
 
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       this.getTabBar().setData({
-        active: 3 // 我的页
+        active: 4 // 我的页（现在是第 5 个 Tab）
       })
     }
   },

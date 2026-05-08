@@ -1308,12 +1308,5 @@ Page({
         fail: err => reject(err)
       });
     }, 100);
-  },
-
-  // 跳转到提醒页面
-  goToReminder() {
-    wx.navigateTo({
-      url: '/pages/reminder/reminder'
-    });
   }
 });

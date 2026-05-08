@@ -9,6 +9,7 @@ Component({
       const urls = [
         '/pages/index/index',
         '/pages/social/social',
+        '/pages/reminder/reminder',
         '/pages/stats/stats',
         '/pages/profile/profile'
       ];

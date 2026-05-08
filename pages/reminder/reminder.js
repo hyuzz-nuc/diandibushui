@@ -45,6 +45,13 @@ Page({
   onShow() {
     this.loadSettings();
     this.loadReminderRecords();
+
+    // 设置 TabBar active 状态
+    if (typeof this.getTabBar === 'function' && this.getTabBar()) {
+      this.getTabBar().setData({
+        active: 2 // 提醒是第 3 个 Tab
+      });
+    }
   },
 
   // 加载设置
@@ -305,10 +312,5 @@ Page({
       yesterdayReminders,
       olderReminders
     });
-  },
-
-  // 返回
-  goBack() {
-    wx.navigateBack();
   }
 });

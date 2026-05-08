@@ -2,45 +2,8 @@
   min-height: 100vh;
   background: linear-gradient(180deg, #E3F2FD 0%, #F5F5F5 30%);
   padding: 20rpx;
-  padding-bottom: 40rpx;
+  padding-bottom: 200rpx;
   box-sizing: border-box;
-}
-
-/* 自定义导航栏 */
-.custom-nav {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  background: #E3F2FD;
-  z-index: 100;
-}
-
-.nav-content {
-  position: absolute;
-  bottom: 10rpx;
-  left: 0;
-  right: 0;
-  display: flex;
-  align-items: center;
-  padding: 0 20rpx;
-}
-
-.nav-back {
-  width: 60rpx;
-  height: 60rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.nav-title {
-  flex: 1;
-  text-align: center;
-  font-size: 34rpx;
-  font-weight: 600;
-  color: #333;
-  margin-right: 60rpx;
 }
 
 /* 设置卡片 */

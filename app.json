@@ -33,6 +33,10 @@
         "text": "社交"
       },
       {
+        "pagePath": "pages/reminder/reminder",
+        "text": "提醒"
+      },
+      {
         "pagePath": "pages/stats/stats",
         "text": "统计"
       },

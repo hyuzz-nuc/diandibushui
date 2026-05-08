@@ -22,7 +22,7 @@ Page({
   onShow() {
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       this.getTabBar().setData({
-        active: 2 // 统计页
+        active: 3 // 统计页（现在是第 4 个 Tab）
       })
     }
     if (!this.data.year) {
