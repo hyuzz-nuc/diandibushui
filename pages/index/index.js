@@ -1118,12 +1118,22 @@ Page({
     this.setData({ notices, hasUnreadNotice: notices.some(n => !n.read) });
     this.updateCurrentMessages();
   },
-  
+
   noticeIcons: {
     'invite': 'friends-o',
     'welfare': 'gift-o',
     'notice': 'bullhorn-o',
     'system': 'setting-o'
+  },
+
+  // 分享小程序
+  onShareAppMessage() {
+    const myOpenid = app.globalData.openid || '';
+    return {
+      title: '点滴补水 - 你的健康喝水助手',
+      path: `/pages/index/index?inviteCode=${myOpenid}`,
+      imageUrl: '/images/share-cover.png'
+    };
   },
 
   // 启动新手引导流程
