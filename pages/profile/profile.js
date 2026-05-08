@@ -6,7 +6,8 @@ Page({
     userInfo: {
       avatarUrl: '',
       nickName: '',
-      current_title: '饮水萌新',
+      current_title: '饮水小白',
+      title: '饮水小白',
       consecutive_days: 0,
       total_days: 0,
       daily_goal: 2000

@@ -24,7 +24,7 @@
           </view>
         </view>
       </button>
-      <view class="user-title">{{ userInfo.current_title || '饮水小白' }}</view>
+      <view class="user-title">{{ userInfo.title || userInfo.current_title || '饮水小白' }}</view>
       <view class="nickname-wrapper">
         <input class="nickname-input" placeholder="点击输入昵称" value="{{ userInfo.nickName }}" bind:change="onInputChange" />
         <van-icon name="edit" size="16px" color="#999" />
