@@ -104,7 +104,7 @@
                 <text>🎁</text>
               </view>
               <view class="message-item-content">
-                <view class="message-item-title">{{ item.title }}</view>
+                <view class="message-item-title">新手福利礼包🎁</view>
                 <view class="message-item-desc">{{ item.desc }}</view>
                 <view class="welfare-rewards" wx:if="{{ item.content }}">
                   <view class="welfare-reward-item">

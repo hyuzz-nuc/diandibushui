@@ -1116,35 +1116,20 @@ Page({
     const item = e.currentTarget.dataset.item;
 
     if (item.claimed) {
-      wx.showToast({ title: '已领取过', icon: 'none' });
       return;
     }
 
-    wx.showModal({
-      title: '🎁 领取福利',
-      content: `确定领取「${item.content.title}」称号 + ${item.content.exp}经验？`,
-      confirmText: '领取',
-      success: (res) => {
-        if (res.confirm) {
-          this.claimWelfare(item);
-        }
-      }
-    });
+    this.claimWelfare(item);
   },
 
   // 领取福利
   claimWelfare(item) {
-    wx.showLoading({ title: '领取中...' });
-
     wx.cloud.callFunction({
       name: 'claimWelfare',
       data: { welfareId: item._id },
       success: res => {
-        wx.hideLoading();
         if (res.result && res.result.success) {
-          const { exp, title } = res.result.data;
-
-          // 更新当前消息列表
+          // 更新当前消息列表，直接置灰
           const currentMessages = this.data.currentMessages.map(m => {
             if (m._id === item._id) {
               return { ...m, claimed: true, read: true };
@@ -1153,19 +1138,11 @@ Page({
           });
 
           this.setData({ currentMessages });
-
-          wx.showModal({
-            title: '🎉 领取成功',
-            content: `获得「${title}」称号\n+${exp} 经验`,
-            showCancel: false,
-            confirmText: '太棒了'
-          });
         } else {
           wx.showToast({ title: res.result?.message || '领取失败', icon: 'none' });
         }
       },
       fail: err => {
-        wx.hideLoading();
         console.error('[claimWelfare] 失败:', err);
         wx.showToast({ title: '网络错误', icon: 'none' });
       }
