@@ -32,18 +32,26 @@ exports.main = async (event, context) => {
       return { success: false, message: '金币不足' }
     }
 
-    // 计算过期时间（30天后）
-    const expireAt = new Date()
-    expireAt.setDate(expireAt.getDate() + 30)
-
     // 更新用户数据
     const decorations = user.decorations || {}
     if (!decorations[type]) {
       decorations[type] = {}
     }
-    decorations[type][name] = {
-      expireAt: expireAt.toISOString(),
-      buyTime: new Date().toISOString()
+
+    // 免费商品永久有效，付费商品30天
+    if (price === 0) {
+      decorations[type][name] = {
+        expireAt: null, // 永久
+        buyTime: new Date().toISOString(),
+        permanent: true
+      }
+    } else {
+      const expireAt = new Date()
+      expireAt.setDate(expireAt.getDate() + 30)
+      decorations[type][name] = {
+        expireAt: expireAt.toISOString(),
+        buyTime: new Date().toISOString()
+      }
     }
 
     await db.collection('users').doc(user._id).update({
@@ -58,7 +66,7 @@ exports.main = async (event, context) => {
       message: '购买成功',
       data: {
         remainCoins: currentCoins - price,
-        expireAt: expireAt.toISOString()
+        permanent: price === 0
       }
     }
   } catch (err) {

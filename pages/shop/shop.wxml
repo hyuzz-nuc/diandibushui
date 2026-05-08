@@ -37,8 +37,22 @@
       <view class="shop-item {{ item.owned ? 'owned' : '' }} {{ item.locked ? 'locked' : '' }}"
             wx:for="{{ currentItems }}" wx:key="name"
             bind:tap="onItemTap" data-item="{{ item }}">
-        <view class="item-preview {{ item.previewClass }}">
-          <text class="preview-icon">{{ item.icon }}</text>
+        <!-- 圆环预览 -->
+        <view class="item-preview-ring" wx:if="{{ activeTab === 'ring' }}">
+          <view class="ring-circle {{ item.previewClass }}"></view>
+        </view>
+        <!-- 按钮预览 -->
+        <view class="item-preview-btn" wx:elif="{{ activeTab === 'button' }}">
+          <view class="btn-sample {{ item.previewClass }}">+200</view>
+        </view>
+        <!-- 特效预览 -->
+        <view class="item-preview-effect {{ item.previewClass }}" wx:elif="{{ activeTab === 'effect' }}">
+          <text class="effect-icon">{{ item.icon }}</text>
+          <text class="effect-desc">{{ item.desc }}</text>
+        </view>
+        <!-- 头像框预览 -->
+        <view class="item-preview-frame {{ item.previewClass }}" wx:elif="{{ activeTab === 'frame' }}">
+          <view class="frame-avatar">👤</view>
         </view>
         <view class="item-info">
           <text class="item-name">{{ item.name }}</text>
@@ -48,10 +62,12 @@
           </view>
           <text class="item-free" wx:else>免费</text>
         </view>
-        <view class="item-duration">30天</view>
+        <view class="item-duration" wx:if="{{ item.price > 0 }}">30天</view>
+        <view class="item-duration permanent" wx:else>永久</view>
         <view class="item-status">
           <text wx:if="{{ item.locked }}">🔒 Lv.{{ item.unlockLevel }}</text>
           <text wx:elif="{{ item.owned && item.expired }}">已过期</text>
+          <text wx:elif="{{ item.owned && item.remainDays === -1 }}">已装扮</text>
           <text wx:elif="{{ item.owned }}">{{ item.remainDays }}天</text>
           <text wx:else>购买</text>
         </view>
@@ -67,18 +83,20 @@
     bind:close="closeBuyPopup"
   >
     <view class="buy-popup">
-      <view class="buy-title">确认购买</view>
+      <view class="buy-title">{{ selectedItem.price > 0 ? '确认购买' : '确认领取' }}</view>
       <view class="buy-item">
         <text class="buy-icon">{{ selectedItem.icon }}</text>
         <text class="buy-name">{{ selectedItem.name }}</text>
       </view>
       <view class="buy-info">
-        <text>有效期：30天</text>
-        <text>花费：💰 {{ selectedItem.price || 0 }}</text>
+        <text wx:if="{{ selectedItem.price > 0 }}">有效期：30天</text>
+        <text wx:else>有效期：永久</text>
+        <text wx:if="{{ selectedItem.price > 0 }}">花费：💰 {{ selectedItem.price }}</text>
+        <text wx:else>花费：免费</text>
       </view>
       <view class="buy-actions">
         <view class="buy-btn cancel" bind:tap="closeBuyPopup">取消</view>
-        <view class="buy-btn confirm" bind:tap="confirmBuy">确认购买</view>
+        <view class="buy-btn confirm" bind:tap="confirmBuy">{{ selectedItem.price > 0 ? '确认购买' : '立即领取' }}</view>
       </view>
     </view>
   </van-popup>

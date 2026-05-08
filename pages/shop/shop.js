@@ -3,38 +3,38 @@ const app = getApp();
 // 商品配置
 const SHOP_ITEMS = {
   ring: [
-    { name: '清新蓝', icon: '⭕', price: 0, previewClass: '', unlockLevel: 1 },
-    { name: '活力橙', icon: '⭕', price: 200, previewClass: 'ring-orange', unlockLevel: 1 },
-    { name: '薄荷绿', icon: '⭕', price: 200, previewClass: 'ring-green', unlockLevel: 1 },
-    { name: '梦幻紫', icon: '⭕', price: 300, previewClass: 'ring-purple', unlockLevel: 1 },
-    { name: '少女粉', icon: '⭕', price: 300, previewClass: 'ring-pink', unlockLevel: 1 },
-    { name: '星空黑', icon: '⭕', price: 500, previewClass: 'ring-black', unlockLevel: 1 },
-    { name: '彩虹色', icon: '⭕', price: 800, previewClass: 'ring-rainbow', unlockLevel: 1 }
+    { name: '天空之境', icon: '⭕', price: 0, previewClass: '', unlockLevel: 1 },
+    { name: '落日余晖', icon: '⭕', price: 200, previewClass: 'ring-orange', unlockLevel: 2 },
+    { name: '薄荷微风', icon: '⭕', price: 200, previewClass: 'ring-green', unlockLevel: 2 },
+    { name: '紫霞仙子', icon: '⭕', price: 300, previewClass: 'ring-purple', unlockLevel: 3 },
+    { name: '樱花物语', icon: '⭕', price: 300, previewClass: 'ring-pink', unlockLevel: 3 },
+    { name: '暗夜星辰', icon: '⭕', price: 500, previewClass: 'ring-black', unlockLevel: 4 },
+    { name: '极光幻梦', icon: '⭕', price: 800, previewClass: 'ring-rainbow', unlockLevel: 5 }
   ],
   button: [
-    { name: '经典蓝', icon: '🔘', price: 0, previewClass: '', unlockLevel: 1 },
-    { name: '活力橙', icon: '🔘', price: 150, previewClass: 'ring-orange', unlockLevel: 1 },
-    { name: '薄荷绿', icon: '🔘', price: 150, previewClass: 'ring-green', unlockLevel: 1 },
-    { name: '梦幻紫', icon: '🔘', price: 250, previewClass: 'ring-purple', unlockLevel: 1 },
-    { name: '少女粉', icon: '🔘', price: 250, previewClass: 'ring-pink', unlockLevel: 1 },
-    { name: '金色奢华', icon: '🔘', price: 400, previewClass: 'ring-black', unlockLevel: 1 }
+    { name: '纯净之心', icon: '🔘', price: 0, previewClass: '', unlockLevel: 1 },
+    { name: '暖阳轻抚', icon: '🔘', price: 150, previewClass: 'ring-orange', unlockLevel: 2 },
+    { name: '森林呼吸', icon: '🔘', price: 150, previewClass: 'ring-green', unlockLevel: 2 },
+    { name: '薰衣草田', icon: '🔘', price: 250, previewClass: 'ring-purple', unlockLevel: 3 },
+    { name: '初恋悸动', icon: '🔘', price: 250, previewClass: 'ring-pink', unlockLevel: 3 },
+    { name: '鎏金岁月', icon: '🔘', price: 400, previewClass: 'ring-gold', unlockLevel: 4 }
   ],
   effect: [
-    { name: '水波纹', icon: '✨', price: 0, previewClass: '', unlockLevel: 1 },
-    { name: '星光闪烁', icon: '✨', price: 300, previewClass: 'ring-purple', unlockLevel: 1 },
-    { name: '樱花飘落', icon: '✨', price: 300, previewClass: 'ring-pink', unlockLevel: 1 },
-    { name: '烟花绽放', icon: '✨', price: 500, previewClass: 'ring-orange', unlockLevel: 1 },
-    { name: '极光流动', icon: '✨', price: 600, previewClass: 'ring-rainbow', unlockLevel: 1 }
+    { name: '涟漪轻漾', icon: '💧', desc: '水波扩散', price: 0, previewClass: '', unlockLevel: 1 },
+    { name: '星河璀璨', icon: '✨', desc: '星光闪烁', price: 300, previewClass: 'ring-purple', unlockLevel: 2 },
+    { name: '樱吹雪舞', icon: '🌸', desc: '樱花飘落', price: 300, previewClass: 'ring-pink', unlockLevel: 3 },
+    { name: '烟火人间', icon: '🎆', desc: '烟花绽放', price: 500, previewClass: 'ring-orange', unlockLevel: 4 },
+    { name: '极光流转', icon: '🌈', desc: '彩虹光效', price: 600, previewClass: 'ring-rainbow', unlockLevel: 5 }
   ],
   frame: [
-    { name: '简约白', icon: '🖼️', price: 0, previewClass: '', unlockLevel: 1 },
-    { name: '清新蓝', icon: '🖼️', price: 200, previewClass: '', unlockLevel: 1 },
-    { name: '活力橙', icon: '🖼️', price: 300, previewClass: 'ring-orange', unlockLevel: 2 },
-    { name: '薄荷绿', icon: '🖼️', price: 300, previewClass: 'ring-green', unlockLevel: 2 },
-    { name: '梦幻紫', icon: '🖼️', price: 400, previewClass: 'ring-purple', unlockLevel: 3 },
-    { name: '金色荣耀', icon: '🖼️', price: 600, previewClass: 'ring-black', unlockLevel: 4 },
-    { name: '钻石闪耀', icon: '🖼️', price: 800, previewClass: 'ring-rainbow', unlockLevel: 5 },
-    { name: '传奇之框', icon: '🖼️', price: 1000, previewClass: 'ring-rainbow', unlockLevel: 6 }
+    { name: '素雅时光', icon: '🖼️', price: 0, previewClass: '', unlockLevel: 1 },
+    { name: '碧海蓝天', icon: '🖼️', price: 200, previewClass: 'ring-blue', unlockLevel: 2 },
+    { name: '橙意满满', icon: '🖼️', price: 300, previewClass: 'ring-orange', unlockLevel: 3 },
+    { name: '绿野仙踪', icon: '🖼️', price: 300, previewClass: 'ring-green', unlockLevel: 3 },
+    { name: '紫气东来', icon: '🖼️', price: 400, previewClass: 'ring-purple', unlockLevel: 4 },
+    { name: '荣耀金冠', icon: '🖼️', price: 600, previewClass: 'ring-gold', unlockLevel: 5 },
+    { name: '钻石之心', icon: '🖼️', price: 800, previewClass: 'ring-diamond', unlockLevel: 6 },
+    { name: '传奇荣耀', icon: '🖼️', price: 1000, previewClass: 'ring-legend', unlockLevel: 7 }
   ]
 };
 
@@ -100,13 +100,23 @@ Page({
       let isExpired = false;
       let remainDays = 0;
 
-      if (ownedInfo && ownedInfo.expireAt) {
-        const expireDate = new Date(ownedInfo.expireAt);
-        if (expireDate > now) {
+      // 免费商品默认拥有
+      if (item.price === 0) {
+        isOwned = true;
+        remainDays = -1; // 永久
+      } else if (ownedInfo) {
+        // 付费商品检查过期时间
+        if (ownedInfo.permanent || !ownedInfo.expireAt) {
           isOwned = true;
-          remainDays = Math.ceil((expireDate - now) / (1000 * 60 * 60 * 24));
+          remainDays = -1;
         } else {
-          isExpired = true;
+          const expireDate = new Date(ownedInfo.expireAt);
+          if (expireDate > now) {
+            isOwned = true;
+            remainDays = Math.ceil((expireDate - now) / (1000 * 60 * 60 * 24));
+          } else {
+            isExpired = true;
+          }
         }
       }
 
@@ -130,6 +140,12 @@ Page({
 
     if (item.locked) {
       wx.showToast({ title: `需要 Lv.${item.unlockLevel} 解锁`, icon: 'none' });
+      return;
+    }
+
+    // 免费商品已拥有则不弹窗
+    if (item.price === 0 && item.owned) {
+      wx.showToast({ title: '已拥有', icon: 'none' });
       return;
     }
 
