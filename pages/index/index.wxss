@@ -354,8 +354,6 @@
   border-radius: 32rpx;
   display: inline-block;
 }
-  padding: 16rpx 0;
-}
 
 .clear-btn:active {
   color: #666;
