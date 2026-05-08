@@ -15,11 +15,11 @@
   background-color: #fff;
   padding: 40rpx 30rpx;
   border-radius: 16rpx;
-  margin-bottom: 30rpx;
+  margin-bottom: 20rpx;
   box-shadow: 0 2rpx 10rpx rgba(0,0,0,0.05);
   display: flex;
   flex-direction: column;
-  align-items: center; /* 居中对齐 */
+  align-items: center;
   text-align: center;
   gap: 20rpx;
 }
@@ -35,6 +35,35 @@
   border: none !important;
   color: #ffffff !important;
   box-shadow: 0 4rpx 12rpx rgba(41, 182, 246, 0.3) !important;
+}
+
+/* 好友数量统计 */
+.friend-count-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16rpx 0;
+  margin-bottom: 16rpx;
+}
+
+.friend-count-text {
+  font-size: 26rpx;
+  color: #666;
+}
+
+.friend-count-tip {
+  font-size: 24rpx;
+  color: #FF6B6B;
+  margin-left: 12rpx;
+  padding: 4rpx 12rpx;
+  background: rgba(255, 107, 107, 0.1);
+  border-radius: 16rpx;
+}
+
+/* 好友列表滚动区域 */
+.friend-scroll {
+  height: 50vh;
+  min-height: 300rpx;
 }
 
 /* 列表容器 */
