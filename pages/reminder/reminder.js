@@ -105,9 +105,12 @@ Page({
               systemPermissionGranted: true
             });
             this.saveSettings();
-            wx.showToast({ title: '提醒已开启', icon: 'success' });
+            wx.showToast({ title: '提醒权限已打开', icon: 'success' });
+          } else if (res[TEMPLATE_ID] === 'reject') {
+            wx.showToast({ title: '请在设置中开启', icon: 'none' });
+            this.setData({ systemReminderEnabled: false });
           } else {
-            wx.showToast({ title: '请同意授权', icon: 'none' });
+            // 用户取消或关闭
             this.setData({ systemReminderEnabled: false });
           }
         },
@@ -138,9 +141,11 @@ Page({
               friendReminderEnabled: true,
               friendPermissionGranted: true
             });
-            wx.showToast({ title: '好友提醒已开启', icon: 'success' });
+            wx.showToast({ title: '提醒权限已打开', icon: 'success' });
+          } else if (res[TEMPLATE_ID] === 'reject') {
+            wx.showToast({ title: '请在设置中开启', icon: 'none' });
+            this.setData({ friendReminderEnabled: false });
           } else {
-            wx.showToast({ title: '请同意授权', icon: 'none' });
             this.setData({ friendReminderEnabled: false });
           }
         },
