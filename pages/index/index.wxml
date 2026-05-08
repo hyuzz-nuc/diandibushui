@@ -78,7 +78,7 @@
             </view>
             <!-- 展开的公告内容 -->
             <view class="announcement-content" wx:if="{{ item.type === 'system' && expandedAnnouncementId === item.id }}">
-              <view class="announcement-text">{{ item.content }}</view>
+              <text class="announcement-text" decode="true">{{ item.content }}</text>
             </view>
 
             <!-- 邀请类型 -->

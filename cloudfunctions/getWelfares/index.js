@@ -13,10 +13,8 @@ exports.main = async (event, context) => {
   const openid = wxContext.OPENID
 
   try {
-    // 获取用户的福利列表
-    const res = await db.collection('welfares').where({
-      _openid: openid
-    }).orderBy('date', 'desc').get()
+    // 查询所有福利（不限制openid）
+    const res = await db.collection('welfares').orderBy('date', 'desc').limit(100).get()
 
     return {
       success: true,
