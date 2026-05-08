@@ -69,12 +69,12 @@ Page({
     announcements: [],
     expandedAnnouncementId: null, // 当前展开的公告ID
 
-    // 过滤后的消息列表（根据 Tab）
-    filteredNotices: [],
-    filteredAnnouncements: [],
-    unreadAllCount: 0,
+    // 当前显示的消息列表
+    currentMessages: [],
+    totalUnreadCount: 0,
     unreadInviteCount: 0,
     unreadSystemCount: 0,
+    unreadWelfareCount: 0,
 
     // 海报预览相关
     showPosterPopup: false,
@@ -907,7 +907,7 @@ Page({
     const show = !this.data.showNotificationPanel;
     this.setData({
       showNotificationPanel: show,
-      activeNoticeTab: 'all' // 重置为全部
+      activeNoticeTab: 'invite' // 默认显示邀请
     });
     if (show) {
       this.loadAnnouncements();
@@ -918,7 +918,7 @@ Page({
   switchNoticeTab(e) {
     const tab = e.currentTarget.dataset.tab;
     this.setData({ activeNoticeTab: tab });
-    this.updateFilteredMessages();
+    this.updateCurrentMessages();
   },
 
   // 加载系统公告
@@ -954,37 +954,46 @@ Page({
     this.setData({
       hasUnreadNotice: hasUnreadNotices || hasUnreadAnnouncements
     });
-    this.updateFilteredMessages();
+    this.updateCurrentMessages();
   },
 
-  // 更新过滤后的消息列表
-  updateFilteredMessages() {
+  // 更新当前显示的消息列表
+  updateCurrentMessages() {
     const { notices, announcements, activeNoticeTab } = this.data;
 
-    // 计算未读数量
+    // 计算各分类未读数量
     const unreadInviteCount = notices.filter(n => n.type === 'invite' && !n.read).length;
+    const unreadWelfareCount = notices.filter(n => n.type === 'welfare' && !n.read).length;
     const unreadSystemCount = announcements.filter(a => !a.isRead).length;
-    const unreadAllCount = unreadInviteCount + unreadSystemCount;
+    const totalUnreadCount = unreadInviteCount + unreadWelfareCount + unreadSystemCount;
 
-    // 根据 Tab 过滤
-    let filteredNotices = [];
-    let filteredAnnouncements = [];
+    // 根据当前分类整理消息
+    let currentMessages = [];
 
-    if (activeNoticeTab === 'all') {
-      filteredNotices = notices;
-      filteredAnnouncements = announcements;
-    } else if (activeNoticeTab === 'invite') {
-      filteredNotices = notices.filter(n => n.type === 'invite');
+    if (activeNoticeTab === 'invite') {
+      currentMessages = notices.filter(n => n.type === 'invite');
     } else if (activeNoticeTab === 'system') {
-      filteredAnnouncements = announcements;
+      // 系统公告
+      currentMessages = announcements.map(ann => ({
+        id: ann._id,
+        type: 'system',
+        title: ann.title,
+        desc: ann.version ? '版本 ' + ann.version + ' 更新' : '',
+        date: ann.date,
+        content: ann.content,
+        version: ann.version,
+        isRead: ann.isRead
+      }));
+    } else if (activeNoticeTab === 'welfare') {
+      currentMessages = notices.filter(n => n.type === 'welfare');
     }
 
     this.setData({
-      filteredNotices,
-      filteredAnnouncements,
-      unreadAllCount,
+      currentMessages,
+      totalUnreadCount,
       unreadInviteCount,
-      unreadSystemCount
+      unreadSystemCount,
+      unreadWelfareCount
     });
   },
 
@@ -1012,14 +1021,23 @@ Page({
       wx.setStorageSync('read_announcements', readIds);
     }
 
-    // 更新本地状态
+    // 更新 announcements 状态
     const announcements = this.data.announcements.map(a => {
       if (a._id === annId) {
         return { ...a, isRead: true };
       }
       return a;
     });
-    this.setData({ announcements });
+
+    // 更新 currentMessages 状态
+    const currentMessages = this.data.currentMessages.map(m => {
+      if (m.id === annId) {
+        return { ...m, isRead: true };
+      }
+      return m;
+    });
+
+    this.setData({ announcements, currentMessages });
     this.updateUnreadStatus();
   },
 
@@ -1098,7 +1116,7 @@ Page({
   loadNotices() {
     const notices = wx.getStorageSync('notices') || [];
     this.setData({ notices, hasUnreadNotice: notices.some(n => !n.read) });
-    this.updateFilteredMessages();
+    this.updateCurrentMessages();
   },
   
   noticeIcons: {

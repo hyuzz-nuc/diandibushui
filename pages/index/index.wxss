@@ -126,42 +126,63 @@
   justify-content: center;
 }
 
-/* 分类 Tab */
-.message-tabs {
+/* 左右布局 */
+.message-body {
   display: flex;
-  padding: 0 24rpx;
-  margin-bottom: 16rpx;
+  height: 45vh;
+  min-height: 400rpx;
 }
 
-.message-tab {
-  flex: 1;
-  text-align: center;
+/* 左侧分类导航 */
+.message-sidebar {
+  width: 160rpx;
+  background: linear-gradient(180deg, #F8F9FA 0%, #E9ECEF 100%);
+  display: flex;
+  flex-direction: column;
   padding: 16rpx 0;
-  font-size: 28rpx;
-  color: #999;
+}
+
+.sidebar-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24rpx 16rpx;
+  margin: 8rpx 12rpx;
+  border-radius: 12rpx;
   position: relative;
   transition: all 0.2s;
 }
 
-.message-tab.active {
-  color: #00B0FF;
-  font-weight: 600;
+.sidebar-item.active {
+  background: linear-gradient(135deg, #4FC3F7 0%, #00B0FF 100%);
 }
 
-.message-tab.active::after {
+.sidebar-item.active::before {
   content: '';
   position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 48rpx;
-  height: 6rpx;
-  background: #00B0FF;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6rpx;
+  height: 32rpx;
+  background: linear-gradient(180deg, #4FC3F7 0%, #00B0FF 100%);
   border-radius: 3rpx;
 }
 
-.tab-badge {
-  display: inline-block;
+.sidebar-name {
+  font-size: 28rpx;
+  color: #666;
+}
+
+.sidebar-item.active .sidebar-name {
+  color: #fff;
+  font-weight: 600;
+}
+
+.sidebar-badge {
+  position: absolute;
+  right: 8rpx;
+  top: 8rpx;
   min-width: 32rpx;
   height: 32rpx;
   line-height: 32rpx;
@@ -170,13 +191,17 @@
   color: #fff;
   background: #FF6B6B;
   border-radius: 16rpx;
-  margin-left: 8rpx;
+  text-align: center;
 }
 
-.message-list {
-  height: 45vh;
-  min-height: 400rpx;
-  padding: 0 24rpx;
+.sidebar-item.active .sidebar-badge {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* 右侧内容区 */
+.message-content {
+  flex: 1;
+  padding: 16rpx;
   overflow-y: auto;
 }
 
@@ -184,7 +209,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 80rpx 0;
+  justify-content: center;
+  height: 100%;
 }
 
 .empty-icon {
@@ -200,7 +226,7 @@
 .message-item {
   display: flex;
   padding: 24rpx;
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.8);
   border-radius: 16rpx;
   margin-bottom: 16rpx;
   position: relative;
@@ -211,7 +237,7 @@
 }
 
 .message-item:active {
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 1);
 }
 
 .unread-dot {
@@ -245,7 +271,6 @@
   background: linear-gradient(135deg, rgba(250, 112, 154, 0.2) 0%, rgba(254, 225, 64, 0.2) 100%);
 }
 
-.message-item-icon.notice,
 .message-item-icon.system {
   background: linear-gradient(135deg, rgba(79, 172, 254, 0.2) 0%, rgba(0, 242, 254, 0.2) 100%);
 }

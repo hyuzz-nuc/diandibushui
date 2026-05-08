@@ -16,7 +16,7 @@
     round
     bind:close="toggleNotificationPanel"
     z-index="3000"
-    custom-style="width: 90%; max-height: 75vh; border-radius: 32rpx; background: rgba(255,255,255,0.85); backdrop-filter: blur(20px);"
+    custom-style="width: 90%; max-height: 75vh; border-radius: 32rpx; background: rgba(255,255,255,0.92); backdrop-filter: blur(20px);"
   >
     <view class="message-card">
       <!-- 顶部标题栏 -->
@@ -28,72 +28,89 @@
         </view>
       </view>
 
-      <!-- 分类 Tab -->
-      <view class="message-tabs">
-        <view class="message-tab {{ activeNoticeTab === 'all' ? 'active' : '' }}" bind:tap="switchNoticeTab" data-tab="all">
-          全部
-          <text class="tab-badge" wx:if="{{ unreadAllCount > 0 }}">{{ unreadAllCount }}</text>
-        </view>
-        <view class="message-tab {{ activeNoticeTab === 'invite' ? 'active' : '' }}" bind:tap="switchNoticeTab" data-tab="invite">
-          邀请
-          <text class="tab-badge" wx:if="{{ unreadInviteCount > 0 }}">{{ unreadInviteCount }}</text>
-        </view>
-        <view class="message-tab {{ activeNoticeTab === 'system' ? 'active' : '' }}" bind:tap="switchNoticeTab" data-tab="system">
-          系统
-          <text class="tab-badge" wx:if="{{ unreadSystemCount > 0 }}">{{ unreadSystemCount }}</text>
-        </view>
-      </view>
-
-      <!-- 消息列表 -->
-      <scroll-view scroll-y class="message-list">
-        <!-- 空状态 -->
-        <view class="message-empty" wx:if="{{ filteredNotices.length === 0 && filteredAnnouncements.length === 0 }}">
-          <text class="empty-icon">📭</text>
-          <text class="empty-text">暂无新消息</text>
+      <!-- 左右布局 -->
+      <view class="message-body">
+        <!-- 左侧分类导航 -->
+        <view class="message-sidebar">
+          <view class="sidebar-item {{ activeNoticeTab === 'invite' ? 'active' : '' }}" bind:tap="switchNoticeTab" data-tab="invite">
+            <text class="sidebar-name">邀请</text>
+            <text class="sidebar-badge" wx:if="{{ unreadInviteCount > 0 }}">{{ unreadInviteCount }}</text>
+          </view>
+          <view class="sidebar-item {{ activeNoticeTab === 'system' ? 'active' : '' }}" bind:tap="switchNoticeTab" data-tab="system">
+            <text class="sidebar-name">系统</text>
+            <text class="sidebar-badge" wx:if="{{ unreadSystemCount > 0 }}">{{ unreadSystemCount }}</text>
+          </view>
+          <view class="sidebar-item {{ activeNoticeTab === 'welfare' ? 'active' : '' }}" bind:tap="switchNoticeTab" data-tab="welfare">
+            <text class="sidebar-name">福利</text>
+            <text class="sidebar-badge" wx:if="{{ unreadWelfareCount > 0 }}">{{ unreadWelfareCount }}</text>
+          </view>
         </view>
 
-        <!-- 系统公告 -->
-        <block wx:for="{{ filteredAnnouncements }}" wx:key="_id">
-          <view class="message-item announcement-item" bind:tap="toggleAnnouncement" data-id="{{ item._id }}">
-            <view class="unread-dot" wx:if="{{ !item.isRead }}"></view>
-            <view class="message-item-icon system">
-              <text>📢</text>
-            </view>
-            <view class="message-item-content">
-              <view class="message-item-title">{{ item.title }}</view>
-              <view class="message-item-desc">{{ item.version ? '版本 ' + item.version + ' 更新' : item.title }}</view>
-              <view class="message-item-footer">
-                <text class="message-item-time">{{ item.date }}</text>
+        <!-- 右侧内容区 -->
+        <scroll-view scroll-y class="message-content">
+          <!-- 空状态 -->
+          <view class="message-empty" wx:if="{{ currentMessages.length === 0 }}">
+            <text class="empty-icon">📭</text>
+            <text class="empty-text">暂无{{ activeNoticeTab === 'invite' ? '邀请' : activeNoticeTab === 'system' ? '系统公告' : '福利' }}消息</text>
+          </view>
+
+          <!-- 消息列表 -->
+          <block wx:for="{{ currentMessages }}" wx:key="id">
+            <!-- 系统公告类型 -->
+            <view wx:if="{{ item.type === 'system' }}" class="message-item" bind:tap="toggleAnnouncement" data-id="{{ item.id }}">
+              <view class="unread-dot" wx:if="{{ !item.isRead }}"></view>
+              <view class="message-item-icon system">
+                <text>📢</text>
+              </view>
+              <view class="message-item-content">
+                <view class="message-item-title">{{ item.title }}</view>
+                <view class="message-item-desc">{{ item.version ? '版本 ' + item.version + ' 更新' : '' }}</view>
+                <view class="message-item-footer">
+                  <text class="message-item-time">{{ item.date }}</text>
+                </view>
               </view>
             </view>
-          </view>
-          <!-- 展开的公告内容 -->
-          <view class="announcement-content" wx:if="{{ expandedAnnouncementId === item._id }}">
-            <view class="announcement-text">{{ item.content }}</view>
-          </view>
-        </block>
-
-        <!-- 其他消息卡片 -->
-        <view class="message-item" wx:for="{{ filteredNotices }}" wx:key="id" bind:tap="onNoticeTap" data-item="{{ item }}">
-          <view class="unread-dot" wx:if="{{ !item.read }}"></view>
-          <view class="message-item-icon {{ item.type }}">
-            <text wx:if="{{ item.type === 'invite' }}">👥</text>
-            <text wx:elif="{{ item.type === 'welfare' }}">🎁</text>
-            <text wx:else>📢</text>
-          </view>
-          <view class="message-item-content">
-            <view class="message-item-title">{{ item.title }}</view>
-            <view class="message-item-desc">{{ item.desc }}</view>
-            <view class="message-item-footer">
-              <text class="message-item-time">{{ item.time }}</text>
-              <view class="message-item-action" wx:if="{{ item.type === 'invite' }}">查看</view>
+            <!-- 展开的公告内容 -->
+            <view class="announcement-content" wx:if="{{ item.type === 'system' && expandedAnnouncementId === item.id }}">
+              <view class="announcement-text">{{ item.content }}</view>
             </view>
-          </view>
-        </view>
-      </scroll-view>
+
+            <!-- 邀请类型 -->
+            <view wx:elif="{{ item.type === 'invite' }}" class="message-item" bind:tap="onNoticeTap" data-item="{{ item }}">
+              <view class="unread-dot" wx:if="{{ !item.read }}"></view>
+              <view class="message-item-icon invite">
+                <text>👥</text>
+              </view>
+              <view class="message-item-content">
+                <view class="message-item-title">{{ item.title }}</view>
+                <view class="message-item-desc">{{ item.desc }}</view>
+                <view class="message-item-footer">
+                  <text class="message-item-time">{{ item.time }}</text>
+                  <view class="message-item-action">查看</view>
+                </view>
+              </view>
+            </view>
+
+            <!-- 福利类型 -->
+            <view wx:elif="{{ item.type === 'welfare' }}" class="message-item" bind:tap="onNoticeTap" data-item="{{ item }}">
+              <view class="unread-dot" wx:if="{{ !item.read }}"></view>
+              <view class="message-item-icon welfare">
+                <text>🎁</text>
+              </view>
+              <view class="message-item-content">
+                <view class="message-item-title">{{ item.title }}</view>
+                <view class="message-item-desc">{{ item.desc }}</view>
+                <view class="message-item-footer">
+                  <text class="message-item-time">{{ item.time }}</text>
+                </view>
+              </view>
+            </view>
+          </block>
+        </scroll-view>
+      </view>
 
       <!-- 底部按钮 -->
-      <view class="message-card-footer" wx:if="{{ notices.length > 0 || announcements.length > 0 }}">
+      <view class="message-card-footer" wx:if="{{ totalUnreadCount > 0 }}">
         <view class="clear-btn" bind:tap="clearAllNotices">全部已读</view>
       </view>
     </view>
