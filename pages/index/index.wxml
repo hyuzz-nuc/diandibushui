@@ -33,12 +33,35 @@
       <!-- 消息列表 -->
       <scroll-view scroll-y class="message-list">
         <!-- 空状态 -->
-        <view class="message-empty" wx:if="{{ notices.length === 0 }}">
+        <view class="message-empty" wx:if="{{ notices.length === 0 && announcements.length === 0 }}">
           <van-icon name="envelop-o" size="48" color="#ddd" />
           <text class="empty-text">暂无消息</text>
         </view>
 
-        <!-- 消息卡片 -->
+        <!-- 系统公告 -->
+        <block wx:for="{{ announcements }}" wx:key="_id">
+          <view class="message-item announcement-item" bind:tap="toggleAnnouncement" data-id="{{ item._id }}">
+            <view class="message-item-icon system">
+              <text>📢</text>
+            </view>
+            <view class="message-item-content">
+              <view class="message-item-title">
+                {{ item.title }}
+                <text class="new-tag" wx:if="{{ !item.isRead }}">新</text>
+              </view>
+              <view class="message-item-desc">{{ item.version ? '版本 ' + item.version + ' 更新' : item.title }}</view>
+              <view class="message-item-footer">
+                <text class="message-item-time">{{ item.date }}</text>
+              </view>
+            </view>
+          </view>
+          <!-- 展开的公告内容 -->
+          <view class="announcement-content" wx:if="{{ expandedAnnouncementId === item._id }}">
+            <view class="announcement-text">{{ item.content }}</view>
+          </view>
+        </block>
+
+        <!-- 其他消息卡片 -->
         <view class="message-item" wx:for="{{ notices }}" wx:key="id" bind:tap="onNoticeTap" data-item="{{ item }}">
           <view class="message-item-icon {{ item.type }}">
             <text wx:if="{{ item.type === 'invite' }}">👥</text>
@@ -57,8 +80,8 @@
       </scroll-view>
 
       <!-- 底部清空按钮 -->
-      <view class="message-card-footer" wx:if="{{ notices.length > 0 }}">
-        <view class="clear-btn" bind:tap="clearAllNotices">清空全部消息</view>
+      <view class="message-card-footer" wx:if="{{ notices.length > 0 || announcements.length > 0 }}">
+        <view class="clear-btn" bind:tap="clearAllNotices">全部已读</view>
       </view>
     </view>
   </van-popup>

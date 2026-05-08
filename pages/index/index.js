@@ -64,6 +64,10 @@ Page({
     notices: [],
     hasUnreadNotice: false,
 
+    // 系统公告
+    announcements: [],
+    expandedAnnouncementId: null, // 当前展开的公告ID
+
     // 海报预览相关
     showPosterPopup: false,
     currentPosterIndex: 0,
@@ -896,13 +900,94 @@ Page({
     this.setData({ showNotificationPanel: show });
     if (show) {
       this.markAllAsRead();
+      this.loadAnnouncements();
     }
   },
 
+  // 加载系统公告
+  loadAnnouncements() {
+    wx.cloud.callFunction({
+      name: 'getAnnouncements',
+      success: res => {
+        if (res.result && res.result.success) {
+          const announcements = res.result.data || [];
+          // 检查已读状态
+          const readIds = wx.getStorageSync('read_announcements') || [];
+          const announcementsWithStatus = announcements.map(ann => ({
+            ...ann,
+            isRead: readIds.includes(ann._id)
+          }));
+
+          this.setData({ announcements: announcementsWithStatus });
+
+          // 更新未读状态
+          this.updateUnreadStatus();
+        }
+      },
+      fail: err => {
+        console.error('[loadAnnouncements] 加载失败:', err);
+      }
+    });
+  },
+
+  // 更新未读状态
+  updateUnreadStatus() {
+    const hasUnreadNotices = this.data.notices.some(n => !n.read);
+    const hasUnreadAnnouncements = this.data.announcements.some(a => !a.isRead);
+    this.setData({
+      hasUnreadNotice: hasUnreadNotices || hasUnreadAnnouncements
+    });
+  },
+
+  // 展开/收起公告
+  toggleAnnouncement(e) {
+    const annId = e.currentTarget.dataset.id;
+    const expandedId = this.data.expandedAnnouncementId;
+
+    if (expandedId === annId) {
+      // 收起
+      this.setData({ expandedAnnouncementId: null });
+    } else {
+      // 展开
+      this.setData({ expandedAnnouncementId: annId });
+      // 标记为已读
+      this.markAnnouncementAsRead(annId);
+    }
+  },
+
+  // 标记公告为已读
+  markAnnouncementAsRead(annId) {
+    const readIds = wx.getStorageSync('read_announcements') || [];
+    if (!readIds.includes(annId)) {
+      readIds.push(annId);
+      wx.setStorageSync('read_announcements', readIds);
+    }
+
+    // 更新本地状态
+    const announcements = this.data.announcements.map(a => {
+      if (a._id === annId) {
+        return { ...a, isRead: true };
+      }
+      return a;
+    });
+    this.setData({ announcements });
+    this.updateUnreadStatus();
+  },
+
   markAllAsRead() {
+    // 标记通知为已读
     const notices = this.data.notices.map(n => ({ ...n, read: true }));
-    this.setData({ notices, hasUnreadNotice: false });
+    this.setData({ notices });
     wx.setStorageSync('notices', notices);
+
+    // 标记公告为已读
+    const announcements = this.data.announcements.map(a => ({ ...a, isRead: true }));
+    this.setData({ announcements });
+
+    const readIds = announcements.map(a => a._id);
+    wx.setStorageSync('read_announcements', readIds);
+
+    this.updateUnreadStatus();
   },
 
   clearAllNotices() {

@@ -203,6 +203,18 @@
   font-weight: 600;
   color: #333;
   margin-bottom: 8rpx;
+  display: flex;
+  align-items: center;
+}
+
+.new-tag {
+  font-size: 20rpx;
+  font-weight: 500;
+  color: #fff;
+  background: #FF6B6B;
+  padding: 2rpx 12rpx;
+  border-radius: 16rpx;
+  margin-left: 12rpx;
 }
 
 .message-item-desc {
@@ -229,6 +241,22 @@
   padding: 4rpx 16rpx;
   background: rgba(0, 176, 255, 0.1);
   border-radius: 20rpx;
+}
+
+/* 公告展开内容 */
+.announcement-content {
+  background: #F8F9FA;
+  margin: 0 24rpx 16rpx;
+  padding: 20rpx;
+  border-radius: 12rpx;
+  border-left: 4rpx solid #00B0FF;
+}
+
+.announcement-text {
+  font-size: 26rpx;
+  color: #666;
+  line-height: 1.8;
+  white-space: pre-line;
 }
 
 .message-card-footer {
