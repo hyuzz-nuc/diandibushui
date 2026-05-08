@@ -398,7 +398,7 @@ Page({
   showAbout() {
     wx.showModal({
       title: '关于我们',
-      content: '点滴补水 - 你的健康喝水助手\n\n版本：1.0.0\n开发：点滴补水团队',
+      content: '点滴补水 - 你的健康喝水助手\n\n版本：1.2.0\nGitHub：https://github.com/hyuzz-nuc\n邮箱：zhy_nuc1114@outlook.com\n微信：cursor1114',
       showCancel: false,
       confirmText: '知道了',
       confirmColor: '#00B0FF'
