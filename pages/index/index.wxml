@@ -98,16 +98,27 @@
             </view>
 
             <!-- 福利类型 -->
-            <view wx:elif="{{ item.type === 'welfare' }}" class="message-item" bind:tap="onNoticeTap" data-item="{{ item }}">
-              <view class="unread-dot" wx:if="{{ !item.read }}"></view>
+            <view wx:elif="{{ item.type === 'welfare' }}" class="message-item welfare-item {{ item.claimed ? 'claimed' : '' }}" bind:tap="onWelfareTap" data-item="{{ item }}">
+              <view class="unread-dot" wx:if="{{ !item.read && !item.claimed }}"></view>
               <view class="message-item-icon welfare">
                 <text>🎁</text>
               </view>
               <view class="message-item-content">
                 <view class="message-item-title">{{ item.title }}</view>
                 <view class="message-item-desc">{{ item.desc }}</view>
+                <view class="welfare-rewards" wx:if="{{ item.content }}">
+                  <view class="welfare-reward-item">
+                    <text class="reward-icon">🏆</text>
+                    <text class="reward-text">{{ item.content.title }}</text>
+                  </view>
+                  <view class="welfare-reward-item">
+                    <text class="reward-icon">⭐</text>
+                    <text class="reward-text">+{{ item.content.exp }} 经验</text>
+                  </view>
+                </view>
                 <view class="message-item-footer">
                   <text class="message-item-time">{{ item.time }}</text>
+                  <view class="welfare-action {{ item.claimed ? 'claimed' : '' }}">{{ item.claimed ? '已领取' : '领取' }}</view>
                 </view>
               </view>
             </view>

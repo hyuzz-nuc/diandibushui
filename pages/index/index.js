@@ -917,6 +917,7 @@ Page({
     });
     if (show) {
       this.loadAnnouncements();
+      this.loadWelfares();
     }
   },
 
@@ -925,6 +926,36 @@ Page({
     const tab = e.currentTarget.dataset.tab;
     this.setData({ activeNoticeTab: tab });
     this.updateCurrentMessages();
+  },
+
+  // 加载福利消息
+  loadWelfares() {
+    wx.cloud.callFunction({
+      name: 'getWelfares',
+      success: res => {
+        if (res.result && res.result.success) {
+          const welfares = res.result.data || [];
+          // 合并到 notices 中
+          const welfareNotices = welfares.map(w => ({
+            ...w,
+            id: w._id,
+            type: 'welfare',
+            time: this.formatNoticeTime(new Date(w.date)),
+            read: w.read || w.claimed
+          }));
+
+          // 过滤掉已有的福利消息，重新添加
+          const otherNotices = this.data.notices.filter(n => n.type !== 'welfare');
+          const allNotices = [...otherNotices, ...welfareNotices];
+
+          this.setData({ notices: allNotices });
+          this.updateUnreadStatus();
+        }
+      },
+      fail: err => {
+        console.error('[loadWelfares] 加载失败:', err);
+      }
+    });
   },
 
   // 加载系统公告
@@ -1078,6 +1109,67 @@ Page({
     const notices = this.data.notices.map(n => n.id === item.id ? { ...n, read: true } : n);
     this.setData({ notices, hasUnreadNotice: notices.some(n => !n.read) });
     wx.setStorageSync('notices', notices);
+  },
+
+  // 点击福利领取
+  onWelfareTap(e) {
+    const item = e.currentTarget.dataset.item;
+
+    if (item.claimed) {
+      wx.showToast({ title: '已领取过', icon: 'none' });
+      return;
+    }
+
+    wx.showModal({
+      title: '🎁 领取福利',
+      content: `确定领取「${item.content.title}」称号 + ${item.content.exp}经验？`,
+      confirmText: '领取',
+      success: (res) => {
+        if (res.confirm) {
+          this.claimWelfare(item);
+        }
+      }
+    });
+  },
+
+  // 领取福利
+  claimWelfare(item) {
+    wx.showLoading({ title: '领取中...' });
+
+    wx.cloud.callFunction({
+      name: 'claimWelfare',
+      data: { welfareId: item._id },
+      success: res => {
+        wx.hideLoading();
+        if (res.result && res.result.success) {
+          const { exp, title } = res.result.data;
+
+          // 更新当前消息列表
+          const currentMessages = this.data.currentMessages.map(m => {
+            if (m._id === item._id) {
+              return { ...m, claimed: true, read: true };
+            }
+            return m;
+          });
+
+          this.setData({ currentMessages });
+
+          wx.showModal({
+            title: '🎉 领取成功',
+            content: `获得「${title}」称号\n+${exp} 经验`,
+            showCancel: false,
+            confirmText: '太棒了'
+          });
+        } else {
+          wx.showToast({ title: res.result?.message || '领取失败', icon: 'none' });
+        }
+      },
+      fail: err => {
+        wx.hideLoading();
+        console.error('[claimWelfare] 失败:', err);
+        wx.showToast({ title: '网络错误', icon: 'none' });
+      }
+    });
   },
 
   addNotice(type, title, desc, uniqueKey) {

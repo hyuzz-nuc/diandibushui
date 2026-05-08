@@ -346,6 +346,53 @@
   border-radius: 20rpx;
 }
 
+/* 福利样式 */
+.welfare-item {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.welfare-item.claimed {
+  opacity: 0.6;
+}
+
+.welfare-rewards {
+  display: flex;
+  gap: 24rpx;
+  margin: 12rpx 0;
+  padding: 12rpx 16rpx;
+  background: linear-gradient(135deg, rgba(255, 152, 0, 0.1) 0%, rgba(255, 193, 7, 0.1) 100%);
+  border-radius: 12rpx;
+}
+
+.welfare-reward-item {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.welfare-reward-item .reward-icon {
+  font-size: 24rpx;
+}
+
+.welfare-reward-item .reward-text {
+  font-size: 24rpx;
+  color: #FF9800;
+  font-weight: 600;
+}
+
+.welfare-action {
+  font-size: 24rpx;
+  color: #fff;
+  padding: 6rpx 20rpx;
+  background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%);
+  border-radius: 20rpx;
+}
+
+.welfare-action.claimed {
+  background: #ccc;
+}
+
 /* 公告展开内容 */
 .announcement-content {
   background: rgba(255, 255, 255, 0.5);
