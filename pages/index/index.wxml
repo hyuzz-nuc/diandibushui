@@ -1,12 +1,18 @@
 <view class="container">
   <view class="header">
-    <view class="header-left">
-      <view class="notification-bell" bind:tap="toggleNotificationPanel">
-        <van-icon name="envelop-o" size="24" color="{{ hasUnreadNotice ? '#00B0FF' : '#999' }}" />
-        <view class="notification-dot" wx:if="{{ hasUnreadNotice }}"></view>
-      </view>
-    </view>
     <text class="greeting">Hi, 记得喝水哦 💧</text>
+  </view>
+
+  <!-- 左侧图标 -->
+  <view class="left-icons">
+    <view class="notification-bell" bind:tap="toggleNotificationPanel">
+      <van-icon name="envelop-o" size="24" color="{{ hasUnreadNotice ? '#00B0FF' : '#999' }}" />
+      <view class="notification-dot" wx:if="{{ hasUnreadNotice }}"></view>
+    </view>
+    <view class="task-entry" bind:tap="goToTask">
+      <van-icon name="todo-list-o" size="24" color="#999" />
+      <view class="notification-dot" wx:if="{{ hasClaimableTask }}"></view>
+    </view>
   </view>
 
   <!-- 消息中心弹窗卡片 -->
@@ -260,8 +266,8 @@
 
   <!-- 进度圆环 -->
   <view class="progress-container" wx:if="{{ !showConfirmPopup && !showCupGuide && !showCustomDialog && !isSystemDialogShowing && !showRecommendDialog && !showWelcomeDialog && !showSocialGuideDialog && !showFinalDialog && !showNotificationPanel && !showPosterPopup }}">
-    <van-circle 
-      value="{{ percent }}" 
+    <van-circle
+      value="{{ percent }}"
       color="{{ guideStep > 0 ? '#666666' : '#00B0FF' }}"
       layer-color="{{ guideStep > 0 ? 'rgba(100, 100, 100, 0.2)' : 'rgba(238, 238, 238, 0.3)' }}"
       stroke-width="10"

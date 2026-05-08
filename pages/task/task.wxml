@@ -1,0 +1,99 @@
+<view class="container" style="padding-top: {{safeAreaTop}}px;">
+  <!-- 自定义导航栏 -->
+  <view class="custom-nav">
+    <view class="nav-back" bind:tap="goBack">
+      <van-icon name="arrow-left" size="20" color="#333" />
+    </view>
+    <text class="nav-title">📋 任务中心</text>
+    <view class="nav-placeholder"></view>
+  </view>
+
+  <!-- 等级卡片 -->
+  <view class="level-card">
+    <view class="level-info">
+      <view class="level-badge">
+        <text class="level-icon">🏆</text>
+        <text class="level-text">Lv.{{ level }}</text>
+      </view>
+      <view class="level-title">{{ title }}</view>
+    </view>
+    <view class="exp-bar">
+      <view class="exp-progress" style="width: {{ expPercent }}%;"></view>
+    </view>
+    <view class="exp-text">{{ exp }}/{{ nextLevelExp }} 经验</view>
+  </view>
+
+  <!-- 一键领取按钮 -->
+  <view class="claim-all-btn" wx:if="{{ hasClaimable }}" bind:tap="claimAllRewards">
+    <text>🎁 一键领取全部奖励</text>
+  </view>
+
+  <!-- Tab切换 -->
+  <view class="task-tabs">
+    <view class="tab-item {{ activeTab === 'daily' ? 'active' : '' }}" bind:tap="switchTab" data-tab="daily">
+      <text class="tab-name">每日任务</text>
+      <view class="tab-dot" wx:if="{{ dailyHasClaimable }}"></view>
+    </view>
+    <view class="tab-item {{ activeTab === 'growth' ? 'active' : '' }}" bind:tap="switchTab" data-tab="growth">
+      <text class="tab-name">成长任务</text>
+      <view class="tab-dot" wx:if="{{ growthHasClaimable }}"></view>
+    </view>
+  </view>
+
+  <!-- 任务列表 -->
+  <scroll-view scroll-y class="task-scroll">
+    <!-- 每日任务 -->
+    <view class="task-list" wx:if="{{ activeTab === 'daily' }}">
+      <view class="task-item {{ item.claimed ? 'claimed' : '' }}" wx:for="{{ dailyTasks }}" wx:key="id">
+        <view class="task-icon">{{ item.icon }}</view>
+        <view class="task-content">
+          <view class="task-name">{{ item.name }}</view>
+          <view class="task-progress" wx:if="{{ item.progress !== undefined }}">{{ item.progress }}/{{ item.target }}</view>
+        </view>
+        <view class="task-reward">
+          <text class="reward-num">+{{ item.exp }}</text>
+          <text class="reward-label">经验</text>
+        </view>
+        <!-- 未完成：去完成 -->
+        <view class="task-action" wx:if="{{ !item.completed }}">
+          <view class="action-btn" bind:tap="goToAction" data-action="{{ item.action }}">去完成</view>
+        </view>
+        <!-- 已完成未领取：领取 -->
+        <view class="task-action" wx:elif="{{ item.completed && !item.claimed }}">
+          <view class="claim-btn" bind:tap="claimReward" data-id="{{ item.id }}">领取</view>
+        </view>
+        <!-- 已领取：完成 -->
+        <view class="task-done" wx:else>
+          <van-icon name="passed" color="#52c41a" size="24px" />
+        </view>
+      </view>
+    </view>
+
+    <!-- 成长任务 -->
+    <view class="task-list" wx:if="{{ activeTab === 'growth' }}">
+      <view class="task-item {{ item.claimed ? 'claimed' : '' }}" wx:for="{{ growthTasks }}" wx:key="id">
+        <view class="task-icon">{{ item.icon }}</view>
+        <view class="task-content">
+          <view class="task-name">{{ item.name }}</view>
+          <view class="task-progress">{{ item.progress }}/{{ item.target }}</view>
+        </view>
+        <view class="task-reward">
+          <text class="reward-num">+{{ item.exp }}</text>
+          <text class="reward-label">经验</text>
+        </view>
+        <!-- 未完成：去完成 -->
+        <view class="task-action" wx:if="{{ !item.completed }}">
+          <view class="action-btn" bind:tap="goToAction" data-action="{{ item.action }}">去完成</view>
+        </view>
+        <!-- 已完成未领取：领取 -->
+        <view class="task-action" wx:elif="{{ item.completed && !item.claimed }}">
+          <view class="claim-btn" bind:tap="claimReward" data-id="{{ item.id }}">领取</view>
+        </view>
+        <!-- 已领取：完成 -->
+        <view class="task-done" wx:else>
+          <van-icon name="passed" color="#52c41a" size="24px" />
+        </view>
+      </view>
+    </view>
+  </scroll-view>
+</view>

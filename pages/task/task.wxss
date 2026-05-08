@@ -1,0 +1,253 @@
+.container {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #E3F2FD 0%, #F5F5F5 30%);
+  padding: 20rpx;
+  padding-bottom: 100rpx;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 自定义导航栏 */
+.custom-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20rpx 16rpx;
+  margin-bottom: 20rpx;
+}
+
+.nav-back {
+  width: 60rpx;
+  height: 60rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-title {
+  font-size: 34rpx;
+  font-weight: 600;
+  color: #333;
+}
+
+.nav-placeholder {
+  width: 60rpx;
+}
+
+/* 等级卡片 */
+.level-card {
+  background: linear-gradient(135deg, #4FC3F7 0%, #00B0FF 100%);
+  border-radius: 24rpx;
+  padding: 32rpx;
+  margin-bottom: 24rpx;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.level-info {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20rpx;
+}
+
+.level-badge {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 8rpx 20rpx;
+  border-radius: 24rpx;
+}
+
+.level-icon {
+  font-size: 28rpx;
+  margin-right: 8rpx;
+}
+
+.level-text {
+  font-size: 26rpx;
+  font-weight: 600;
+}
+
+.level-title {
+  font-size: 36rpx;
+  font-weight: 700;
+}
+
+.exp-bar {
+  height: 16rpx;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 8rpx;
+  overflow: hidden;
+  margin-bottom: 12rpx;
+}
+
+.exp-progress {
+  height: 100%;
+  background: #fff;
+  border-radius: 8rpx;
+  transition: width 0.3s;
+}
+
+.exp-text {
+  font-size: 24rpx;
+  text-align: right;
+  opacity: 0.9;
+}
+
+/* 一键领取按钮 */
+.claim-all-btn {
+  background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%);
+  color: #fff;
+  font-size: 28rpx;
+  font-weight: 600;
+  padding: 20rpx 40rpx;
+  border-radius: 40rpx;
+  text-align: center;
+  margin-bottom: 24rpx;
+  box-shadow: 0 4rpx 12rpx rgba(255, 152, 0, 0.3);
+  flex-shrink: 0;
+}
+
+.claim-all-btn:active {
+  opacity: 0.9;
+  transform: scale(0.98);
+}
+
+/* Tab切换 */
+.task-tabs {
+  display: flex;
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 8rpx;
+  margin-bottom: 20rpx;
+  flex-shrink: 0;
+}
+
+.tab-item {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20rpx 0;
+  border-radius: 16rpx;
+  position: relative;
+  transition: all 0.3s;
+}
+
+.tab-item.active {
+  background: linear-gradient(135deg, #4FC3F7 0%, #00B0FF 100%);
+}
+
+.tab-name {
+  font-size: 28rpx;
+  color: #666;
+  font-weight: 500;
+}
+
+.tab-item.active .tab-name {
+  color: #fff;
+  font-weight: 600;
+}
+
+.tab-dot {
+  position: absolute;
+  top: 12rpx;
+  right: 24rpx;
+  width: 16rpx;
+  height: 16rpx;
+  background: #FF6B6B;
+  border-radius: 50%;
+}
+
+/* 任务滚动区域 */
+.task-scroll {
+  flex: 1;
+  overflow: hidden;
+}
+
+.task-list {
+  background: #fff;
+  border-radius: 20rpx;
+  overflow: hidden;
+}
+
+.task-item {
+  display: flex;
+  align-items: center;
+  padding: 24rpx;
+  border-bottom: 1rpx solid #F5F5F5;
+}
+
+.task-item:last-child {
+  border-bottom: none;
+}
+
+.task-item.claimed {
+  opacity: 0.6;
+}
+
+.task-icon {
+  font-size: 40rpx;
+  margin-right: 20rpx;
+}
+
+.task-content {
+  flex: 1;
+}
+
+.task-name {
+  font-size: 28rpx;
+  color: #333;
+  font-weight: 500;
+}
+
+.task-progress {
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 4rpx;
+}
+
+.task-reward {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 20rpx;
+}
+
+.reward-num {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #FF9800;
+}
+
+.reward-label {
+  font-size: 20rpx;
+  color: #999;
+}
+
+.task-action {
+  flex-shrink: 0;
+}
+
+.action-btn {
+  font-size: 24rpx;
+  color: #00B0FF;
+  padding: 8rpx 20rpx;
+  background: rgba(0, 176, 255, 0.1);
+  border-radius: 24rpx;
+}
+
+.claim-btn {
+  font-size: 24rpx;
+  color: #fff;
+  padding: 8rpx 20rpx;
+  background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%);
+  border-radius: 24rpx;
+  box-shadow: 0 2rpx 8rpx rgba(255, 152, 0, 0.3);
+}
+
+.task-done {
+  flex-shrink: 0;
+}

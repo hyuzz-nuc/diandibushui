@@ -1,0 +1,9 @@
+{
+  "name": "resetUserExp",
+  "version": "1.0.0",
+  "description": "重置用户经验并发放福利",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

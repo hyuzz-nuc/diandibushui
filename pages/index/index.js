@@ -65,6 +65,9 @@ Page({
     hasUnreadNotice: false,
     activeNoticeTab: 'all', // 当前选中的消息分类：all / invite / system
 
+    // 任务红点
+    hasClaimableTask: false,
+
     // 系统公告
     announcements: [],
     expandedAnnouncementId: null, // 当前展开的公告ID
@@ -179,6 +182,9 @@ Page({
 
     // 检查是否需要自动请求订阅消息
     this.checkAndRequestSubscribe();
+
+    // 检查任务红点状态
+    this.checkClaimableTask();
 
     setTimeout(() => {
       try {
@@ -1482,5 +1488,54 @@ Page({
         fail: err => reject(err)
       });
     }, 100);
+  },
+
+  // 检查是否有可领取的任务
+  checkClaimableTask() {
+    // 先检查全局状态
+    if (app.globalData && app.globalData.hasClaimableTask) {
+      this.setData({ hasClaimableTask: true });
+      return;
+    }
+
+    // 调用云函数检查
+    wx.cloud.callFunction({
+      name: 'getTaskStatus',
+      success: res => {
+        if (res.result && res.result.success) {
+          const { dailyTasks, growthTasks, consecutiveDays, todayWater, dailyGoal, claimedTasks } = res.result.data;
+          const claimedList = claimedTasks || [];
+
+          // 检查每日任务
+          const dailyClaimable = [
+            dailyTasks.login,
+            (dailyTasks.drinkCount || 0) >= 3,
+            todayWater >= dailyGoal,
+            (dailyTasks.remindFriends || 0) >= 3
+          ];
+
+          // 检查成长任务
+          const growthClaimable = [3, 7, 15, 30].map(target => consecutiveDays >= target);
+
+          // 合并检查是否有可领取的
+          const hasClaimable = [...dailyClaimable, ...growthClaimable].some((completed, index) => {
+            const taskId = index < 4 ? index + 1 : 101 + (index - 4);
+            return completed && !claimedList.includes(taskId);
+          });
+
+          this.setData({ hasClaimableTask: hasClaimable });
+          if (app.globalData) {
+            app.globalData.hasClaimableTask = hasClaimable;
+          }
+        }
+      }
+    });
+  },
+
+  // 跳转到任务中心
+  goToTask() {
+    wx.navigateTo({
+      url: '/pages/task/task'
+    });
   }
 });
