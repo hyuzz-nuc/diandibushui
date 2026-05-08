@@ -146,7 +146,7 @@ Page({
 
     // 模拟测试：如果有邀请码，添加邀请通知
     if (app.globalData.inviteCode) {
-      this.addNotice('invite', '好友邀请', '你有一个好友邀请你一起喝水打卡');
+      this.addNotice('invite', '好友邀请', '你有一个好友邀请你一起喝水打卡', `invite_${app.globalData.inviteCode}`);
     }
 
     // 检查是否需要启动新手引导（延迟检查，避免页面未加载完成）
@@ -922,8 +922,18 @@ Page({
     wx.setStorageSync('notices', notices);
   },
 
-  addNotice(type, title, desc) {
+  addNotice(type, title, desc, uniqueKey) {
     const notices = this.data.notices;
+
+    // 如果提供了 uniqueKey，检查是否已存在相同的通知
+    if (uniqueKey) {
+      const exists = notices.some(n => n.uniqueKey === uniqueKey);
+      if (exists) {
+        console.log('[addNotice] 通知已存在，跳过:', uniqueKey);
+        return;
+      }
+    }
+
     const newNotice = {
       id: Date.now(),
       type,
@@ -931,7 +941,8 @@ Page({
       desc,
       icon: this.noticeIcons[type] || 'info-o',
       time: this.formatNoticeTime(new Date()),
-      read: false
+      read: false,
+      uniqueKey: uniqueKey || null // 用于去重
     };
     notices.unshift(newNotice);
     this.setData({ notices, hasUnreadNotice: true });
