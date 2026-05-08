@@ -51,11 +51,11 @@ exports.main = async (event, context) => {
     // 获取今日记录
     const today = new Date()
     today.setHours(0, 0, 0, 0)
-    const todayStr = today.toISOString().split('T')[0]
+    const todayStart = today.getTime()
 
     const recordRes = await db.collection('records').where({
       _openid: openid,
-      date: todayStr
+      timestamp: _.gte(todayStart)
     }).get()
 
     // 计算今日喝水量
