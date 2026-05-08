@@ -61,7 +61,8 @@ Page({
   // 加载任务数据
   loadTaskData() {
     wx.cloud.callFunction({
-      name: 'getTaskStatus',
+      name: 'handleTask',
+      data: { action: 'get' },
       success: res => {
         if (res.result && res.result.success) {
           const data = res.result.data;
@@ -69,7 +70,7 @@ Page({
         }
       },
       fail: err => {
-        console.error('[getTaskStatus] 加载失败:', err);
+        console.error('[handleTask] 加载失败:', err);
       }
     });
   },
@@ -181,8 +182,8 @@ Page({
     const taskId = e.currentTarget.dataset.id;
 
     wx.cloud.callFunction({
-      name: 'claimTaskReward',
-      data: { taskId },
+      name: 'handleTask',
+      data: { action: 'claim', taskId },
       success: res => {
         if (res.result && res.result.success) {
           // 静默刷新数据
@@ -195,7 +196,7 @@ Page({
         }
       },
       fail: err => {
-        console.error('[claimTaskReward] 失败:', err);
+        console.error('[handleTask] 失败:', err);
         wx.showToast({
           title: '网络错误',
           icon: 'none'
@@ -226,8 +227,8 @@ Page({
       }
 
       wx.cloud.callFunction({
-        name: 'claimTaskReward',
-        data: { taskId: claimableTasks[index].id },
+        name: 'handleTask',
+        data: { action: 'claim', taskId: claimableTasks[index].id },
         success: res => {
           if (res.result && res.result.success) {
             totalExp += res.result.data.exp;

@@ -69,21 +69,34 @@ Page({
 
   // 加载商城数据
   loadShopData() {
+    // 优先从全局数据获取
+    const app = getApp();
+    if (app.globalData.shopData) {
+      this.setData({
+        coins: app.globalData.shopData.coins || 0,
+        level: app.globalData.shopData.level || 1,
+        ownedDecorations: app.globalData.shopData.decorations || {}
+      });
+      this.updateCurrentItems();
+      return;
+    }
+
+    // 否则调用login获取
     wx.cloud.callFunction({
-      name: 'getShopData',
+      name: 'login',
       success: res => {
-        if (res.result && res.result.success) {
-          const { coins, level, decorations } = res.result.data;
+        if (res.result && res.result.shopData) {
+          app.globalData.shopData = res.result.shopData;
           this.setData({
-            coins: coins || 0,
-            level: level || 1,
-            ownedDecorations: decorations || {}
+            coins: res.result.shopData.coins || 0,
+            level: res.result.shopData.level || 1,
+            ownedDecorations: res.result.shopData.decorations || {}
           });
           this.updateCurrentItems();
         }
       },
       fail: err => {
-        console.error('[getShopData] 加载失败:', err);
+        console.error('[loadShopData] 加载失败:', err);
       }
     });
   },

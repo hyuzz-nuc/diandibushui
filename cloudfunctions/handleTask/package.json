@@ -1,7 +1,7 @@
 {
-  "name": "getShopData",
+  "name": "handleTask",
   "version": "1.0.0",
-  "description": "获取商城数据",
+  "description": "任务处理云函数（获取状态+领取奖励）",
   "main": "index.js",
   "dependencies": {
     "wx-server-sdk": "~2.6.3"

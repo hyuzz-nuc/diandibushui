@@ -1585,7 +1585,8 @@ Page({
 
     // 调用云函数检查
     wx.cloud.callFunction({
-      name: 'getTaskStatus',
+      name: 'handleTask',
+      data: { action: 'get' },
       success: res => {
         if (res.result && res.result.success) {
           const { dailyTasks, growthTasks, consecutiveDays, todayWater, dailyGoal, claimedTasks } = res.result.data;
@@ -1619,46 +1620,56 @@ Page({
 
   // 加载主题
   loadTheme() {
+    // 优先从全局数据获取
+    if (app.globalData.shopData) {
+      this.applyTheme(app.globalData.shopData.decorations);
+      return;
+    }
+
     wx.cloud.callFunction({
-      name: 'getShopData',
+      name: 'login',
       success: res => {
-        if (res.result && res.result.success) {
-          const decorations = res.result.data.decorations || {};
-          const now = new Date();
-
-          // 获取圆环主题
-          const ring = decorations.ring || {};
-          let ringTheme = '清新蓝';
-          for (const name in ring) {
-            if (ring[name].expireAt && new Date(ring[name].expireAt) > now) {
-              ringTheme = name;
-              break;
-            }
-          }
-
-          // 获取按钮主题
-          const button = decorations.button || {};
-          let buttonTheme = '经典蓝';
-          for (const name in button) {
-            if (button[name].expireAt && new Date(button[name].expireAt) > now) {
-              buttonTheme = name;
-              break;
-            }
-          }
-
-          // 应用主题颜色
-          const ringColor = THEME_COLORS[ringTheme]?.ring || '#00B0FF';
-          const buttonBg = THEME_COLORS[ringTheme]?.button || 'linear-gradient(135deg, #4FC3F7 0%, #00B0FF 100%)';
-
-          this.setData({
-            ringColor,
-            buttonBg,
-            gradientColor: {
-              '0%': ringColor,
-              '100%': ringColor
-            }
-          });
+        if (res.result && res.result.shopData) {
+          app.globalData.shopData = res.result.shopData;
+          this.applyTheme(res.result.shopData.decorations);
         }
+      }
+    });
+  },
+
+  applyTheme(decorations) {
+    const now = new Date();
+
+    // 获取圆环主题
+    const ring = decorations?.ring || {};
+    let ringTheme = '清新蓝';
+    for (const name in ring) {
+      if (ring[name].expireAt && new Date(ring[name].expireAt) > now) {
+        ringTheme = name;
+        break;
+      }
+    }
+
+    // 获取按钮主题
+    const button = decorations?.button || {};
+    let buttonTheme = '经典蓝';
+    for (const name in button) {
+      if (button[name].expireAt && new Date(button[name].expireAt) > now) {
+        buttonTheme = name;
+        break;
+      }
+    }
+
+    // 应用主题颜色
+    const ringColor = THEME_COLORS[ringTheme]?.ring || '#00B0FF';
+    const buttonBg = THEME_COLORS[ringTheme]?.button || 'linear-gradient(135deg, #4FC3F7 0%, #00B0FF 100%)';
+
+    this.setData({
+      ringColor,
+      buttonBg,
+      gradientColor: {
+        '0%': ringColor,
+        '100%': ringColor
       }
     });
   },

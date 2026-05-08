@@ -66,6 +66,9 @@ exports.main = async (event, context) => {
         current_title: '饮水萌新',
         consecutive_days: 0,
         total_days: 0,
+        coins: 0,
+        exp: 0,
+        level: 1,
         createTime: db.serverDate()
       }
 
@@ -85,7 +88,13 @@ exports.main = async (event, context) => {
 
     return {
       openid: openid,
-      userInfo: userData
+      userInfo: userData,
+      // 商城数据合并返回
+      shopData: {
+        coins: userData.coins || 0,
+        level: userData.level || 1,
+        decorations: userData.decorations || {}
+      }
     }
   } catch (err) {
     console.error(err)

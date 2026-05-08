@@ -40,37 +40,50 @@ Page({
   },
 
   loadCoinsAndDecorations() {
+    // 优先从全局数据获取
+    const app = getApp();
+    if (app.globalData.shopData) {
+      this.processShopData(app.globalData.shopData);
+      return;
+    }
+
+    // 否则调用login获取
     wx.cloud.callFunction({
-      name: 'getShopData',
+      name: 'login',
       success: res => {
-        if (res.result && res.result.success) {
-          const { coins, decorations } = res.result.data;
-          const frame = decorations?.frame || {};
-          // 找到当前有效的头像框
-          let currentFrame = '';
-          const now = new Date();
-          for (const name in frame) {
-            if (frame[name].expireAt && new Date(frame[name].expireAt) > now) {
-              currentFrame = name;
-              break;
-            }
-          }
-          // 中文类名映射成英文
-          const frameClassMap = {
-            '活力橙': 'orange',
-            '薄荷绿': 'green',
-            '梦幻紫': 'purple',
-            '金色荣耀': 'gold',
-            '钻石闪耀': 'diamond',
-            '传奇之框': 'legend'
-          };
-          const frameClass = frameClassMap[currentFrame] || '';
-          this.setData({
-            coins: coins || 0,
-            currentFrame: frameClass
-          });
+        if (res.result && res.result.shopData) {
+          app.globalData.shopData = res.result.shopData;
+          this.processShopData(res.result.shopData);
         }
       }
+    });
+  },
+
+  processShopData(shopData) {
+    const { coins, decorations } = shopData;
+    const frame = decorations?.frame || {};
+    // 找到当前有效的头像框
+    let currentFrame = '';
+    const now = new Date();
+    for (const name in frame) {
+      if (frame[name].expireAt && new Date(frame[name].expireAt) > now) {
+        currentFrame = name;
+        break;
+      }
+    }
+    // 中文类名映射成英文
+    const frameClassMap = {
+      '活力橙': 'orange',
+      '薄荷绿': 'green',
+      '梦幻紫': 'purple',
+      '金色荣耀': 'gold',
+      '钻石闪耀': 'diamond',
+      '传奇之框': 'legend'
+    };
+    const frameClass = frameClassMap[currentFrame] || '';
+    this.setData({
+      coins: coins || 0,
+      currentFrame: frameClass
     });
   },
 
