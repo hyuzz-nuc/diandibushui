@@ -123,56 +123,43 @@
   margin-bottom: 12rpx;
 }
 
-/* 金币卡片 */
-.coins-card {
+/* 用户统计（金币+装扮） */
+.user-stats {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  background: #fff;
-  padding: 24rpx 32rpx;
-  border-radius: 20rpx;
-  margin-bottom: 30rpx;
-  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.05);
+  justify-content: center;
+  margin-top: 20rpx;
+  padding-top: 20rpx;
+  border-top: 1rpx solid rgba(0, 176, 255, 0.1);
+  width: 100%;
 }
 
-.coins-info {
+.stat-item {
   display: flex;
   align-items: center;
   gap: 8rpx;
+  padding: 8rpx 24rpx;
 }
 
-.coins-icon {
+.stat-icon {
+  font-size: 28rpx;
+}
+
+.stat-value {
   font-size: 32rpx;
-}
-
-.coins-num {
-  font-size: 36rpx;
   font-weight: 700;
   color: #FF9800;
 }
 
-.coins-label {
+.stat-label {
   font-size: 24rpx;
   color: #999;
-  margin-left: 8rpx;
 }
 
-.decorations-info {
-  display: flex;
-  align-items: center;
-  gap: 8rpx;
-  padding: 12rpx 24rpx;
-  background: #f5f5f5;
-  border-radius: 24rpx;
-}
-
-.decorations-icon {
-  font-size: 24rpx;
-}
-
-.decorations-text {
-  font-size: 26rpx;
-  color: #333;
+.stat-divider {
+  width: 1rpx;
+  height: 40rpx;
+  background: rgba(0, 0, 0, 0.08);
 }
 
 /* 登录按钮样式 */

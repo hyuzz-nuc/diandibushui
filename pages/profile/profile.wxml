@@ -29,21 +29,22 @@
         <input class="nickname-input" placeholder="点击输入昵称" value="{{ userInfo.nickName }}" bind:change="onInputChange" />
         <van-icon name="edit" size="16px" color="#999" />
       </view>
-    </block>
-  </view>
 
-  <!-- 金币和装扮 -->
-  <view class="coins-card" wx:if="{{ hasUserInfo }}">
-    <view class="coins-info">
-      <text class="coins-icon">💰</text>
-      <text class="coins-num">{{ coins }}</text>
-      <text class="coins-label">金币</text>
-    </view>
-    <view class="decorations-info" bind:tap="goToDecorations">
-      <text class="decorations-icon">🎨</text>
-      <text class="decorations-text">我的装扮</text>
-      <van-icon name="arrow" size="14px" color="#999" />
-    </view>
+      <!-- 金币和装扮（合并到用户卡片内） -->
+      <view class="user-stats">
+        <view class="stat-item">
+          <text class="stat-icon">💰</text>
+          <text class="stat-value">{{ coins }}</text>
+          <text class="stat-label">金币</text>
+        </view>
+        <view class="stat-divider"></view>
+        <view class="stat-item" bind:tap="goToDecorations">
+          <text class="stat-icon">🎨</text>
+          <text class="stat-value">装扮</text>
+          <van-icon name="arrow" size="12px" color="#999" />
+        </view>
+      </view>
+    </block>
   </view>
 
   <!-- 功能列表 -->
