@@ -16,39 +16,51 @@
     round
     bind:close="toggleNotificationPanel"
     z-index="3000"
-    custom-style="width: 90%; max-height: 70vh; border-radius: 24rpx;"
+    custom-style="width: 90%; max-height: 75vh; border-radius: 32rpx; background: rgba(255,255,255,0.85); backdrop-filter: blur(20px);"
   >
     <view class="message-card">
       <!-- 顶部标题栏 -->
       <view class="message-card-header">
-        <view class="header-left">
-          <text class="header-icon">📬</text>
-          <text class="header-title">消息中心</text>
+        <view class="header-placeholder"></view>
+        <text class="header-title">📬 消息中心</text>
+        <view class="header-back" bind:tap="toggleNotificationPanel">
+          <van-icon name="arrow-left" size="20" color="#666" />
         </view>
-        <view class="header-close" bind:tap="toggleNotificationPanel">
-          <van-icon name="cross" size="20" color="#999" />
+      </view>
+
+      <!-- 分类 Tab -->
+      <view class="message-tabs">
+        <view class="message-tab {{ activeNoticeTab === 'all' ? 'active' : '' }}" bind:tap="switchNoticeTab" data-tab="all">
+          全部
+          <text class="tab-badge" wx:if="{{ unreadAllCount > 0 }}">{{ unreadAllCount }}</text>
+        </view>
+        <view class="message-tab {{ activeNoticeTab === 'invite' ? 'active' : '' }}" bind:tap="switchNoticeTab" data-tab="invite">
+          邀请
+          <text class="tab-badge" wx:if="{{ unreadInviteCount > 0 }}">{{ unreadInviteCount }}</text>
+        </view>
+        <view class="message-tab {{ activeNoticeTab === 'system' ? 'active' : '' }}" bind:tap="switchNoticeTab" data-tab="system">
+          系统
+          <text class="tab-badge" wx:if="{{ unreadSystemCount > 0 }}">{{ unreadSystemCount }}</text>
         </view>
       </view>
 
       <!-- 消息列表 -->
       <scroll-view scroll-y class="message-list">
         <!-- 空状态 -->
-        <view class="message-empty" wx:if="{{ notices.length === 0 && announcements.length === 0 }}">
-          <van-icon name="envelop-o" size="48" color="#ddd" />
-          <text class="empty-text">暂无消息</text>
+        <view class="message-empty" wx:if="{{ filteredNotices.length === 0 && filteredAnnouncements.length === 0 }}">
+          <text class="empty-icon">📭</text>
+          <text class="empty-text">暂无新消息</text>
         </view>
 
         <!-- 系统公告 -->
-        <block wx:for="{{ announcements }}" wx:key="_id">
+        <block wx:for="{{ filteredAnnouncements }}" wx:key="_id">
           <view class="message-item announcement-item" bind:tap="toggleAnnouncement" data-id="{{ item._id }}">
+            <view class="unread-dot" wx:if="{{ !item.isRead }}"></view>
             <view class="message-item-icon system">
               <text>📢</text>
             </view>
             <view class="message-item-content">
-              <view class="message-item-title">
-                {{ item.title }}
-                <text class="new-tag" wx:if="{{ !item.isRead }}">新</text>
-              </view>
+              <view class="message-item-title">{{ item.title }}</view>
               <view class="message-item-desc">{{ item.version ? '版本 ' + item.version + ' 更新' : item.title }}</view>
               <view class="message-item-footer">
                 <text class="message-item-time">{{ item.date }}</text>
@@ -62,7 +74,8 @@
         </block>
 
         <!-- 其他消息卡片 -->
-        <view class="message-item" wx:for="{{ notices }}" wx:key="id" bind:tap="onNoticeTap" data-item="{{ item }}">
+        <view class="message-item" wx:for="{{ filteredNotices }}" wx:key="id" bind:tap="onNoticeTap" data-item="{{ item }}">
+          <view class="unread-dot" wx:if="{{ !item.read }}"></view>
           <view class="message-item-icon {{ item.type }}">
             <text wx:if="{{ item.type === 'invite' }}">👥</text>
             <text wx:elif="{{ item.type === 'welfare' }}">🎁</text>
@@ -79,7 +92,7 @@
         </view>
       </scroll-view>
 
-      <!-- 底部清空按钮 -->
+      <!-- 底部按钮 -->
       <view class="message-card-footer" wx:if="{{ notices.length > 0 || announcements.length > 0 }}">
         <view class="clear-btn" bind:tap="clearAllNotices">全部已读</view>
       </view>

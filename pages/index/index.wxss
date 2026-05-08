@@ -97,8 +97,7 @@
 
 /* ========== 消息中心弹窗卡片 ========== */
 .message-card {
-  background: #fff;
-  border-radius: 24rpx;
+  background: transparent;
   overflow: hidden;
 }
 
@@ -107,17 +106,10 @@
   align-items: center;
   justify-content: space-between;
   padding: 32rpx;
-  border-bottom: 1rpx solid #F0F0F0;
 }
 
-.message-card-header .header-left {
-  display: flex;
-  align-items: center;
-}
-
-.header-icon {
-  font-size: 36rpx;
-  margin-right: 12rpx;
+.header-placeholder {
+  width: 48rpx;
 }
 
 .header-title {
@@ -126,7 +118,7 @@
   color: #333;
 }
 
-.header-close {
+.header-back {
   width: 48rpx;
   height: 48rpx;
   display: flex;
@@ -134,9 +126,56 @@
   justify-content: center;
 }
 
+/* 分类 Tab */
+.message-tabs {
+  display: flex;
+  padding: 0 24rpx;
+  margin-bottom: 16rpx;
+}
+
+.message-tab {
+  flex: 1;
+  text-align: center;
+  padding: 16rpx 0;
+  font-size: 28rpx;
+  color: #999;
+  position: relative;
+  transition: all 0.2s;
+}
+
+.message-tab.active {
+  color: #00B0FF;
+  font-weight: 600;
+}
+
+.message-tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 48rpx;
+  height: 6rpx;
+  background: #00B0FF;
+  border-radius: 3rpx;
+}
+
+.tab-badge {
+  display: inline-block;
+  min-width: 32rpx;
+  height: 32rpx;
+  line-height: 32rpx;
+  padding: 0 8rpx;
+  font-size: 20rpx;
+  color: #fff;
+  background: #FF6B6B;
+  border-radius: 16rpx;
+  margin-left: 8rpx;
+}
+
 .message-list {
   max-height: 50vh;
-  padding: 20rpx 24rpx;
+  padding: 0 24rpx;
 }
 
 .message-empty {
@@ -146,18 +185,23 @@
   padding: 80rpx 0;
 }
 
+.empty-icon {
+  font-size: 80rpx;
+  margin-bottom: 16rpx;
+}
+
 .empty-text {
   font-size: 28rpx;
   color: #999;
-  margin-top: 20rpx;
 }
 
 .message-item {
   display: flex;
   padding: 24rpx;
-  background: #F8F9FA;
+  background: rgba(255, 255, 255, 0.7);
   border-radius: 16rpx;
   margin-bottom: 16rpx;
+  position: relative;
 }
 
 .message-item:last-child {
@@ -165,13 +209,24 @@
 }
 
 .message-item:active {
-  background: #F0F1F2;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.unread-dot {
+  position: absolute;
+  left: 8rpx;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 12rpx;
+  height: 12rpx;
+  background: #00B0FF;
+  border-radius: 50%;
 }
 
 .message-item-icon {
   width: 72rpx;
   height: 72rpx;
-  border-radius: 16rpx;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -181,16 +236,16 @@
 }
 
 .message-item-icon.invite {
-  background: rgba(102, 126, 234, 0.15);
+  background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
 }
 
 .message-item-icon.welfare {
-  background: rgba(245, 87, 108, 0.15);
+  background: linear-gradient(135deg, rgba(250, 112, 154, 0.2) 0%, rgba(254, 225, 64, 0.2) 100%);
 }
 
 .message-item-icon.notice,
 .message-item-icon.system {
-  background: rgba(79, 172, 254, 0.15);
+  background: linear-gradient(135deg, rgba(79, 172, 254, 0.2) 0%, rgba(0, 242, 254, 0.2) 100%);
 }
 
 .message-item-content {
@@ -245,7 +300,7 @@
 
 /* 公告展开内容 */
 .announcement-content {
-  background: #F8F9FA;
+  background: rgba(255, 255, 255, 0.5);
   margin: 0 24rpx 16rpx;
   padding: 20rpx;
   border-radius: 12rpx;
@@ -262,12 +317,16 @@
 .message-card-footer {
   padding: 20rpx 24rpx 32rpx;
   text-align: center;
-  border-top: 1rpx solid #F0F0F0;
 }
 
 .clear-btn {
   font-size: 26rpx;
-  color: #999;
+  color: #00B0FF;
+  padding: 16rpx 32rpx;
+  background: rgba(0, 176, 255, 0.1);
+  border-radius: 32rpx;
+  display: inline-block;
+}
   padding: 16rpx 0;
 }
 

@@ -63,10 +63,18 @@ Page({
     showNotificationPanel: false,
     notices: [],
     hasUnreadNotice: false,
+    activeNoticeTab: 'all', // 当前选中的消息分类：all / invite / system
 
     // 系统公告
     announcements: [],
     expandedAnnouncementId: null, // 当前展开的公告ID
+
+    // 过滤后的消息列表（根据 Tab）
+    filteredNotices: [],
+    filteredAnnouncements: [],
+    unreadAllCount: 0,
+    unreadInviteCount: 0,
+    unreadSystemCount: 0,
 
     // 海报预览相关
     showPosterPopup: false,
@@ -897,11 +905,20 @@ Page({
 
   toggleNotificationPanel() {
     const show = !this.data.showNotificationPanel;
-    this.setData({ showNotificationPanel: show });
+    this.setData({
+      showNotificationPanel: show,
+      activeNoticeTab: 'all' // 重置为全部
+    });
     if (show) {
-      this.markAllAsRead();
       this.loadAnnouncements();
     }
+  },
+
+  // 切换消息分类 Tab
+  switchNoticeTab(e) {
+    const tab = e.currentTarget.dataset.tab;
+    this.setData({ activeNoticeTab: tab });
+    this.updateFilteredMessages();
   },
 
   // 加载系统公告
@@ -936,6 +953,38 @@ Page({
     const hasUnreadAnnouncements = this.data.announcements.some(a => !a.isRead);
     this.setData({
       hasUnreadNotice: hasUnreadNotices || hasUnreadAnnouncements
+    });
+    this.updateFilteredMessages();
+  },
+
+  // 更新过滤后的消息列表
+  updateFilteredMessages() {
+    const { notices, announcements, activeNoticeTab } = this.data;
+
+    // 计算未读数量
+    const unreadInviteCount = notices.filter(n => n.type === 'invite' && !n.read).length;
+    const unreadSystemCount = announcements.filter(a => !a.isRead).length;
+    const unreadAllCount = unreadInviteCount + unreadSystemCount;
+
+    // 根据 Tab 过滤
+    let filteredNotices = [];
+    let filteredAnnouncements = [];
+
+    if (activeNoticeTab === 'all') {
+      filteredNotices = notices;
+      filteredAnnouncements = announcements;
+    } else if (activeNoticeTab === 'invite') {
+      filteredNotices = notices.filter(n => n.type === 'invite');
+    } else if (activeNoticeTab === 'system') {
+      filteredAnnouncements = announcements;
+    }
+
+    this.setData({
+      filteredNotices,
+      filteredAnnouncements,
+      unreadAllCount,
+      unreadInviteCount,
+      unreadSystemCount
     });
   },
 
@@ -1049,6 +1098,7 @@ Page({
   loadNotices() {
     const notices = wx.getStorageSync('notices') || [];
     this.setData({ notices, hasUnreadNotice: notices.some(n => !n.read) });
+    this.updateFilteredMessages();
   },
   
   noticeIcons: {
