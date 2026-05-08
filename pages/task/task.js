@@ -180,31 +180,13 @@ Page({
   claimReward(e) {
     const taskId = e.currentTarget.dataset.id;
 
-    wx.showLoading({ title: '领取中...' });
-
     wx.cloud.callFunction({
       name: 'claimTaskReward',
       data: { taskId },
       success: res => {
-        wx.hideLoading();
         if (res.result && res.result.success) {
-          const { exp, totalExp, title, titleUpgraded } = res.result.data;
-
+          // 静默刷新数据
           this.loadTaskData();
-
-          if (titleUpgraded) {
-            wx.showModal({
-              title: '🎉 恭喜升级',
-              content: `获得 ${exp} 经验\n称号升级为：${title}`,
-              showCancel: false,
-              confirmText: '太棒了'
-            });
-          } else {
-            wx.showToast({
-              title: `+${exp} 经验`,
-              icon: 'success'
-            });
-          }
         } else {
           wx.showToast({
             title: res.result?.message || '领取失败',
@@ -213,7 +195,6 @@ Page({
         }
       },
       fail: err => {
-        wx.hideLoading();
         console.error('[claimTaskReward] 失败:', err);
         wx.showToast({
           title: '网络错误',
@@ -233,30 +214,14 @@ Page({
       return;
     }
 
-    wx.showLoading({ title: '领取中...', mask: true });
-
     let totalExp = 0;
     let upgraded = false;
     let newTitle = '';
 
     const claimOne = (index) => {
       if (index >= claimableTasks.length) {
-        wx.hideLoading();
+        // 静默刷新数据
         this.loadTaskData();
-
-        if (upgraded) {
-          wx.showModal({
-            title: '🎉 恭喜升级',
-            content: `共获得 ${totalExp} 经验\n称号升级为：${newTitle}`,
-            showCancel: false,
-            confirmText: '太棒了'
-          });
-        } else {
-          wx.showToast({
-            title: `共获得 ${totalExp} 经验`,
-            icon: 'success'
-          });
-        }
         return;
       }
 
