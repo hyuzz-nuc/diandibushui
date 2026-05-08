@@ -18,18 +18,32 @@
     <!-- 已登录状态 -->
     <block wx:else>
       <button class="avatar-wrapper" bind:tap="onPickAvatar">
-        <view class="avatar-ring">
-          <image class="avatar-img" mode="aspectFill" src="{{ userInfo.avatarUrl }}" />
+        <view class="avatar-frame frame-{{ currentFrame }}">
+          <view class="avatar-ring">
+            <image class="avatar-img" mode="aspectFill" src="{{ userInfo.avatarUrl }}" />
+          </view>
         </view>
       </button>
+      <view class="user-title">{{ userInfo.current_title || '饮水小白' }}</view>
       <view class="nickname-wrapper">
         <input class="nickname-input" placeholder="点击输入昵称" value="{{ userInfo.nickName }}" bind:change="onInputChange" />
         <van-icon name="edit" size="16px" color="#999" />
       </view>
-      <view class="title-badge" wx:if="{{ userInfo.current_title }}" bind:tap="onViewPoster">
-        <van-icon name="medal-o" /> {{ userInfo.current_title }} <van-icon name="arrow" size="12px" style="margin-left: 4px;" />
-      </view>
     </block>
+  </view>
+
+  <!-- 金币和装扮 -->
+  <view class="coins-card" wx:if="{{ hasUserInfo }}">
+    <view class="coins-info">
+      <text class="coins-icon">💰</text>
+      <text class="coins-num">{{ coins }}</text>
+      <text class="coins-label">金币</text>
+    </view>
+    <view class="decorations-info" bind:tap="goToDecorations">
+      <text class="decorations-icon">🎨</text>
+      <text class="decorations-text">我的装扮</text>
+      <van-icon name="arrow" size="14px" color="#999" />
+    </view>
   </view>
 
   <!-- 功能列表 -->

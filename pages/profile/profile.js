@@ -13,14 +13,15 @@ Page({
     },
     hasUserInfo: false,
     showInvitePopup: false,
-    showLoginPopup: false, // 登录弹窗
-    loginAvatarUrl: '', // 登录弹窗中的临时头像
-    loginNickName: '', // 登录弹窗中的临时昵称
-    safeAreaTop: 110
+    showLoginPopup: false,
+    loginAvatarUrl: '',
+    loginNickName: '',
+    safeAreaTop: 110,
+    coins: 0,
+    currentFrame: ''
   },
 
   onLoad() {
-    // 设置顶部安全距离（自动适配胶囊按钮）
     const app = getApp();
     this.setData({
       safeAreaTop: app.globalData.safeAreaTop || 110
@@ -29,12 +30,44 @@ Page({
 
   onShow() {
     this.loadUserInfo();
+    this.loadCoinsAndDecorations();
 
     if (typeof this.getTabBar === 'function' && this.getTabBar()) {
       this.getTabBar().setData({
-        active: 4 // 我的页（现在是第 5 个 Tab）
+        active: 4
       })
     }
+  },
+
+  loadCoinsAndDecorations() {
+    wx.cloud.callFunction({
+      name: 'getShopData',
+      success: res => {
+        if (res.result && res.result.success) {
+          const { coins, decorations } = res.result.data;
+          const frame = decorations?.frame || {};
+          // 找到当前有效的头像框
+          let currentFrame = '';
+          const now = new Date();
+          for (const name in frame) {
+            if (frame[name].expireAt && new Date(frame[name].expireAt) > now) {
+              currentFrame = name;
+              break;
+            }
+          }
+          this.setData({
+            coins: coins || 0,
+            currentFrame
+          });
+        }
+      }
+    });
+  },
+
+  goToDecorations() {
+    wx.navigateTo({
+      url: '/pages/shop/shop'
+    });
   },
 
   loadUserInfo() {

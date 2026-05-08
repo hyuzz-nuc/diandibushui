@@ -515,6 +515,25 @@
   width: 100%;
 }
 
+.water-btn-custom {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8rpx;
+  width: 180rpx;
+  height: 80rpx;
+  border-radius: 40rpx;
+  color: #fff;
+  font-size: 28rpx;
+  font-weight: 500;
+  box-shadow: 0 4rpx 10rpx rgba(0, 176, 255, 0.3);
+}
+
+.water-btn-custom:active {
+  opacity: 0.9;
+  transform: scale(0.98);
+}
+
 .water-btn {
   width: 180rpx !important;
   box-shadow: 0 4rpx 10rpx rgba(0, 176, 255, 0.3);

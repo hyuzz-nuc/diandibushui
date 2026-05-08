@@ -1,5 +1,16 @@
 import Dialog from '@vant/weapp/dialog/dialog';
 
+// 主题颜色配置
+const THEME_COLORS = {
+  '清新蓝': { ring: '#00B0FF', button: 'linear-gradient(135deg, #4FC3F7 0%, #00B0FF 100%)' },
+  '活力橙': { ring: '#FF9800', button: 'linear-gradient(135deg, #FFB74D 0%, #FF9800 100%)' },
+  '薄荷绿': { ring: '#4CAF50', button: 'linear-gradient(135deg, #81C784 0%, #4CAF50 100%)' },
+  '梦幻紫': { ring: '#9C27B0', button: 'linear-gradient(135deg, #BA68C8 0%, #9C27B0 100%)' },
+  '少女粉': { ring: '#E91E63', button: 'linear-gradient(135deg, #F48FB1 0%, #E91E63 100%)' },
+  '星空黑': { ring: '#424242', button: 'linear-gradient(135deg, #616161 0%, #424242 100%)' },
+  '彩虹色': { ring: '#FF6B6B', button: 'linear-gradient(135deg, #FF6B6B 0%, #FFD93D 50%, #6BCB77 100%)' }
+};
+
 const app = getApp()
 
 Page({
@@ -11,6 +22,8 @@ Page({
       '0%': '#4FC3F7',
       '100%': '#00B0FF',
     },
+    ringColor: '#00B0FF',
+    buttonBg: 'linear-gradient(135deg, #4FC3F7 0%, #00B0FF 100%)',
     consecutiveDays: 0, // 连续打卡天数
     showRecommendDialog: false,
     weight: '',
@@ -185,6 +198,9 @@ Page({
 
     // 检查任务红点状态
     this.checkClaimableTask();
+
+    // 加载主题
+    this.loadTheme();
 
     setTimeout(() => {
       try {
@@ -1596,6 +1612,52 @@ Page({
           if (app.globalData) {
             app.globalData.hasClaimableTask = hasClaimable;
           }
+        }
+      }
+    });
+  },
+
+  // 加载主题
+  loadTheme() {
+    wx.cloud.callFunction({
+      name: 'getShopData',
+      success: res => {
+        if (res.result && res.result.success) {
+          const decorations = res.result.data.decorations || {};
+          const now = new Date();
+
+          // 获取圆环主题
+          const ring = decorations.ring || {};
+          let ringTheme = '清新蓝';
+          for (const name in ring) {
+            if (ring[name].expireAt && new Date(ring[name].expireAt) > now) {
+              ringTheme = name;
+              break;
+            }
+          }
+
+          // 获取按钮主题
+          const button = decorations.button || {};
+          let buttonTheme = '经典蓝';
+          for (const name in button) {
+            if (button[name].expireAt && new Date(button[name].expireAt) > now) {
+              buttonTheme = name;
+              break;
+            }
+          }
+
+          // 应用主题颜色
+          const ringColor = THEME_COLORS[ringTheme]?.ring || '#00B0FF';
+          const buttonBg = THEME_COLORS[ringTheme]?.button || 'linear-gradient(135deg, #4FC3F7 0%, #00B0FF 100%)';
+
+          this.setData({
+            ringColor,
+            buttonBg,
+            gradientColor: {
+              '0%': ringColor,
+              '100%': ringColor
+            }
+          });
         }
       }
     });

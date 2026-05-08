@@ -70,6 +70,111 @@
   justify-content: center;
 }
 
+/* 头像框样式 */
+.avatar-frame {
+  position: relative;
+  padding: 8rpx;
+  border-radius: 50%;
+}
+
+.avatar-frame.frame-活力橙 {
+  background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%);
+  box-shadow: 0 0 20rpx rgba(255, 152, 0, 0.5);
+}
+
+.avatar-frame.frame-薄荷绿 {
+  background: linear-gradient(135deg, #4CAF50 0%, #388E3C 100%);
+  box-shadow: 0 0 20rpx rgba(76, 175, 80, 0.5);
+}
+
+.avatar-frame.frame-梦幻紫 {
+  background: linear-gradient(135deg, #9C27B0 0%, #7B1FA2 100%);
+  box-shadow: 0 0 20rpx rgba(156, 39, 176, 0.5);
+}
+
+.avatar-frame.frame-金色荣耀 {
+  background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+  box-shadow: 0 0 30rpx rgba(255, 215, 0, 0.6);
+}
+
+.avatar-frame.frame-钻石闪耀 {
+  background: linear-gradient(135deg, #B9F2FF 0%, #00BFFF 50%, #1E90FF 100%);
+  box-shadow: 0 0 30rpx rgba(0, 191, 255, 0.6);
+}
+
+.avatar-frame.frame-传奇之框 {
+  background: linear-gradient(135deg, #FF6B6B 0%, #FFD93D 25%, #6BCB77 50%, #4D96FF 75%, #9B59B6 100%);
+  box-shadow: 0 0 40rpx rgba(255, 107, 107, 0.5);
+  animation: rainbow-glow 3s ease-in-out infinite;
+}
+
+@keyframes rainbow-glow {
+  0%, 100% { box-shadow: 0 0 40rpx rgba(255, 107, 107, 0.6); }
+  25% { box-shadow: 0 0 40rpx rgba(255, 217, 61, 0.6); }
+  50% { box-shadow: 0 0 40rpx rgba(107, 203, 119, 0.6); }
+  75% { box-shadow: 0 0 40rpx rgba(77, 150, 255, 0.6); }
+}
+
+/* 用户称号 */
+.user-title {
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #00B0FF;
+  margin-bottom: 12rpx;
+}
+
+/* 金币卡片 */
+.coins-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+  padding: 24rpx 32rpx;
+  border-radius: 20rpx;
+  margin-bottom: 30rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.05);
+}
+
+.coins-info {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+}
+
+.coins-icon {
+  font-size: 32rpx;
+}
+
+.coins-num {
+  font-size: 36rpx;
+  font-weight: 700;
+  color: #FF9800;
+}
+
+.coins-label {
+  font-size: 24rpx;
+  color: #999;
+  margin-left: 8rpx;
+}
+
+.decorations-info {
+  display: flex;
+  align-items: center;
+  gap: 8rpx;
+  padding: 12rpx 24rpx;
+  background: #f5f5f5;
+  border-radius: 24rpx;
+}
+
+.decorations-icon {
+  font-size: 24rpx;
+}
+
+.decorations-text {
+  font-size: 26rpx;
+  color: #333;
+}
+
 /* 登录按钮样式 */
 .login-btn {
   padding: 16rpx 48rpx;
