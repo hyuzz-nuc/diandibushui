@@ -174,8 +174,10 @@
 }
 
 .message-list {
-  max-height: 50vh;
+  height: 45vh;
+  min-height: 400rpx;
   padding: 0 24rpx;
+  overflow-y: auto;
 }
 
 .message-empty {
