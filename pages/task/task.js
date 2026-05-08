@@ -186,8 +186,13 @@ Page({
       data: { action: 'claim', taskId },
       success: res => {
         if (res.result && res.result.success) {
+          // 清除全局缓存，让其他页面重新获取最新金币
+          if (app.globalData) {
+            app.globalData.shopData = null;
+          }
           // 静默刷新数据
           this.loadTaskData();
+          wx.showToast({ title: '领取成功', icon: 'success' });
         } else {
           wx.showToast({
             title: res.result?.message || '领取失败',
@@ -215,14 +220,23 @@ Page({
       return;
     }
 
+    // 清除全局缓存
+    if (app.globalData) {
+      app.globalData.shopData = null;
+    }
+
     let totalExp = 0;
-    let upgraded = false;
-    let newTitle = '';
+    let totalCoins = 0;
 
     const claimOne = (index) => {
       if (index >= claimableTasks.length) {
-        // 静默刷新数据
+        // 全部领取完成
         this.loadTaskData();
+        wx.showToast({
+          title: `获得 ${totalExp}经验 ${totalCoins}金币`,
+          icon: 'success',
+          duration: 2000
+        });
         return;
       }
 
@@ -232,10 +246,7 @@ Page({
         success: res => {
           if (res.result && res.result.success) {
             totalExp += res.result.data.exp;
-            if (res.result.data.titleUpgraded) {
-              upgraded = true;
-              newTitle = res.result.data.title;
-            }
+            totalCoins += res.result.data.coins;
           }
           claimOne(index + 1);
         },
