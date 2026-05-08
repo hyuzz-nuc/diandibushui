@@ -22,6 +22,20 @@ const TASK_EXP = {
   104: 150   // 连续打卡30天
 }
 
+// 任务金币配置
+const TASK_COINS = {
+  // 每日任务
+  1: 10,  // 每日签到
+  2: 15,  // 记录喝水3次
+  3: 20,  // 达成每日目标
+  4: 10,  // 提醒好友喝水
+  // 成长任务
+  101: 30,   // 连续打卡3天
+  102: 50,   // 连续打卡7天
+  103: 80,   // 连续打卡15天
+  104: 150   // 连续打卡30天
+}
+
 // 云函数入口函数
 exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext()
@@ -46,8 +60,9 @@ exports.main = async (event, context) => {
       return { success: false, message: '已领取过奖励' }
     }
 
-    // 获取任务经验
+    // 获取任务经验和金币
     const exp = TASK_EXP[taskId] || 0
+    const coins = TASK_COINS[taskId] || 0
     if (exp === 0) {
       return { success: false, message: '任务不存在' }
     }
@@ -80,6 +95,7 @@ exports.main = async (event, context) => {
       data: {
         exp: newExp,
         title: newTitle,
+        coins: _.inc(coins),
         claimedTasks: _.push(taskId)
       }
     })
@@ -89,6 +105,7 @@ exports.main = async (event, context) => {
       message: '领取成功',
       data: {
         exp,
+        coins,
         totalExp: newExp,
         title: newTitle,
         titleUpgraded: newTitle !== user.title

@@ -1606,5 +1606,12 @@ Page({
     wx.navigateTo({
       url: '/pages/task/task'
     });
+  },
+
+  // 跳转到商城
+  goToShop() {
+    wx.navigateTo({
+      url: '/pages/shop/shop'
+    });
   }
 });

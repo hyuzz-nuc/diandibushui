@@ -15,6 +15,13 @@
     </view>
   </view>
 
+  <!-- 右侧商城图标 -->
+  <view class="right-icons">
+    <view class="shop-entry" bind:tap="goToShop">
+      <van-icon name="shop-o" size="24" color="#999" />
+    </view>
+  </view>
+
   <!-- 消息中心弹窗卡片 -->
   <van-popup
     show="{{ showNotificationPanel }}"
