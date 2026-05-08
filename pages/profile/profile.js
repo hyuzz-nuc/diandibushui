@@ -55,9 +55,19 @@ Page({
               break;
             }
           }
+          // 中文类名映射成英文
+          const frameClassMap = {
+            '活力橙': 'orange',
+            '薄荷绿': 'green',
+            '梦幻紫': 'purple',
+            '金色荣耀': 'gold',
+            '钻石闪耀': 'diamond',
+            '传奇之框': 'legend'
+          };
+          const frameClass = frameClassMap[currentFrame] || '';
           this.setData({
             coins: coins || 0,
-            currentFrame
+            currentFrame: frameClass
           });
         }
       }

@@ -77,32 +77,32 @@
   border-radius: 50%;
 }
 
-.avatar-frame.frame-活力橙 {
+.avatar-frame.frame-orange {
   background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%);
   box-shadow: 0 0 20rpx rgba(255, 152, 0, 0.5);
 }
 
-.avatar-frame.frame-薄荷绿 {
+.avatar-frame.frame-green {
   background: linear-gradient(135deg, #4CAF50 0%, #388E3C 100%);
   box-shadow: 0 0 20rpx rgba(76, 175, 80, 0.5);
 }
 
-.avatar-frame.frame-梦幻紫 {
+.avatar-frame.frame-purple {
   background: linear-gradient(135deg, #9C27B0 0%, #7B1FA2 100%);
   box-shadow: 0 0 20rpx rgba(156, 39, 176, 0.5);
 }
 
-.avatar-frame.frame-金色荣耀 {
+.avatar-frame.frame-gold {
   background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
   box-shadow: 0 0 30rpx rgba(255, 215, 0, 0.6);
 }
 
-.avatar-frame.frame-钻石闪耀 {
+.avatar-frame.frame-diamond {
   background: linear-gradient(135deg, #B9F2FF 0%, #00BFFF 50%, #1E90FF 100%);
   box-shadow: 0 0 30rpx rgba(0, 191, 255, 0.6);
 }
 
-.avatar-frame.frame-传奇之框 {
+.avatar-frame.frame-legend {
   background: linear-gradient(135deg, #FF6B6B 0%, #FFD93D 25%, #6BCB77 50%, #4D96FF 75%, #9B59B6 100%);
   box-shadow: 0 0 40rpx rgba(255, 107, 107, 0.5);
   animation: rainbow-glow 3s ease-in-out infinite;
