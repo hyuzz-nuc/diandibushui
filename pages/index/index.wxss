@@ -86,125 +86,165 @@
 }
 
 .notification-dot {
+  position: absolute;
+  top: -4rpx;
+  right: -4rpx;
+  width: 16rpx;
+  height: 16rpx;
+  background: #00B0FF;
+  border-radius: 50%;
 }
 
-/* ========== 通知中心面板 ========== */
-.notification-panel {
-  padding: calc(30rpx + env(safe-area-inset-top)) 20rpx 30rpx;
-  max-height: 60vh;
-  overflow-y: auto;
+/* ========== 消息中心弹窗卡片 ========== */
+.message-card {
+  background: #fff;
+  border-radius: 24rpx;
+  overflow: hidden;
 }
 
-.panel-header {
+.message-card-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding-bottom: 20rpx;
-  border-bottom: 1rpx solid #eee;
-  margin-bottom: 20rpx;
+  justify-content: space-between;
+  padding: 32rpx;
+  border-bottom: 1rpx solid #F0F0F0;
 }
 
-.panel-title {
-  font-size: 32rpx;
-  font-weight: bold;
+.message-card-header .header-left {
+  display: flex;
+  align-items: center;
+}
+
+.header-icon {
+  font-size: 36rpx;
+  margin-right: 12rpx;
+}
+
+.header-title {
+  font-size: 34rpx;
+  font-weight: 700;
   color: #333;
 }
 
-.clear-all {
-  font-size: 24rpx;
-  color: #999;
-  padding: 8rpx 16rpx;
-}
-
-.clear-all:active {
-  color: #00B0FF;
-}
-
-.notice-list {
-  display: flex;
-  flex-direction: column;
-  gap: 20rpx;
-}
-
-.notice-item {
-  display: flex;
-  align-items: flex-start;
-  padding: 20rpx;
-  background: #f8f9fa;
-  border-radius: 12rpx;
-  position: relative;
-}
-
-.notice-item:active {
-  background: #f0f1f2;
-}
-
-.notice-icon {
-  width: 64rpx;
-  height: 64rpx;
-  border-radius: 50%;
+.header-close {
+  width: 48rpx;
+  height: 48rpx;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.message-list {
+  max-height: 50vh;
+  padding: 20rpx 24rpx;
+}
+
+.message-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 80rpx 0;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: #999;
+  margin-top: 20rpx;
+}
+
+.message-item {
+  display: flex;
+  padding: 24rpx;
+  background: #F8F9FA;
+  border-radius: 16rpx;
+  margin-bottom: 16rpx;
+}
+
+.message-item:last-child {
+  margin-bottom: 0;
+}
+
+.message-item:active {
+  background: #F0F1F2;
+}
+
+.message-item-icon {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32rpx;
   margin-right: 20rpx;
   flex-shrink: 0;
 }
 
-.notice-icon.invite {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+.message-item-icon.invite {
+  background: rgba(102, 126, 234, 0.15);
 }
 
-.notice-icon.welfare {
-  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+.message-item-icon.welfare {
+  background: rgba(245, 87, 108, 0.15);
 }
 
-.notice-icon.notice {
-  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+.message-item-icon.notice,
+.message-item-icon.system {
+  background: rgba(79, 172, 254, 0.15);
 }
 
-.notice-icon.system {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-}
-
-.notice-content {
+.message-item-content {
   flex: 1;
   min-width: 0;
 }
 
-.notice-title {
-  font-size: 28rpx;
-  font-weight: bold;
+.message-item-title {
+  font-size: 30rpx;
+  font-weight: 600;
   color: #333;
   margin-bottom: 8rpx;
 }
 
-.notice-desc {
-  font-size: 24rpx;
+.message-item-desc {
+  font-size: 26rpx;
   color: #666;
-  margin-bottom: 8rpx;
+  margin-bottom: 12rpx;
   line-height: 1.4;
 }
 
-.notice-time {
-  font-size: 20rpx;
+.message-item-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.message-item-time {
+  font-size: 22rpx;
   color: #999;
 }
 
-.notice-dot {
-  width: 16rpx;
-  height: 16rpx;
-  background: #ff6b6b;
-  border-radius: 50%;
-  flex-shrink: 0;
-  margin-left: 10rpx;
+.message-item-action {
+  font-size: 24rpx;
+  color: #00B0FF;
+  padding: 4rpx 16rpx;
+  background: rgba(0, 176, 255, 0.1);
+  border-radius: 20rpx;
 }
 
-.notice-empty {
+.message-card-footer {
+  padding: 20rpx 24rpx 32rpx;
   text-align: center;
+  border-top: 1rpx solid #F0F0F0;
+}
+
+.clear-btn {
+  font-size: 26rpx;
   color: #999;
-  font-size: 28rpx;
-  padding: 40rpx 0;
-  width: 100%;
+  padding: 16rpx 0;
+}
+
+.clear-btn:active {
+  color: #666;
 }
 
 .progress-container {

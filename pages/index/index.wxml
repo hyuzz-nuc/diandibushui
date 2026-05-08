@@ -2,42 +2,63 @@
   <view class="header">
     <view class="header-left">
       <view class="notification-bell" bind:tap="toggleNotificationPanel">
-        <van-icon name="bell" size="24" color="{{ hasUnreadNotice ? '#ff6b6b' : '#999' }}" />
+        <van-icon name="envelop-o" size="24" color="{{ hasUnreadNotice ? '#00B0FF' : '#999' }}" />
         <view class="notification-dot" wx:if="{{ hasUnreadNotice }}"></view>
       </view>
     </view>
     <text class="greeting">Hi, 记得喝水哦 💧</text>
   </view>
-  
-  <!-- 通知中心弹窗 -->
+
+  <!-- 消息中心弹窗卡片 -->
   <van-popup
     show="{{ showNotificationPanel }}"
-    position="top"
+    position="center"
     round
     bind:close="toggleNotificationPanel"
     z-index="3000"
-    custom-style="border-radius: 0 0 16px 16px; padding-top: calc(80rpx + env(safe-area-inset-top));"
+    custom-style="width: 90%; max-height: 70vh; border-radius: 24rpx;"
   >
-    <view class="notification-panel">
-      <view class="panel-header">
-        <text class="panel-title">消息中心</text>
-        <view class="clear-all" wx:if="{{ notices.length > 0 }}" bind:tap="clearAllNotices">清空</view>
+    <view class="message-card">
+      <!-- 顶部标题栏 -->
+      <view class="message-card-header">
+        <view class="header-left">
+          <text class="header-icon">📬</text>
+          <text class="header-title">消息中心</text>
+        </view>
+        <view class="header-close" bind:tap="toggleNotificationPanel">
+          <van-icon name="cross" size="20" color="#999" />
+        </view>
       </view>
-      <view class="notice-list">
-        <view class="notice-item" wx:if="{{ notices.length === 0 }}">
-          <view class="notice-empty">暂无消息</view>
+
+      <!-- 消息列表 -->
+      <scroll-view scroll-y class="message-list">
+        <!-- 空状态 -->
+        <view class="message-empty" wx:if="{{ notices.length === 0 }}">
+          <van-icon name="envelop-o" size="48" color="#ddd" />
+          <text class="empty-text">暂无消息</text>
         </view>
-        <view class="notice-item" wx:for="{{ notices }}" wx:key="id" bind:tap="onNoticeTap" data-item="{{ item }}">
-          <view class="notice-icon {{ item.type }}">
-            <van-icon name="{{ item.icon }}" size="20" color="#fff" />
+
+        <!-- 消息卡片 -->
+        <view class="message-item" wx:for="{{ notices }}" wx:key="id" bind:tap="onNoticeTap" data-item="{{ item }}">
+          <view class="message-item-icon {{ item.type }}">
+            <text wx:if="{{ item.type === 'invite' }}">👥</text>
+            <text wx:elif="{{ item.type === 'welfare' }}">🎁</text>
+            <text wx:else>📢</text>
           </view>
-          <view class="notice-content">
-            <view class="notice-title">{{ item.title }}</view>
-            <view class="notice-desc">{{ item.desc }}</view>
-            <view class="notice-time">{{ item.time }}</view>
+          <view class="message-item-content">
+            <view class="message-item-title">{{ item.title }}</view>
+            <view class="message-item-desc">{{ item.desc }}</view>
+            <view class="message-item-footer">
+              <text class="message-item-time">{{ item.time }}</text>
+              <view class="message-item-action" wx:if="{{ item.type === 'invite' }}">查看</view>
+            </view>
           </view>
-          <view class="notice-dot" wx:if="{{ !item.read }}"></view>
         </view>
+      </scroll-view>
+
+      <!-- 底部清空按钮 -->
+      <view class="message-card-footer" wx:if="{{ notices.length > 0 }}">
+        <view class="clear-btn" bind:tap="clearAllNotices">清空全部消息</view>
       </view>
     </view>
   </van-popup>
