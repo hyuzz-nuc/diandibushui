@@ -43,10 +43,15 @@
   </van-popup>
 
   <!-- 底部打卡天数提示（可点击预览海报） -->
-  <view class="bottom-streak-bar" bind:tap="showPosterPreview">
-    <text class="bottom-streak-text" wx:if="{{ consecutiveDays == 0 }}">💪 开始打卡，连续 7 天解锁惊喜海报</text>
-    <text class="bottom-streak-text" wx:elif="{{ consecutiveDays > 0 && consecutiveDays < 7 }}">🔥 已连续打卡 {{ consecutiveDays }} 天，再坚持 {{ 7 - consecutiveDays }} 天解锁惊喜海报</text>
-    <text class="bottom-streak-text" wx:else>🎉 已连续打卡 {{ consecutiveDays }} 天，点击查看惊喜海报</text>
+  <view class="bottom-bar">
+    <view class="bottom-streak-bar" bind:tap="showPosterPreview">
+      <text class="bottom-streak-text" wx:if="{{ consecutiveDays == 0 }}">💪 开始打卡，连续 7 天解锁惊喜海报</text>
+      <text class="bottom-streak-text" wx:elif="{{ consecutiveDays > 0 && consecutiveDays < 7 }}">🔥 已连续打卡 {{ consecutiveDays }} 天，再坚持 {{ 7 - consecutiveDays }} 天解锁惊喜海报</text>
+      <text class="bottom-streak-text" wx:else>🎉 已连续打卡 {{ consecutiveDays }} 天，点击查看惊喜海报</text>
+    </view>
+    <view class="reminder-entry" bind:tap="goToReminder">
+      <van-icon name="bell" size="20" color="#00B0FF" />
+    </view>
   </view>
 
   <!-- 海报预览弹窗 -->

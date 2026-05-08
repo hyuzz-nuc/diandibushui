@@ -1,0 +1,166 @@
+<view class="container" style="padding-top: {{safeAreaTop}}px;">
+  <!-- 顶部设置卡片 -->
+  <view class="settings-card">
+    <view class="card-header">
+      <text class="card-title">💧 喝水提醒</text>
+    </view>
+
+    <!-- 系统提醒开关 -->
+    <view class="setting-row">
+      <view class="setting-info">
+        <text class="setting-label">系统提醒</text>
+        <view class="setting-desc">定时发送喝水提醒</view>
+      </view>
+      <view class="setting-switch-wrapper">
+        <van-switch checked="{{ systemReminderEnabled }}" size="24px" active-color="#00B0FF" bind:change="onSystemReminderChange" />
+        <view class="permission-warning" wx:if="{{ systemReminderEnabled && !systemPermissionGranted }}">
+          <van-icon name="warning-o" color="#FF6B6B" size="14px" />
+          <text class="warning-text">权限未开启</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 好友提醒开关 -->
+    <view class="setting-row">
+      <view class="setting-info">
+        <text class="setting-label">好友提醒</text>
+        <view class="setting-desc">好友提醒你时收到通知</view>
+      </view>
+      <view class="setting-switch-wrapper">
+        <van-switch checked="{{ friendReminderEnabled }}" size="24px" active-color="#00B0FF" bind:change="onFriendReminderChange" />
+        <view class="permission-warning" wx:if="{{ friendReminderEnabled && !friendPermissionGranted }}">
+          <van-icon name="warning-o" color="#FF6B6B" size="14px" />
+          <text class="warning-text">权限未开启</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 时间段设置 -->
+    <view class="time-section">
+      <view class="time-label">提醒时段</view>
+      <view class="time-picker-row">
+        <view class="time-picker" bind:tap="showStartTimePicker">
+          <text class="time-value">{{ startTime }}</text>
+          <van-icon name="arrow-down" size="14px" color="#999" />
+        </view>
+        <text class="time-separator">—</text>
+        <view class="time-picker" bind:tap="showEndTimePicker">
+          <text class="time-value">{{ endTime }}</text>
+          <van-icon name="arrow-down" size="14px" color="#999" />
+        </view>
+      </view>
+    </view>
+
+    <!-- 间隔设置 -->
+    <view class="interval-section">
+      <view class="interval-label">提醒间隔</view>
+      <view class="interval-btns">
+        <view class="interval-btn {{ interval === '30 分钟' ? 'active' : '' }}" bind:tap="selectInterval" data-interval="30 分钟">30分</view>
+        <view class="interval-btn {{ interval === '1 小时' ? 'active' : '' }}" bind:tap="selectInterval" data-interval="1 小时">1时</view>
+        <view class="interval-btn {{ interval === '1.5 小时' ? 'active' : '' }}" bind:tap="selectInterval" data-interval="1.5 小时">1.5时</view>
+        <view class="interval-btn {{ interval === '2 小时' ? 'active' : '' }}" bind:tap="selectInterval" data-interval="2 小时">2时</view>
+      </view>
+    </view>
+
+    <!-- 下次提醒提示 -->
+    <view class="next-reminder" wx:if="{{ systemReminderEnabled && systemPermissionGranted }}">
+      <van-icon name="clock-o" size="14px" color="#00B0FF" />
+      <text class="next-reminder-text">下次提醒：{{ nextReminderTime }}</text>
+    </view>
+  </view>
+
+  <!-- 提醒记录列表 -->
+  <view class="reminder-list">
+    <view class="list-header">
+      <text class="list-title">提醒记录</text>
+    </view>
+
+    <!-- 今天 -->
+    <view class="reminder-group" wx:if="{{ todayReminders.length > 0 }}">
+      <view class="group-title">今天</view>
+      <view class="reminder-item" wx:for="{{ todayReminders }}" wx:key="id">
+        <view class="reminder-icon {{ item.type === 'system' ? 'system' : 'friend' }}">
+          <van-icon wx:if="{{ item.type === 'system' }}" name="water" size="20px" color="#00B0FF" />
+          <image wx:else class="friend-avatar" src="{{ item.avatarUrl }}" mode="aspectFill" />
+        </view>
+        <view class="reminder-content">
+          <view class="reminder-time">{{ item.time }}</view>
+          <view class="reminder-text">
+            <text wx:if="{{ item.type === 'system' }}">该喝水啦！</text>
+            <text wx:else>{{ item.fromName }} 提醒你喝水</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 昨天 -->
+    <view class="reminder-group" wx:if="{{ yesterdayReminders.length > 0 }}">
+      <view class="group-title">昨天</view>
+      <view class="reminder-item" wx:for="{{ yesterdayReminders }}" wx:key="id">
+        <view class="reminder-icon {{ item.type === 'system' ? 'system' : 'friend' }}">
+          <van-icon wx:if="{{ item.type === 'system' }}" name="water" size="20px" color="#00B0FF" />
+          <image wx:else class="friend-avatar" src="{{ item.avatarUrl }}" mode="aspectFill" />
+        </view>
+        <view class="reminder-content">
+          <view class="reminder-time">{{ item.time }}</view>
+          <view class="reminder-text">
+            <text wx:if="{{ item.type === 'system' }}">该喝水啦！</text>
+            <text wx:else>{{ item.fromName }} 提醒你喝水</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 更早 -->
+    <view class="reminder-group" wx:if="{{ olderReminders.length > 0 }}">
+      <view class="group-title">更早</view>
+      <view class="reminder-item" wx:for="{{ olderReminders }}" wx:key="id">
+        <view class="reminder-icon {{ item.type === 'system' ? 'system' : 'friend' }}">
+          <van-icon wx:if="{{ item.type === 'system' }}" name="water" size="20px" color="#00B0FF" />
+          <image wx:else class="friend-avatar" src="{{ item.avatarUrl }}" mode="aspectFill" />
+        </view>
+        <view class="reminder-content">
+          <view class="reminder-time">{{ item.time }}</view>
+          <view class="reminder-text">
+            <text wx:if="{{ item.type === 'system' }}">该喝水啦！</text>
+            <text wx:else>{{ item.fromName }} 提醒你喝水</text>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="empty-state" wx:if="{{ !todayReminders.length && !yesterdayReminders.length && !olderReminders.length }}">
+      <van-empty description="暂无提醒记录" />
+    </view>
+  </view>
+
+  <!-- 时间选择器弹窗 -->
+  <van-popup show="{{ showTimePicker }}" position="bottom" round bind:close="closeTimePicker">
+    <view class="time-picker-popup">
+      <view class="picker-header">
+        <text class="picker-cancel" bind:tap="closeTimePicker">取消</text>
+        <text class="picker-title">{{ timePickerTitle }}</text>
+        <text class="picker-confirm" bind:tap="confirmTime">确定</text>
+      </view>
+      <picker-view value="{{ pickerValue }}" bind:change="onPickerChange" class="picker-view">
+        <picker-view-column>
+          <view wx:for="{{ hours }}" wx:key="*this" class="picker-item">{{ item }}时</view>
+        </picker-view-column>
+        <picker-view-column>
+          <view wx:for="{{ minutes }}" wx:key="*this" class="picker-item">{{ item }}分</view>
+        </picker-view-column>
+      </picker-view>
+    </view>
+  </van-popup>
+
+  <!-- 自定义导航栏 -->
+  <view class="custom-nav" style="height: {{safeAreaTop}}px;">
+    <view class="nav-content">
+      <view class="nav-back" bind:tap="goBack">
+        <van-icon name="arrow-left" size="20px" color="#333" />
+      </view>
+      <text class="nav-title">提醒中心</text>
+    </view>
+  </view>
+</view>

@@ -6,7 +6,8 @@
     "pages/profile/profile",
     "pages/friends/friends",
     "pages/settings/settings",
-    "pages/celebrate/celebrate"
+    "pages/celebrate/celebrate",
+    "pages/reminder/reminder"
   ],
   "window": {
     "backgroundTextStyle": "light",

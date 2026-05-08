@@ -373,7 +373,14 @@ Page({
       url: '/pages/social/social'
     });
   },
-  
+
+  // 跳转到提醒中心
+  goToReminder() {
+    wx.navigateTo({
+      url: '/pages/reminder/reminder'
+    });
+  },
+
   // 用户反馈（打开微信官方反馈页面）
   openFeedback() {
     // 使用小程序内置的反馈功能

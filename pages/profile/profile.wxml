@@ -36,7 +36,7 @@
   <view class="menu-list">
     <van-cell-group inset>
       <van-cell title="我的好友" icon="friends-o" is-link bind:click="goToSocial" />
-      <van-cell title="提醒设置" icon="clock-o" is-link url="/pages/settings/settings" />
+      <van-cell title="提醒中心" icon="bell" is-link bind:click="goToReminder" />
       <view class="guide-cell" bindtap="restartGuide">
         <van-cell title="重新进入引导" icon="replay" is-link />
       </view>
