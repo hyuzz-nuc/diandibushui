@@ -94,34 +94,24 @@ Page({
     const checked = e.detail;
 
     if (checked) {
-      // 开启时先请求权限
+      // 直接打开，后台静默请求权限
+      this.setData({
+        systemReminderEnabled: true,
+        systemPermissionGranted: true
+      });
+      this.saveSettings();
+      wx.showToast({ title: '提醒权限已打开', icon: 'success' });
+
+      // 后台静默请求订阅权限
       wx.requestSubscribeMessage({
         tmplIds: [TEMPLATE_ID],
         success: (res) => {
           if (res[TEMPLATE_ID] === 'accept') {
             wx.setStorageSync('has_subscribed_water_remind', true);
-            this.setData({
-              systemReminderEnabled: true,
-              systemPermissionGranted: true
-            });
-            this.saveSettings();
-            wx.showToast({ title: '提醒权限已打开', icon: 'success' });
-          } else if (res[TEMPLATE_ID] === 'reject') {
-            wx.showToast({ title: '请在设置中开启', icon: 'none' });
-            this.setData({ systemReminderEnabled: false });
-          } else {
-            // 用户取消或关闭
-            this.setData({ systemReminderEnabled: false });
           }
-        },
-        fail: (err) => {
-          console.error('[订阅消息] 请求失败:', err);
-          wx.showToast({ title: '授权失败', icon: 'none' });
-          this.setData({ systemReminderEnabled: false });
         }
       });
     } else {
-      // 关闭
       this.setData({ systemReminderEnabled: false });
       this.saveSettings();
     }
@@ -132,27 +122,20 @@ Page({
     const checked = e.detail;
 
     if (checked) {
+      // 直接打开
+      this.setData({
+        friendReminderEnabled: true,
+        friendPermissionGranted: true
+      });
+      wx.showToast({ title: '提醒权限已打开', icon: 'success' });
+
+      // 后台静默请求订阅权限
       wx.requestSubscribeMessage({
         tmplIds: [TEMPLATE_ID],
         success: (res) => {
           if (res[TEMPLATE_ID] === 'accept') {
             wx.setStorageSync('has_subscribed_water_remind', true);
-            this.setData({
-              friendReminderEnabled: true,
-              friendPermissionGranted: true
-            });
-            wx.showToast({ title: '提醒权限已打开', icon: 'success' });
-          } else if (res[TEMPLATE_ID] === 'reject') {
-            wx.showToast({ title: '请在设置中开启', icon: 'none' });
-            this.setData({ friendReminderEnabled: false });
-          } else {
-            this.setData({ friendReminderEnabled: false });
           }
-        },
-        fail: (err) => {
-          console.error('[订阅消息] 请求失败:', err);
-          wx.showToast({ title: '授权失败', icon: 'none' });
-          this.setData({ friendReminderEnabled: false });
         }
       });
     } else {
