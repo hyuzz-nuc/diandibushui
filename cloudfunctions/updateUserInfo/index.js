@@ -12,12 +12,13 @@ exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext()
   const openid = wxContext.OPENID
 
-  const { nickName, avatarUrl, daily_goal } = event
+  const { nickName, avatarUrl, daily_goal, settings } = event
 
   const updateData = {}
   if (nickName !== undefined) updateData.nickName = nickName
   if (avatarUrl !== undefined) updateData.avatarUrl = avatarUrl
   if (daily_goal !== undefined) updateData.daily_goal = daily_goal
+  if (settings !== undefined) updateData.settings = settings
 
   // 更新时间
   updateData.updateTime = db.serverDate()
